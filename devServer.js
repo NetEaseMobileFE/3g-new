@@ -15,14 +15,18 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 // app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('/page/:type', function (req, res) {
+app.get('/page/:type', function (req, res, next) {
+  if (!req.params.type.match(/map$/)) {
     res.sendFile(path.join(__dirname, 'src', req.params.type, 'index.html'));
+  } else {
+    next()
+  }
 });
 
 app.listen(3100, function (err) {
     if (err) {
-        console.log(err);
-        return;
+      console.log(err);
+      return
     }
     console.log('Listening at http://localhost:3100');
 });

@@ -12,7 +12,24 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'js/[name].entry.js',
+    filename: 'js/[name].bundle.js',
     publicPath: '/static/'
-  }
+  },
+  module: {
+    loaders: [
+      { 
+        test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" 
+      }, {
+        test: /\.css$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      }, {
+        test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+      }, {
+        test: /\.less$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+      }
+
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin("css/[name].css")
+  ]
 };
