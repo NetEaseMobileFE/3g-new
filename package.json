@@ -1,0 +1,20 @@
+{
+  "name": "3g-new",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node devServer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ybduan <duanyubin2012@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "express": "^4.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.6.1"
+  }
+}
