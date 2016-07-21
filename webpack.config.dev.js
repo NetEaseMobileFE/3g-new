@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+process.env.NODE_ENV = 'development'
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',

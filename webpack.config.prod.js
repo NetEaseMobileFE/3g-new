@@ -1,10 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+process.env.NODE_ENV = 'production'
 
 module.exports = {
-  devtool: '#cheap-module-eval-source-map',
+  devtool: 'source-map-hidden',
   context: path.join(__dirname, 'src'),
   entry: {
     article: ['./article/index'],
@@ -32,10 +32,16 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin("css/[name].css"),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      DEBUG: true
-    })
+      'process.env': {
+        'NODE_ENV': 'production'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    }),
+    new webpack.NoErrorsPlugin()
   ]
 };
