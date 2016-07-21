@@ -7,8 +7,8 @@ module.exports = {
   devtool: '#cheap-module-eval-source-map',
   context: path.join(__dirname, 'src'),
   entry: {
-    article: ['./article/index', 'webpack-hot-middleware/client?reload=true'],
-    special: ['./special/index', 'webpack-hot-middleware/client?reload=true']
+    article: ['./article/index'],
+    special: ['./special/index']
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -20,16 +20,17 @@ module.exports = {
       { 
         test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" 
       }, {
-        test: /\.css$/, exclude: /node_modules/, loader: "style-loader!css-loader"
+        test: /\.css$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")
       }, {
-        test: /\.scss$/, exclude: /node_modules/, loader: "style-loader!css-loader!sass-loader"
+        test: /\.scss$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
       }, {
-        test: /\.less$/, exclude: /node_modules/, loader: "style-loader!css-loader!less-loader"
+        test: /\.less$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
       }
 
     ]
   },
   plugins: [
+    new ExtractTextPlugin("css/[name].css"),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),

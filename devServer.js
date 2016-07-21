@@ -10,10 +10,13 @@ var compiler = webpack(config);
 app.use(express.static('mocks'));
 app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
-    publicPath: config.output.publicPath
+    publicPath: config.output.publicPath,
+    stats: {
+      colors: true
+    }
 }));
 
-// app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler));
 
 app.get('/page/:type', function (req, res, next) {
   if (!req.params.type.match(/map$/)) {
@@ -22,6 +25,9 @@ app.get('/page/:type', function (req, res, next) {
     next()
   }
 });
+app.get('/favicon.ico', function(req, res) {
+  res.sendFile(path.join(__dirname, 'favicon.ico'))
+})
 
 app.listen(3100, function (err) {
     if (err) {
