@@ -4,6 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 process.env.NODE_ENV = 'production'
 
 module.exports = {
+  devtool: 'source-map',
   context: path.join(__dirname, 'src'),
   entry: {
     article: ['./article/index'],
@@ -11,8 +12,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'js/[name].[chunkhash].js',
-    publicPath: '/'
+    filename: 'js/[name].js',
+    publicPath: '/static/'
   },
   module: {
     loaders: [
@@ -36,16 +37,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("css/[name].[chunkhash].css"),
+    new ExtractTextPlugin("css/[name].css"),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': 'production'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
       }
     }),
     new webpack.NoErrorsPlugin()

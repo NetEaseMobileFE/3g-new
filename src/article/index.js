@@ -3,6 +3,6 @@ if (module && module.hot) {
 }
 import share from '../common/share'
 require('./index.scss')
-const type = 'article'
+const type = 'article11111'
 share({ title: 'title111', desc: 'desc' })
 console.log(type)
