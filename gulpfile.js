@@ -101,12 +101,12 @@ gulp.task('test', ['f2e'], function(cb) {
 gulp.task('ftp', ['assets'], function(cb) {
   var conn = createConnection(profile.ftp.img);
   return gulp.src(['dist/**/*'])
-    .pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}', '*.html']))
+    .pipe(gulpIgnore.exclude(['**/*.map', '*.html']))
     .pipe(conn.dest('/utf8/' + projectName + '/'))
     // .pipe(conn.dest('/utf8/test/'))
 })
 
-gulp.task('deploy', ['assets'], function(cb) {
+gulp.task('deploy', ['ftp'], function(cb) {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const apr = 'http://img6.cache.netease.com/utf8/3g-new/'
@@ -122,7 +122,6 @@ gulp.task('deploy', ['assets'], function(cb) {
     replacement[`${key}Style`] = apr + style
     replacement[`${key}Script`] = apr + script
   }
-  console.log(replacement)
   return gulp.src(which ? `./src/${which}/index.html` : 'src/**/index.html')
     .pipe(htmlreplace(replacement))
     .pipe(htmlmin({

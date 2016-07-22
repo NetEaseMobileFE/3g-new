@@ -25,8 +25,11 @@ module.exports = {
         test: /\.scss$/, exclude: /node_modules/, loader: "style-loader!css-loader!sass-loader"
       }, {
         test: /\.less$/, exclude: /node_modules/, loader: "style-loader!css-loader!less-loader"
+      }, {
+        test: /\.png|jpe?g|gif$/,
+        loader: "url-loader?limit=1",
+        include: path.join(__dirname, 'src/img')
       }
-
     ]
   },
   plugins: [

@@ -1,6 +1,11 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+'use strict'
+const fs = require('fs')
+const path = require('path')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const profile = JSON.parse(fs.readFileSync('.profile', 'utf-8'))
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
+
 process.env.NODE_ENV = 'production'
 
 module.exports = {
@@ -13,7 +18,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'js/[name].js',
-    publicPath: '/static/'
+    publicPath: `/${profile.f2e.name}/${packageJson.name}/`
   },
   module: {
     loaders: [
@@ -33,6 +38,10 @@ module.exports = {
         test: /\.less$/,
         exclude: /node_modules/, 
         loader: ExtractTextPlugin.extract("style", "css!postcss!less")
+      }, {
+        test: /\.png|jpe?g|gif$/,
+        loader: "url-loader?limit=5000&name=img/[hash].[ext]",
+        include: path.join(__dirname, 'src/img')
       }
     ]
   },
