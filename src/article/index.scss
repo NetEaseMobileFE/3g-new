@@ -1,13 +1,5 @@
-#div {
-  span {
-    display: flex;
-    height: 100px;
-    width: 100px;
-    background: blue;
-  }
-}
-.logo{
-  display: block;
-  width: 200px; height: 200px;
-  background: url('../img/200x200.png') 0 0 no-repeat;
+body {
+  width: 7.5rem;
+  margin: 0 auto;
+  background: #f7f7f7;
 }

@@ -1,5 +1,10 @@
-#share {
-  display: block;
-  width: 100px; height: 100px;
-  background: red;
+.share-tip {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  right: .6rem;
+  width: 3.94rem;
+  height: 1.47rem;
+  background: url(http://img1.cache.netease.com/utf8/3g/touch/images/back_tip.png) no-repeat;
+  background-size: cover;
 }

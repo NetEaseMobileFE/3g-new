@@ -5,19 +5,19 @@
   -webkit-user-select: text; 
 }
 a,img{
-  -webkit-touch-callout: none;/*禁用长按弹出系统菜单*/
+  -webkit-touch-callout: none;
 }
 ul, ol{
   list-style: none;
 }
 *, :after, :before {
-  -webkit-box-sizing: border-box;/*高宽不算padding,margin*/
+  -webkit-box-sizing: border-box;
   -webkit-text-size-adjust: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
 }
 body, html {
   text-align: left;
-  height: 100%;/*高度必须为100%*/
+  height: 100%;
   width: 100%;
   font-family: Roboto,HelveticaNeue,Helvetica,Arial,sans-serif;
   font-size: 16px;
@@ -31,9 +31,9 @@ section,p,div{
   max-height: 999999px;
 }
 textarea,input[type="password"],input[type="text"]{
-  resize: none;/*禁用可缩放*/
-  outline: none;/*禁用发光效果*/
-  -webkit-appearance: none;/*禁用增加外观效果*/
+  resize: none;
+  outline: none;
+  -webkit-appearance: none;
   white-space: pre-wrap;
   word-wrap: break-word;  
   background: #fff;
@@ -52,33 +52,31 @@ img{
   white-space: nowrap;
   overflow: hidden; 
 }
-.box-center{
+.box-center {
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-pack: center;
   -webkit-box-align: center;
 }
-.fix-break-word,p{
-  background-image: url('about:blank');
+.fix-break-word, p {
+  /*background-image: url('about:blank');*/
   display: block !important;
   background-color: transparent;
   word-break: break-all;
 }
-.hide{
+.hide {
   display: none !important;
 }
-.fl-r{
+.fl-r {
   float: right;
 }
-.clearfix {
-  &:before,
-  &:after {
-    content: " ";
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table;
+  
 }
-//移动注入脚本
+.clearfix:after {
+  clear: both;
+}
+
 .tlbs{display:none!important;}t:d{display:none!important;}tlbs-flux{display:none!important;}

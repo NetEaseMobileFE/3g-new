@@ -2,7 +2,8 @@ if (module && module.hot) {
   module.hot.accept()
 }
 require('./index.css')
-export default function header(type, id) {
+export default function header(data) {
+  const { type, id } = data
   const page = type ? `${type}=${id}&s=spss` : 's=spss'
   return `
     <header class="m-header">
