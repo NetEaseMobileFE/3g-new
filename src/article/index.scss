@@ -1,8 +1,13 @@
 #div {
   span {
-    display: block;
+    display: flex;
     height: 100px;
     width: 100px;
-    background: yellow;
+    background: blue;
   }
+}
+.logo{
+  display: block;
+  width: 200px; height: 200px;
+  background: url('../img/200x200.png') 0 0 no-repeat;
 }

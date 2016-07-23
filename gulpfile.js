@@ -10,6 +10,7 @@ const gutil = require('gulp-util')
 const rimraf = require('rimraf')
 const rename = require("gulp-rename")
 const htmlmin = require('gulp-htmlmin')
+const gulpIgnore = require('gulp-ignore')
 const htmlreplace = require('gulp-html-replace')
 const webpackStream = require('webpack-stream')
 
@@ -20,10 +21,9 @@ const profile = JSON.parse(fs.readFileSync('.profile', 'utf-8'))
 let webpackConfig = require('./webpack.config.prod')
 const testMode = gutil.env._.indexOf('test') >= 0
 if (testMode) {
-  webpackConfig = require('./webpack.config.dev');
+  webpackConfig = require('./webpack.config.test');
 }
 let webpackStats = null
-
 const NEWS_TYPE = ['article', 'special', 'live', 'topic', 'question']
 
 gulp.task('clean', function(cb) {
@@ -38,7 +38,17 @@ gulp.task('clean', function(cb) {
 gulp.task('assets', ['clean'], function() {
   const which = argv.w
   checkArgs(which, NEWS_TYPE)
-  return gulp.src(which ? `src/${which}/index.js` : 'src/**/index.js').pipe(webpackStream(webpackConfig, null, function(err, stats) {
+  let config = webpackConfig
+  if (which) {
+    config = Object.assign({}, config, {
+      entry: {
+        [which]: [`./${which}/index`]
+      }
+    })
+  }
+  return gulp.src(which ? `src/${which}/index.js` : 'src/**/index.js')
+  // return gulp.src(`src/article/index.js`)
+    .pipe(webpackStream(config, null, function(err, stats) {
     webpackStats = stats.toJson({
       chunks: true,
       modules: true,
@@ -46,14 +56,14 @@ gulp.task('assets', ['clean'], function() {
       reasons: true,
       cached: true,
       cachedAssets: true
-    });
+    })
     return fs.writeFile('./analyse.log', JSON.stringify(webpackStats), null, 2)
   })).pipe(gulp.dest('dist'))
 })
 gulp.task('f2e', ['assets'], function(cb) {
-  var f2e
-  f2e = profile.f2e
-  exec("scp -r -P " + f2e.port + " dist/* " + f2e.name + "@" + f2e.host + ":/home/" + f2e.name + "/" + projectName + "/", function(err) {
+  const f2e = profile.f2e
+  const cmd = `scp -r -P ${f2e.port} dist/* ${f2e.name}@${f2e.host}:/home/${f2e.name}/${projectName}/`
+  exec(cmd, function(err, stdout, stderr) {
     if (err) {
       throw new gutil.PluginError("clean", err)
     }
@@ -61,7 +71,7 @@ gulp.task('f2e', ['assets'], function(cb) {
     return cb()
   })
 })
-gulp.task('test', ['clean'], function(cb) {
+gulp.task('test', ['f2e'], function(cb) {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const f2e = profile.f2e
@@ -83,7 +93,6 @@ gulp.task('test', ['clean'], function(cb) {
       removeComments: true
     }))
     .pipe(rename((path) => {
-
       path.basename = which || path.dirname
       path.dirname = ''
     }))
@@ -93,20 +102,38 @@ gulp.task('test', ['clean'], function(cb) {
 gulp.task('ftp', ['assets'], function(cb) {
   var conn = createConnection(profile.ftp.img);
   return gulp.src(['dist/**/*'])
-    .pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}', '*.html']))
+    .pipe(gulpIgnore.exclude(['**/*.map', '*.html']))
     .pipe(conn.dest('/utf8/' + projectName + '/'))
+    // .pipe(conn.dest('/utf8/test/'))
 })
 
 gulp.task('deploy', ['ftp'], function(cb) {
-  const apr = "http://img6.cache.netease.com/utf8/apps/" + projectName + "/";
-  return gulp.src('src/*.html').pipe(htmlreplace({
-    'css': apr + cssFile,
-    'bundle': apr + jsFile,
-    'vendor': apr + assetsNames.vendor[0]
-  })).pipe(htmlmin({
-    collapseWhitespace: true,
-    removeComments: true
-  })).pipe(gulp.dest('dist'))
+  const which = argv.w || null
+  checkArgs(which, NEWS_TYPE)
+  const apr = 'http://img6.cache.netease.com/utf8/3g-new/'
+  const assetsNames = webpackStats.assetsByChunkName
+  let replacement = {}
+  for (const key of Object.keys(assetsNames)) {
+    let style = assetsNames[key][1]
+    let script = assetsNames[key][0]
+    if (!style.match(/css$/)) {
+      style = assetsNames[key][0]
+      script = assetsNames[key][1]
+    }
+    replacement[`${key}Style`] = apr + style
+    replacement[`${key}Script`] = apr + script
+  }
+  return gulp.src(which ? `./src/${which}/index.html` : 'src/**/index.html')
+    .pipe(htmlreplace(replacement))
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true
+    }))
+    .pipe(rename((path) => {
+      path.basename = which || path.dirname
+      path.dirname = ''
+    }))
+    .pipe(gulp.dest('dist'))
 })
 
 function checkArgs(args, types) {
