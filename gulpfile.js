@@ -65,6 +65,7 @@ gulp.task('test', ['clean'], function(cb) {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const f2e = profile.f2e
+  console.log(f2e)
   const apr = "http://f2e.developer.163.com/" + f2e.name + "/" + projectName
   const replacement = which ? {
     [which + 'Style']: `${apr}/css/${which}.css`,
@@ -138,3 +139,4 @@ function createConnection(ftpConfig) {
 
   return vftp.create(options);
 }
+
