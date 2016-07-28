@@ -5,16 +5,17 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const profile = JSON.parse(fs.readFileSync('.profile', 'utf-8'))
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
-
+const entry = packageJson.pages.reduce((prev, curr) => {
+  return Object.assign(prev, {
+    [curr]: [`./${curr}/index`]
+  })
+}, {})
 process.env.NODE_ENV = 'production'
 
 module.exports = {
   devtool: 'source-map',
   context: path.join(__dirname, 'src'),
-  entry: {
-    article: ['./article/index'],
-    special: ['./special/index']
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'js/[name].js',

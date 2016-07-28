@@ -4,14 +4,16 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
+const entry = packageJson.pages.reduce((prev, curr) => {
+  return Object.assign(prev, {
+    [curr]: [`./${curr}/index`]
+  })
+}, {})
 process.env.NODE_ENV = 'production'
 
 module.exports = {
   context: path.join(__dirname, 'src'),
-  entry: {
-    article: ['./article/index'],
-    special: ['./special/index']
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'js/[name].[chunkhash].js',
