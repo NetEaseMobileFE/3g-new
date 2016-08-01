@@ -3,10 +3,11 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import share from '../common/share'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import post from '../common/post'
-import share from '../common/share'
+import middleShare from '../common/middle-share'
 import footer from '../common/footer'
 
 require('../common/reset.css')
@@ -290,6 +291,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       ArticleRander.videoRecommend(data)
       // 获取跟帖
       post({ boardid: data.replyBoard, id: data.replyid, votecount: data.replyCount})
+      $('.m-middle-share').show()
       // share component
       {
         let title = `【视频】${data.title}`
@@ -323,6 +325,9 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
   ArticleRander.hotVideoList()
 }
+
+// 中间分享
+$('.m-middle-share')[0].innerHTML = middleShare()
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({

@@ -9,12 +9,13 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import share from '../common/share'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import more from '../common/more'
 import post from '../common/post'
+import middleShare from '../common/middle-share'
 import popular from '../common/popular'
-import share from '../common/share'
 import model from '../common/model'
 import footer from '../common/footer'
 
@@ -161,6 +162,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     post({ boardid: replyBoard, id: docid, votecount: replyCount})
   })(boardid, docid)
 }
+
+// 中间分享
+$('.m-middle-share')[0].innerHTML = middleShare()
 
 // hotNews videoNews shareNews
 utils.ajax({

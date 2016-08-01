@@ -3,12 +3,13 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import share from '../common/share'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import more from '../common/more'
 import post from '../common/post'
+import middleShare from '../common/middle-share'
 import popular from '../common/popular'
-import share from '../common/share'
 import footer from '../common/footer'
 
 require('../common/reset.css')
@@ -275,6 +276,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     utils.importJs(`http://c.3g.163.com/photo/api/jsonp/set/${channelid}/${setid}.json`)
   }
 }
+
+// 中间分享
+document.querySelector('.m-middle-share').innerHTML = middleShare()
 
 // hotNews videoNews
 utils.ajax({
