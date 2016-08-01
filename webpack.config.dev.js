@@ -1,7 +1,7 @@
+'use strict'
 const fs = require('fs')
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
 process.env.NODE_ENV = 'development'
 const entry = packageJson.pages.reduce((prev, curr) => {
