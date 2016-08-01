@@ -1,0 +1,316 @@
+.border(@bdv, @w, @s, @c){
+  @{bdv}: @w @s @c;
+  .iosx2 &{
+    @{bdv}: @w/2 @s @c;
+  }
+  .iosx3 &{
+    @{bdv}: @w/2.8 @s @c;
+  }
+}
+
+body {
+  width: 7.5rem;
+  margin: 0 auto;
+  background: #f7f7f7;
+}
+.g-body-wrap {
+  padding-bottom: 1.2rem;
+  .m-comment {
+    margin: 0;
+  }
+}
+.m-video-player {
+  margin-bottom: .15rem;
+  .video-holder {
+    margin-bottom: .15rem;
+    background: #fff;
+    .video-wrap {
+      position: relative;
+      width: 7.5rem;
+      min-height: 4.2rem;
+      background-size: cover;
+      text-align: center;
+    }
+    .video-desc-wrap {
+      padding-bottom: .33rem;
+    }
+    video {
+      display: none;
+      height: 4.2rem;
+      width: 7.5rem;
+      vertical-align: top;
+    }
+    .u-play-btn {
+      position: absolute;
+      top: 1.61rem;
+      left: 3.25rem;
+      width: 1rem;
+      height: 1rem;
+      background: url(../img/big-play.png);
+      background-size: cover;
+    }
+    .u-open-tip {
+      position: relative;
+      width: 100%;
+      height: .84rem;
+      line-height: .84rem;
+      text-align: center;
+      font-size: .3rem;
+      background: #e10000;
+      color: #fff;
+      &::after {
+        position: absolute;
+        top: -.2rem;
+        right: .34rem;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: .22rem solid transparent;
+        border-right: .22rem solid transparent;
+        border-bottom: .22rem solid #e10000;
+      }
+    }
+    .title-bar {
+      position: relative;
+      margin-top: .3rem;
+      padding: 0 .3rem;
+      .btn {
+        display: none;
+        position: absolute;
+        right: .28rem;
+        top: .1rem;
+        width: .25rem;
+        height: .15rem;
+      }
+      .arrow-down {
+        background: url(../img/video-icon.png) no-repeat;
+        background-position: 0 -.27rem;
+        background-size: .26rem .42rem;
+        transition: transform 0.2s ease-in-out;
+        &.rotate {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .video-title {
+      width: 6.25rem;
+      color: #121212;
+      font-size: .34rem;
+      line-height: .42rem;
+    }
+    .video-subtitle {
+      display: block;
+      overflow: hidden;
+      margin-top: .14rem;
+      padding: 0 .3rem;
+      max-height: .8rem;
+      color: #8c8c8c;
+      font-size: .28rem;
+      line-height: .4rem;
+    }
+  }
+  .subscibe-wrap {
+    display: flex;
+    padding: 0 .25rem;
+    height: 1.38rem;
+    background-color: #fff;
+    .border(border,1px,solid,rgba(0,0,0,0.08));
+    img {
+      flex: none;
+      width: .76rem;
+      height: .76rem;
+      margin: .3rem .25rem 0 0;
+      border-radius: .1rem;
+    }
+    .subscibe-title {
+      flex: none;
+      width: 3.9rem;
+      p {
+        line-height: 1;
+        &:nth-child(1) {
+          padding-top: .33rem;
+          color: #3f3f3f;
+          font-size: .32rem;
+        }
+        &:nth-child(2) {
+          margin-top: .15rem;
+          color: #8c8c8c;
+          font-size: .26rem;
+        }
+      }
+    }
+    .u-more {
+      display: inline-block;
+      width: 1.4rem;
+      height: .64rem;
+      margin: .37rem 0 0 .64rem;
+      color: #fff;
+      font-size: .26rem;
+      line-height: .64rem;
+      text-align: center;
+      border-radius: .06rem;
+      background: #e10000;
+    }
+  }
+}
+
+.m-video-recommond,
+.m-video-hot,
+.m-video-last {
+  .u-more {
+    display: block;
+    margin-top: .24rem;
+    padding: 0;
+    height: .92rem;
+    font-size: .24rem;
+    line-height: .92rem;
+    text-align: right;
+    color: #747474;
+    .border(border-top,1px,solid,rgba(0,0,0,0.08));
+  }
+}
+
+.m-video-recommond,
+.m-video-hot {
+  position: relative;
+  padding: 0 .25rem;
+  margin-bottom: .15rem;
+  background-color: #fff;
+  .border(border,1px,solid,rgba(0,0,0,0.08));
+  .u-title {
+    line-height: .78rem;
+    color: #df3031;
+    font-size: .28rem;
+    .border(border-bottom,1px,solid,rgba(0,0,0,.1));
+  }
+  li:not(:last-child) {
+    .border(border-bottom,1px,solid,rgba(0,0,0,0.08));
+  }
+  a {
+    display: -webkit-box;
+    padding: .2rem 0;
+  }
+  .cover {
+    position: relative;
+  }
+  img {
+    display: -webkit-box;
+    margin-right: .16rem;
+    width: 1.87rem;
+    height: 1.4rem;
+  }
+  .u-video-time {
+    display: inline-block;
+    position: absolute;
+    right: .16rem;
+    bottom: 0;
+    border-bottom: .34rem solid rgba(0,0,0,.6);
+    border-left: .2rem solid transparent;
+    height: 0;
+    width: 1.02rem;
+    line-height: .34rem;
+    text-align: center;
+    color: #fff;
+    font-size: .22rem;
+  }
+  .news-wrap {
+    position: relative;
+    -webkit-box-flex: 1;
+    padding-top: .02rem;
+    height: 1.4rem;
+  }
+  .news-title {
+    line-height: .42rem;
+    color: #1f1f1f;
+    font-size: .34rem;
+  }
+  .news-subtitle {
+    overflow: hidden;
+    position: absolute;
+    bottom: .02rem;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: #828282;
+    font-size: .24rem;
+    line-height: .3rem;
+  }
+  .origin-text {
+    padding-left: .03rem;
+    height: .3rem;
+    line-height: .3rem;
+    font-size: .24rem;
+  }
+  .visitor-wrap {
+    display: flex;
+    align-items: center;
+  }
+  .view {
+    position: relative;
+    display: block;
+    padding-right: .23rem;
+    font-size: .24rem;
+    &::before {
+      position: absolute;
+      left: -.36rem;
+      top: .02rem;
+      content: '';
+      width: .26rem;
+      height: .26rem;
+      background: url(../img/video-icon.png) 0 bottom no-repeat;
+      background-position: 0 0;
+      background-size: .26rem .42rem;
+    }
+  }
+}
+
+.m-video-last {
+  position: relative;
+  padding: 0 .25rem;
+  background-color: #fff;
+  .border(border,1px,solid,rgba(0,0,0,0.08));
+  .news-title {
+    padding-top: .35rem;
+    line-height: 1.2;
+    color: #383838;
+    font-size: .34rem;
+  }
+  .news-subtitle {
+    padding: .19rem 0 .3rem;
+    font-size: .26rem;
+    color: #afafaf;
+  }
+  .cover {
+    overflow: hidden;
+    position: relative;
+    height: 3.54rem;
+    .border(border,1px,solid,rgba(0,0,0,0.08));
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+  .u-video-icon {
+    position: absolute;
+    top: 1.27rem;
+    left: 2.78rem;
+    width: 1rem;
+    height: 1rem;
+    background: url(../img/big-play.png);
+    background-size: cover;
+  }
+  .u-tip-icon {
+    position: absolute;
+    bottom: .1rem;
+    left: .1rem;
+    height: .3rem;
+    width: 1.7rem;
+    line-height: .3rem;
+    text-align: center;
+    font-size: .18rem;
+    color: rgba(255,255,255,.8);
+    background-color: rgba(0,0,0,.8);
+    border-radius: .03rem;
+  }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- build:remove -->
+    <base href="http://localhost:3100/" />
+    <!-- endbuild -->
+    <title>网易新闻 | 图集</title>
+    <link rel="apple-touch-icon-precomposed" href="http://img1.cache.netease.com/3g/img11/3gtouch/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://img1.cache.netease.com/3g/img11/3gtouch/apple-touch-icon-114x114-precomposed.png">
+    <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+          isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+          dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
+          dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+        docEl.dataset.dpr = dpr;
+        var recalc = function () {
+            var width = docEl.clientWidth;
+            if (width / dpr > 750) {
+                width = 750 * dpr;
+            }
+            docEl.dataset.width = width
+            docEl.dataset.percent = 100 * (width / 750);
+            docEl.style.fontSize = 100 * (width / 750) + 'px';
+          };
+        recalc()
+        doc.documentElement.classList.add('iosx' + win.devicePixelRatio)
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+      })(document, window);
+    </script>
+    <!-- 禁用并监听andriod的物理返回事件 -->
+    <script>
+      ;!function(pkg, undefined){
+        var STATE = 'x-back';
+        var element;
+        var onPopState = function(event){
+          event.state === STATE && fire();
+        }
+        var record = function(state){
+          history.pushState(state, null, location.href);
+        }
+        var fire = function(){
+          var event = document.createEvent('Events');
+          event.initEvent(STATE, false, false);
+          element.dispatchEvent(event);
+        }
+        var listen = function(listener){
+          element.addEventListener(STATE, listener, false);
+        }
+        ;!function(){
+          element = document.createElement('span');
+          window.addEventListener('popstate', onPopState);
+          this.listen = listen;
+          record(STATE);
+        }.call(window[pkg] = window[pkg] || {});
+      }('XBack');
+    </script>
+    <!-- build:photoStyle -->
+    <!-- endbuild -->
+  </head>
+  <body ontouchstart="">
+    <section class="m-body-wrap">
+      <article class="main-body" style="max-height:16rem;overflow:hidden">
+        <div class="article-content">
+        </div>
+      </article>
+      <article class="m-comment">
+      </article>
+      <article class="m-hotnews">
+      </article>
+      <article class="m-photoset" data-loaded="0">
+        <ul></ul>
+      </article>
+    </section>
+    <script src="http://img1.cache.netease.com//utf8/3g/libs/iscroll5.js"></script>
+    <!-- build:photoScript -->
+    <script type="text/javascript" src="http://localhost:3100/js/photo.bundle.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

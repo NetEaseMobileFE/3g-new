@@ -24,7 +24,7 @@ if (testMode) {
   webpackConfig = require('./webpack.config.test');
 }
 let webpackStats = null
-const NEWS_TYPE = ['article', 'special', 'live', 'topic', 'question']
+const NEWS_TYPE = ['article', 'special', 'live', 'topic', 'question', 'photo', 'video']
 
 gulp.task('clean', function(cb) {
   rimraf('dist', function(err) {

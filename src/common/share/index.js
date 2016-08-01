@@ -16,7 +16,7 @@ export default function share(config) {
     wbText: config.wbText || config.title || document.title,
     wbImg: config.wbImg || config.img || '',
     site: config.site || location.host,
-    callback: typeof config.callback == 'function' ? config.callback : undefined
+    callback: typeof config.callback == 'function' ? config.callback : function() {}
   }
 
   //分享相关
@@ -49,7 +49,7 @@ export default function share(config) {
   const getShareUrl = () => {
     wapShare.targetInfo.forEach((target) => {
       const href = target.url == '' ? 'javascript:void(0);' : target.url.replace(/{([^}]*)}/g, (str, key) => encodeURIComponent(config[key]))
-      const shareLink = document.querySelectorAll(`.wapShareLink_${target.name}`)
+      const shareLink = document.querySelectorAll(`.u-${target.name}`)
       Array.prototype.forEach.call(shareLink, elm => {
         elm.href = href
       })
@@ -86,13 +86,13 @@ export default function share(config) {
    * @method bindEvent
    */
   const bindEvent = () => {
-    const targetHref = document.querySelectorAll('.wapShareLink')
+    const targetHref = document.querySelectorAll('.share-icon')
     const name = wapShare.targetInfo
     const statistics = shareParam(config.statistics)
     
     Array.prototype.forEach.call(targetHref, (link) => {
       // 非微信打开，隐藏微信icon
-      if (!isWeixin && link.classList.contains('wapShareLink_weixin')) {
+      if (!isWeixin && link.classList.contains('u-weixin')) {
         link.style.display = 'none'
       }
 
@@ -135,8 +135,10 @@ export default function share(config) {
   const shareCallback = (args) => {
     const statistics = shareParam(config.statistics)
     if (args.err_msg.match(/(confirm|ok)/)) {
+      this.config.callback(true)
       neteaseTracker&&neteaseTracker(false,`http://sps.163.com/func/?func=sharedone&${statistics}spsf=wx`, '', 'sps')
     } else {
+      this.config.callback(false)
       neteaseTracker&&neteaseTracker(false,`http://sps.163.com/func/?func=shareerror&${statistics}spsf=wx`, '', 'sps')
     }
   }

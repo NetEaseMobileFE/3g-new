@@ -1,15 +1,19 @@
+const fs = require('fs')
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
 process.env.NODE_ENV = 'development'
+const entry = packageJson.pages.reduce((prev, curr) => {
+  return Object.assign(prev, {
+    [curr]: [`./${curr}/index`, 'webpack-hot-middleware/client?reload=true']
+  })
+}, {})
 
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
   context: path.join(__dirname, 'src'),
-  entry: {
-    article: ['./article/index', 'webpack-hot-middleware/client?reload=true'],
-    special: ['./special/index', 'webpack-hot-middleware/client?reload=true']
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'js/[name].bundle.js',

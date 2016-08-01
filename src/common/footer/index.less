@@ -1,4 +1,4 @@
-.m-footer {
+.g-footer {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -9,8 +9,12 @@
   width: 7.5rem;
   background: #fff;
   will-change: transform;
-  transform: translateX(-50%);
-  .open-newsapp {
+  /*transform: translateX(-50%);*/
+  &.ios9 {
+    background-color:rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+  }
+  .u-open-newsapp {
     display: flex;
     width: 2.4rem;
     color: #4a4645;
@@ -22,11 +26,11 @@
     display: block;
     width: .71rem;
     height: .71rem;
-    background-image: url(http://img1.cache.netease.com/utf8/3g/touch/images/new-logo.png);
+    background-image: url(../../img/new-logo.png);
     background-size: cover;
     border-radius: .1rem;
   }
-  .share-wrap-list {
+  .m-share {
     display: flex;
     flex-flow: row nowrap;
     padding: .14rem 0;
@@ -39,31 +43,31 @@
       display: block;
     }
     a {
-      background: url(http://img1.cache.netease.com/utf8/3g/touch/images/share.png) no-repeat;
+      background: url(../../img/share.png) no-repeat;
       background-size: .48rem 1.65rem;
       margin-left: .4rem;
     }
-    .wapShareLink_sina {
+    .u-sina {
       margin-left: .2rem;
       width: .48rem;
       height: .41rem;
       background-position: 0 0;
     }
-    .wapShareLink_weixin {
+    .u-weixin {
       display: none;
       width: .48rem;
       height: .4rem;
       background-position: 0 -1.26rem;
     }
-    .wapShareLink_qqzone {
+    .u-qqzone {
       width: .45rem;
-      height: .42rem;
+      height: .41rem;
       background-position: 0 -.42rem;
     }
-    .wapShareLink_yixin {
+    .u-yixin {
       width: .44rem;
       height: .42rem;
-      background-position: 0 -.84rem;
+      background-position: 0 -.82rem;
     }
   }
 }

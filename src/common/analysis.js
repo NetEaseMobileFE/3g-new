@@ -2,6 +2,22 @@ if (module && module.hot) {
   module.hot.accept()
 }
 
+function loadScript(id, src, callback) {
+  let script = document.getElementById(id)
+  if (script) {
+    callback()
+    return
+  }
+  script = document.createElement('script')
+  script.charset = 'utf-8'
+  script.async = true
+  script.src = src
+  script.onload = () => {
+    typeof callback === 'function' && callback()
+  }
+  document.body.appendChild(script)
+}
+
 export default function analysis(userOptions) {
   function params() {
     const url = window.location.href
@@ -72,7 +88,14 @@ export default function analysis(userOptions) {
   queryStr = queryStr.substr(0, queryStr.length - 1)
 
   let link = `http://sps.163.com/${options.type}/${queryStr}`
-  neteaseTracker(false, link, '', 'sps' )
+
+  loadScript('__ntes__analysis', 'http://img6.cache.netease.com/utf8/3g/libs/ntes-stat.js', ()=> {
+    window._ntes_nacc = "mapp"
+    neteaseTracker()
+    neteaseTracker(false, link, '', 'sps' )
+  })
 }
+
+
 
 
