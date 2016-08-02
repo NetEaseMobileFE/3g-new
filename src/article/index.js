@@ -23,7 +23,7 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const docid = window.location.href.match(/\/a\/(\w*)\./)[1]
+const docid = search.docid || window.location.href.match(/\/a\/(\w*)\./)[1]
 
 // mapp and sps analysis
 analysis({ 
@@ -34,8 +34,8 @@ analysis({
 
 // common header
 document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'docid',
-  id: docid
+  type: 'article',
+  docid: docid
 }))
 
 // main body
@@ -68,7 +68,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const mainBody = document.querySelector('#contentHolder')
 
     if (articleContent.offsetHeight > mainBody.offsetHeight) {
-      $(mainBody).append(more())
+      $(mainBody).append(more({ origin: 'article'} ))
 
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
@@ -159,12 +159,19 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     // 获取跟帖
     const replyCount = $('.js-reply-link').text().split('（')[1].split('）')[0] || 0
-    post({ boardid: replyBoard, id: docid, votecount: replyCount})
+    post({ 
+      boardid: replyBoard, 
+      id: docid, 
+      votecount: replyCount,
+      origin: 'article'
+    })
   })(boardid, docid)
 }
 
 // 中间分享
-$('.m-middle-share')[0].innerHTML = middleShare()
+$('.m-middle-share')[0].innerHTML = middleShare({
+  origin: "article"
+})
 
 // hotNews videoNews shareNews
 utils.ajax({
@@ -179,8 +186,8 @@ utils.ajax({
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'docid',
-  id: docid
+  type: 'article',
+  docid: docid
 }))
 
 // share component
@@ -212,3 +219,4 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
     }
   })
 }
+

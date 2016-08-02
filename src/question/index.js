@@ -3,6 +3,7 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import loading from '../common/loading'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
@@ -14,6 +15,8 @@ require('./index.less')
 const search = utils.localParam().search
 const id = search.id
 
+loading()
+
 // mapp and sps analysis
 analysis({ 
   spst: 8,
@@ -23,8 +26,8 @@ analysis({
 
 // common header
 document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'expertid',
-  id: id
+  type: 'question',
+  expertid: id
 }))
 
 // main body
@@ -133,6 +136,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       }
     }
 
+    $('.m-loading').style.display = 'none'
     var content = $('.m-content')
     content.style.display = 'block'
     content.offsetWidth
@@ -341,6 +345,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'expertid',
-  id: id
+  type: 'question',
+  expertid: id
 }))

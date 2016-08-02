@@ -3,6 +3,7 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import loading from '../common/loading'
 import share from '../common/share'
 import * as utils from '../common/utils'
 import header from '../common/header'
@@ -14,7 +15,9 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const videoid = window.location.href.match(/\/v\/(\w*)\./)[1]
+const videoid = search.videoid || window.location.href.match(/\/v\/(\w*)\./)[1]
+
+loading()
 
 // mapp and sps analysis
 analysis({ 
@@ -25,8 +28,8 @@ analysis({
 
 // common header
 document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'vid',
-  id: videoid
+  type: 'video',
+  vid: videoid
 }))
 
 // main body 
@@ -82,7 +85,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       `,
       videoList: `
         <li class="single-img">
-          <a class="clearfix" href="http://c.m.163.com/news/v/<#=videoid#>.html?from=video">
+          <a class="clearfix" href="http://c.m.163.com/news/v/<#=videoid#>.html?from=video<#=index#>" data-stat="video<#=index#>">
             <div class="cover">
               <img src="<#=cover#>" />
               <span class="u-video-time"><#=time#></span>
@@ -104,7 +107,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         </li>
       `,
       bigVideo: `
-        <a class="clearfix" href="http://m.163.com/newsapp/applinks.html?vid=<#=videoid#>&s=sps">
+        <a class="clearfix" href="http://m.163.com/newsapp/applinks.html?vid=<#=videoid#>&s=sps" data-stat="video7">
           <div class="news-wrap">
             <div class="news-title"><#=title#></div>
             <div class="news-subtitle"><#=description#></div>
@@ -162,7 +165,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           $(this).hide()
           e.stopPropagation()
         })
-        if (topicDesc.length > 34) {
+        if (topicDesc && topicDesc.length > 34) {
           holder.find('.btn').show()
         }
         holder.find('.btn').on('click', function() {
@@ -180,9 +183,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       // 相关视频列表
       videoRecommend: (data) => {
         let html = ''
-        const search = utils.localParam().search
-        const installed = search.installed
-        const night = search.night
         if (utils.isOwnEmpty(data.recommend) || !(data.recommend.length > 0)) {
           return
         }
@@ -200,8 +200,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
               playCount: playCount,
               replyCount: replyCount,
               originImg: '',
-              installed: installed,
-              night: night
+              index: index + 1
             })
           }
         })
@@ -238,7 +237,8 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
                 topicName: item.topicName,
                 playCount: playCount,
                 replyCount: replyCount,
-                originImg: originImg
+                originImg: originImg,
+                index: index + 4
               })
             }
             if (index == 4) {
@@ -250,17 +250,13 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
                 description: item.description
               })
             }
-            $('.m-video-hot .list').html(html)
-            $('.js-videos-last').html(lastVideoHtml)
-          })
-          document.querySelector('.m-video-recommond').insertAdjacentHTML('afterend',`
-            <article class="m-video-hot">
+            $('.m-video-hot')[0].innerHTML = `
               <div class="u-title">热门视频</div>
               <ul class="video-list">${html}</ul>
               <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
-            </article>
-            <article class="m-video-last">${lastVideoHtml}</article>
-          `)
+            `
+            $('.m-video-last').html(lastVideoHtml)
+          })
         }
         utils.importJs('http://c.m.163.com/nc/video/list/VATL2LQO4/n/0-10.html?callback=videoCallback')
       }
@@ -290,8 +286,15 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       ArticleRander.videoBodyContent(data)
       ArticleRander.videoRecommend(data)
       // 获取跟帖
-      post({ boardid: data.replyBoard, id: data.replyid, votecount: data.replyCount})
+      post({ 
+        boardid: data.replyBoard, 
+        id: data.replyid, 
+        votecount: data.replyCount,
+        origin: 'video'
+      })
       $('.m-middle-share').show()
+
+      $('.m-loading').hide()
       // share component
       {
         let title = `【视频】${data.title}`
@@ -327,10 +330,10 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // 中间分享
-$('.m-middle-share')[0].innerHTML = middleShare()
+$('.m-middle-share')[0].innerHTML = middleShare({ origin: 'video' })
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'vid',
-  id: videoid
+  type: 'video',
+  vid: videoid
 }))

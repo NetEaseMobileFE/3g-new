@@ -5,7 +5,7 @@ if (module && module.hot) {
 require('./index.less')
 import { importJs, isIos9 } from '../utils'
 export default function post(data) {
-  const { boardid, id, votecount } = data
+  const { boardid, id, votecount, origin } = data
 
   // 获取跟帖
   importJs(`http://comment.api.163.com/api/json/post/list/new/hot/${boardid}/${id}/0/3/7/3/1?jsoncallback=hotList`)
@@ -57,7 +57,7 @@ export default function post(data) {
     document.querySelector('.m-comment').innerHTML = `
       <div class="u-title"> 热门跟贴 </div>
       <div class="comment-list">${html}</div>
-      <div class="m-down-tie"><a href="${a}"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>
+      <div class="m-down-tie"><a href="${a}" data-stat="${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>
     `
   }
 

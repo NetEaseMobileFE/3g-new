@@ -92,7 +92,17 @@ export default function analysis(userOptions) {
   loadScript('__ntes__analysis', 'http://img6.cache.netease.com/utf8/3g/libs/ntes-stat.js', ()=> {
     window._ntes_nacc = "mapp"
     neteaseTracker()
+
     neteaseTracker(false, link, '', 'sps' )
+
+    // click analysis
+    document.body.addEventListener('click', function(e){
+      const target = e.target
+      const stat = target.getAttribute('data-stat')
+      if (stat) {
+        neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr}&target=${stat}`, '', 'sps')
+      }
+    })
   })
 }
 

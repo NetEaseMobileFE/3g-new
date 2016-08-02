@@ -3,11 +3,17 @@ if (module && module.hot) {
 }
 require('./index.css')
 export default function header(data) {
-  const { type, id } = data
-  const page = type ? `${type}=${id}&s=spss` : 's=spss'
+  const { type } = data
+  let param = ''
+  for (let item in data) {
+    if (item != 'type') {
+      const id = data[item]
+      param = id ? `${item}=${id}&s=sps` : 's=sps'
+    }
+  }
   return `
     <header class="g-header">
-      <a href="http://m.163.com/newsapp/applinks.html?${page}"></a>
+      <a href="http://m.163.com/newsapp/applinks.html?${param}" data-stat="${type}HeaderOpen"></a>
     </header>
   `
 }

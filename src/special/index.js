@@ -3,6 +3,7 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import loading from '../common/loading'
 import * as utils from '../common/utils'
 import share from '../common/share'
 
@@ -10,7 +11,9 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const sid = window.location.href.match(/\/s\/(\w*)\./)[1]
+const sid = search.sid || window.location.href.match(/\/s\/(\w*)\./)[1]
+
+loading()
 
 // sps analysis
 analysis({ 

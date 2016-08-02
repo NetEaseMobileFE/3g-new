@@ -95,7 +95,7 @@ export default function popular(_type, _data) {
             channelId: item.id.split('|')[0].slice(-4)
           })
           html += `
-            <li class="multi-img" data-stat="hotnews${i}">
+            <li class="multi-img" data-stat="${_type}News${i}">
               <a href="${_url}">
                 <div class="title-wrap">
                   <span class="title ellipsis">${item.title}</span>
@@ -117,7 +117,7 @@ export default function popular(_type, _data) {
             id: item.id
           })
           html += `
-            <li class="single-img" data-stat="hotnews${i}">
+            <li class="single-img" data-stat="${_type}News${i}">
               <a href="${_url}">
                 <img src="${optImage(item.img, 160, 120)}" onerror="this.src='http://img2.cache.netease.com/3g/img11/3gtouch13/default.jpg'">
                 <div class="news-wrap">
@@ -132,7 +132,7 @@ export default function popular(_type, _data) {
       document.querySelector('.m-hotnews').innerHTML = `
         <div class="u-title">热门新闻</div>
         <ul class="news-list">${html}</ul>
-        <a class="u-more" data-stat="4" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多新闻 &gt;</a>
+        <a class="u-more" data-stat="${_type}NewsMore" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多新闻 &gt;</a>
       `
     }
     function isPhotoset(data) {
@@ -178,7 +178,7 @@ export default function popular(_type, _data) {
             id: item.vid
           })
           html += `
-            <li class="single-img" data-stat="hotvideos${index}">
+            <li class="single-img" data-stat="${_type}Video${index}">
               <a href="${_url}">
                 <div class="cover">
                   <img src="${item.cover}" />
@@ -199,7 +199,7 @@ export default function popular(_type, _data) {
             id: item.vid
           })
           lastVideoHtml += `
-            <a class="clearfix" href="${_url}" data-stat="hotvideos${index}">
+            <a class="clearfix" href="${_url}" data-stat="${_type}Video${index}">
               <div class="news-wrap">
                 <div class="news-title">${item.title}</div>
                 <div class="news-subtitle">${item.description}</div>
@@ -210,7 +210,7 @@ export default function popular(_type, _data) {
                 <span class="u-tip-icon">打开网易新闻</span>
               </div>
             </a>
-            <a class="u-more" data-stat="5" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多视频 &gt;</a>
+            <a class="u-more" data-stat="${_type}VideoMore" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多视频 &gt;</a>
           `
         }
       })

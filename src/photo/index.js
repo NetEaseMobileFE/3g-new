@@ -3,6 +3,7 @@ if (module && module.hot) {
 }
 
 import analysis from '../common/analysis'
+import loading from '../common/loading'
 import share from '../common/share'
 import * as utils from '../common/utils'
 import header from '../common/header'
@@ -16,10 +17,17 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const params = window.location.href.match(/\/[pj]\/(\w*)\/(\w*)\./)
-const channelid = params[1] || '0096'
-const setid = params[2]
+let channelid = search.channelid || '0096'
+let setid = search.setid
+if (!setid) {
+  const params = window.location.href.match(/p\/([0-9]{4})\/([0-9]{1,})/)
+  channelid = params[1] || '0096'
+  setid = params[2]
+}
 const modelid = `${channelid}_${setid}`
+
+// loading
+loading()
 
 // mapp and sps analysis
 analysis({ 
@@ -30,8 +38,8 @@ analysis({
 
 // common header
 document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'pid',
-  id: modelid
+  type: 'photo',
+  pid: modelid
 }))
 
 // body content
@@ -215,6 +223,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         document.body.removeEventListener('touchstart', preventDefault, false)
       })
 
+      document.querySelector('.m-loading').style.display = 'none'
+
       // 跟帖
       if (docid && board) {
         document.querySelector('.m-comment').style.display = 'block'
@@ -228,7 +238,12 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           if (tiecount) {
             tiecount.textContent = data.votecount || 0
             // 获取跟帖
-            post({ boardid: board, id: docid, votecount: data.votecount || 0 })
+            post({ 
+              boardid: board, 
+              id: docid, 
+              votecount: data.votecount || 0,
+              origin: 'photo'
+            })
           }
         }
       }
@@ -258,13 +273,12 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         }, false)
       } 
       
-
       const articleContent = document.querySelector('.article-content')
       articleContent.innerHTML = photosHtml
 
       const mainBody = document.querySelector('.main-body')
       if (articleContent.offsetHeight > mainBody.offsetHeight) {
-        articleContent.insertAdjacentHTML('afterend', more())
+        articleContent.insertAdjacentHTML('afterend', more({ origin: 'photo' }))
         const showAllArticle = document.querySelector('.js-all-article')
         showAllArticle.addEventListener('click', function(){
           mainBody.style.maxHeight = 'none'
@@ -278,7 +292,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // 中间分享
-document.querySelector('.m-middle-share').innerHTML = middleShare()
+document.querySelector('.m-middle-share').innerHTML = middleShare({ origin: 'photo' })
 
 // hotNews videoNews
 utils.ajax({
@@ -292,8 +306,8 @@ utils.ajax({
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'pid',
-  id: modelid
+  type: 'photo',
+  pid: modelid
 }))
 
 
