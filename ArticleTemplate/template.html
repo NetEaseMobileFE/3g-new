@@ -38,32 +38,34 @@
 <body ontouchstart="">
   <iframe id="iframe" style="display: none !important;"></iframe>
   <img src="http://img1.cache.netease.com/travel/2014/7/22/20140722172931b2127.png" style="display: none!important;">
-  <div class="m-body-wrap">
-    ${header || ''}
-    <div class="content-wrapper">
-      <!--正文-->
-      <div class="m-container" id="contentHolder" style="max-height: 16rem;">
-        <article class="articleList">
-          <div class="head clearfix">
-            <h1 class="article-title">${data.title}</h1>
-            <h2>
-              <span class="source">${data.source}</span>
-              <span class="time">${data.ptime}</span>
-              <a class="js-reply-link replyLink" href="#comment">${data.replyCount ? ('跟贴（' + data.replyCount + '）条') : ''}</a>
-            </h2>
-            <div class="article-digest">${data.digest}</div>
-          </div>
-          <div class="text clearfix">
-          ${body}
-          </div>
-        </article>
+  <div class="js-analysis">
+    <div class="m-body-wrap">
+      ${header || ''}
+      <div class="content-wrapper">
+        <!--正文-->
+        <div class="m-container" id="contentHolder" style="max-height: 16rem;">
+          <article class="articleList">
+            <div class="head clearfix">
+              <h1 class="article-title">${data.title}</h1>
+              <h2>
+                <span class="source">${data.source}</span>
+                <span class="time">${data.ptime}</span>
+                <a class="js-reply-link replyLink" href="#comment">${data.replyCount ? ('跟贴（' + data.replyCount + '）条') : ''}</a>
+              </h2>
+              <div class="article-digest">${data.digest}</div>
+            </div>
+            <div class="text clearfix">
+            ${body}
+            </div>
+          </article>
+        </div>
       </div>
-    </div>
-    <div class="m-comment">
-    </div>
-    <div class="m-middle-share">
-    </div>
-    <div class="m-hotnews">
+      <div class="m-comment">
+      </div>
+      <div class="m-middle-share">
+      </div>
+      <div class="m-hotnews">
+      </div>
     </div>
   </div>
   <script src="http://img3.cache.netease.com/apps/3g/1.1.4/zepto.min.js" type="text/javascript"></script>

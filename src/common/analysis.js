@@ -96,13 +96,16 @@ export default function analysis(userOptions) {
     neteaseTracker(false, link, '', 'sps' )
 
     // click analysis
-    document.body.addEventListener('click', function(e){
-      const target = e.target
-      const stat = target.getAttribute('data-stat')
-      if (stat) {
-        neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr}&target=${stat}`, '', 'sps')
-      }
-    })
+    const clickStat = document.querySelector('.js-analysis')
+    if (clickStat) {
+      clickStat.addEventListener('click', function(e){
+        const target = e.target
+        const stat = target.getAttribute('data-stat')
+        if (stat) {
+          neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr}&target=${stat}`, '', 'sps')
+        }
+      })
+    }
   })
 }
 

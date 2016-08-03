@@ -483,7 +483,7 @@ analysis({
               }
               if (data.photoset) {
                 newsappTip = `
-                  <a class="open-newsapp-tip" href="http://m.163.com/newsapp/applinks.html?pid=${data.photoset.split('|')[0].slice(4)}_${data.photoset.split('|')[1]}&s=sps">
+                  <a class="open-newsapp-tip" data-stat="specialTipBar" href="http://m.163.com/newsapp/applinks.html?pid=${data.photoset.split('|')[0].slice(4)}_${data.photoset.split('|')[1]}&s=sps">
                     打开网易新闻，查看更多图集
                   </a>
                 `
@@ -514,7 +514,7 @@ analysis({
                     id: data.photoset
                   })
                   newsappTip = `
-                    <a class="open-newsapp-tip" href="http://m.163.com/newsapp/applinks.html?pid=${data.photoset.split('|')[0].slice(4)}_${data.photoset.split('|')[1]}&s=sps">
+                    <a class="open-newsapp-tip" data-stat="specialTipBar" href="http://m.163.com/newsapp/applinks.html?pid=${data.photoset.split('|')[0].slice(4)}_${data.photoset.split('|')[1]}&s=sps">
                       打开网易新闻，查看更多图集
                     </a>
                   `
