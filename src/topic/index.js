@@ -212,7 +212,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${subjectData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp" data-stat="topicTipBar">
+      <div class="open-newsapp-tip open-newsapp" data-stat="O_topicTipBar">
         打开网易新闻，查看更多话题讨论
       </div>
     `

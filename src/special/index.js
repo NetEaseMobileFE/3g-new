@@ -4,6 +4,7 @@ if (module && module.hot) {
 
 import analysis from '../common/analysis'
 import loading from '../common/loading'
+import lazyload from '../common/lazyload'
 import * as utils from '../common/utils'
 import share from '../common/share'
 
@@ -347,88 +348,88 @@ analysis({
   const RENGUI = (($) => {
 
     // 懒加载
-    class DataLazyLoad {
-     constructor(options) {
-       this.config = {
-         container: window,
-         threshold: 0,
-         event: 'scroll',
-         suffix: 'img',
-       }
-       this.cache = {}
-       this.init(options)
-     }
+    // class DataLazyLoad {
+    //  constructor(options) {
+    //    this.config = {
+    //      container: window,
+    //      threshold: 0,
+    //      event: 'scroll',
+    //      suffix: 'img',
+    //    }
+    //    this.cache = {}
+    //    this.init(options)
+    //  }
 
-     init(options = {}) {
-       this.options = $.extend(this.config, options)
-       const self = this
-       const _config = self.config
-       $(_config.container).unbind(_config.event)
+    //  init(options = {}) {
+    //    this.options = $.extend(this.config, options)
+    //    const self = this
+    //    const _config = self.config
+    //    $(_config.container).unbind(_config.event)
 
-       window.onload = () => {
-         self._update()
-         TopTitle.init()
-       }
+    //    window.onload = () => {
+    //      self._update()
+    //      TopTitle.init()
+    //    }
 
-       $(window).on(_config.event, () => {
-         self._update()
-       })
-     }
+    //    $(window).on(_config.event, () => {
+    //      self._update()
+    //    })
+    //  }
 
-     _eachImg(item) {
-       const self = this
-       const _config = self.config
-       let dataImg
-       if($(item).attr('src') === window.location.href) {
-         const _width = $('body').width()
-         const type = $(item).data('type')
-         if(type == 'bannerimg' || type == 'albumimg' || type == 'bigimg') {
-          dataImg = utils.optImage($(item).data(_config.suffix), _width)
-         }else if(type == 'littleimg') {
-          dataImg = utils.optImage($(item).data(_config.suffix), 204)
-         }else if(type == 'timeimg') {
-          dataImg = utils.optImage($(item).data(_config.suffix), 120, 90)
-         }else if(type == 'activeimg'){
-          dataImg = utils.optImage($(item).data(_config.suffix), 180)
-         }else {
-          dataImg = $(item).attr('data-' + _config.suffix)
-         }
+    //  _eachImg(item) {
+    //    const self = this
+    //    const _config = self.config
+    //    let dataImg
+    //    if($(item).attr('src') === window.location.href) {
+    //      const _width = $('body').width()
+    //      const type = $(item).data('type')
+    //      if(type == 'bannerimg' || type == 'albumimg' || type == 'bigimg') {
+    //       dataImg = utils.optImage($(item).data(_config.suffix), _width)
+    //      }else if(type == 'littleimg') {
+    //       dataImg = utils.optImage($(item).data(_config.suffix), 204)
+    //      }else if(type == 'timeimg') {
+    //       dataImg = utils.optImage($(item).data(_config.suffix), 120, 90)
+    //      }else if(type == 'activeimg'){
+    //       dataImg = utils.optImage($(item).data(_config.suffix), 180)
+    //      }else {
+    //       dataImg = $(item).attr('data-' + _config.suffix)
+    //      }
          
-         let src = $(item).attr('src')
-         $(item).attr('src',dataImg)
-         $(item).attr('data-'+_config.suffix,'')
-         $(item).attr('isload','true')
-       }  
-     }
+    //      let src = $(item).attr('src')
+    //      $(item).attr('src',dataImg)
+    //      $(item).attr('data-'+_config.suffix,'')
+    //      $(item).attr('isload','true')
+    //    }  
+    //  }
 
-     _update() {
-       const self = this
-       const _config = self.config
+    //  _update() {
+    //    const self = this
+    //    const _config = self.config
 
-       if(_config.container === window) {
-         $('img').each((index, item) => {
-           if(self.abovethetop(item) || self._leftofbegin(item) || self_rightofbegin(item)) return
-           if (self._belowthefold(item)) {
-             self._eachImg(item)
-           }
-         })
-       }else {
-         $('img',_config.container).each((index, item) => {
-           if (self._belowthefold(item)) {
-             self._eachImg(item)
-           }
-         })
-       }  
-     }
+    //    if(_config.container === window) {
+    //      $('img').each((index, item) => {
+    //        if(self.abovethetop(item) || self._leftofbegin(item) || self_rightofbegin(item)) return
+    //        if (self._belowthefold(item)) {
+    //          self._eachImg(item)
+    //        }
+    //      })
+    //    }else {
+    //      $('img',_config.container).each((index, item) => {
+    //        if (self._belowthefold(item)) {
+    //          self._eachImg(item)
+    //        }
+    //      })
+    //    }  
+    //  }
 
-     _belowthefold(elem) {
-       const self = this
-       const _config = self.config
-       const fold = $(window).height() + $(window).scrollTop()
-       return fold >= $(elem).offset().top - _config.threshold
-     }
-    }
-    new DataLazyLoad({container: '.g-main-body'})
+    //  _belowthefold(elem) {
+    //    const self = this
+    //    const _config = self.config
+    //    const fold = $(window).height() + $(window).scrollTop()
+    //    return fold >= $(elem).offset().top - _config.threshold
+    //  }
+    // }
+    // new DataLazyLoad({container: '.g-main-body'})
 
     const my = {
       //模块验证输出对象
@@ -535,10 +536,12 @@ analysis({
                     id: item.url
                   })
                   _headpicHtml += NTUI.simpleParse (
-                    '<div class="imgwrapper">\
-                    <a class="mainshow" href="<#=url#>"><img src="<#=imgsrc#>" width="100%" data-img=""></a>\
-                    <h1><#=sname#></h1>\
-                    </div>',{url: url, imgsrc: item.imgsrc, sname: item.title})
+                    `<div class="imgwrapper">
+                    <a class="mainshow" href="<#=url#>">
+                      <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" width="100%" data-echo="<#=imgsrc#>">
+                    </a>
+                    <h1><#=sname#></h1>
+                    </div>`,{url: url, imgsrc: item.imgsrc, sname: item.title})
                   _ctrlHtml += '<li></li>' 
                 })
                 bodyContent.content += NTUI.simpleParse(TPL.mainImgWithAd, {
@@ -1120,7 +1123,7 @@ analysis({
       mainImg: `
         <div class="m-main-img">
           <div class="imgwrapper">
-            <a class="mainshow" href="<#=url#>"><img src="<#=imgsrc#>" width="100%"></a>
+            <a class="mainshow" href="<#=url#>"><img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=imgsrc#>" width="100%"></a>
             <h1><#=sname#></h1>
           </div>
           <#=newsappTip#>
@@ -1130,7 +1133,7 @@ analysis({
 
       mainImg2: ` 
         <div class="imgwrapper">
-          <a class="mainshow" href="<#=url#>"><img src="<#=imgsrc#>" width="100%"></a>
+          <a class="mainshow" href="<#=url#>"><img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=imgsrc#>" width="100%"></a>
           <h1><#=sname#></h1>
         </div>
       `,
@@ -1148,21 +1151,21 @@ analysis({
 
       webview: `
         <a href="<#=url#>">
-          <img src="" data-img="<#=pic#>">
+          <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=pic#>">
           <span><#=title#></span>
         </a>
       `,
 
       albumList: `
         <div class="gallery-item">
-          <a class="img-wrapper" href="<#=url#>"><img src="" data-img="<#=cover#>" data-type="albumimg"></a>
+          <a class="img-wrapper" href="<#=url#>"><img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=cover#>"></a>
           <p><#=title#></p>
         </div>
       `, //图集模板
 
       videoList: ` 
         <a class="b-video" href="<#=url#>">
-          <div class="b-img" style="background:url(<#=imgsrc#>) center center no-repeat;background-size:cover;"></div>
+          <div class="b-img" style="background-image:url(http://img4.cache.netease.com/3g/img14/backpage/px.png);background-size:cover;" data-echo-background="<#=imgsrc#>"></div>
           <p class="ttl"><#=title#></p>
           <span class="play-btn"></span>
         </a>
@@ -1171,7 +1174,7 @@ analysis({
       imgNewsList: `
         <li class="news-list">
           <a  href="<#=url#>">
-            <div class="news-img" style="background:url(<#=imgsrc#>) center center no-repeat;background-size:cover;"></div>
+            <div class="news-img" style="background-image:url(http://img4.cache.netease.com/3g/img14/backpage/px.png);background-size:cover;" data-echo-background="<#=imgsrc#>"></div>
             <div class="news-wrap">
               <div class="news-title"><#=title#></div>
               <p class="news-desc"><#=digest#></p>
@@ -1188,22 +1191,21 @@ analysis({
           <a href="<#=url#>">
             <p class="newsTitle"><#=title#></p>
             <div class="cover">
-              <img src="" data-img="<#=img#>" data-type="bigimg">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img#>">
             </div>
           </a>
           <div class="newsTips"><#=replyCount#></div>
         </li>
       `, // 新增大图新闻
 
-      ///dvfsdf
       imgNewsSet: ` 
         <li class="newsHead multiImg">
           <a href="<#=url#>">
             <p class="newsTitle"><#=title#></p>
             <div class="img-box">
-              <img src="" data-img="<#=img1#>">
-              <img src="" data-img="<#=img2#>">
-              <img src="" data-img="<#=img3#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img1#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img2#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img3#>">
             </div>
             <div class="newsTips">
               <#=replyCount#>
@@ -1233,7 +1235,7 @@ analysis({
           <a href="<#=url#>">
             <h3><#=title#></h3>
             <div class="n-list newslist-digest">
-              <img src="" data-img="<#=imgsrc#>"  data-type="timeimg">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=imgsrc#>">
               <p><#=digest#></p>
             </div>
           </a>
@@ -1245,9 +1247,9 @@ analysis({
           <a href="<#=url#>">
             <h3><#=title#></h3>
             <div class="n-list newslist-images">
-              <img src="" data-img="<#=img1#>">
-              <img src="" data-img="<#=img2#>">
-              <img src="" data-img="<#=img3#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img1#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img2#>">
+              <img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=img3#>">
             </div>
           </a>
         </dd>
@@ -1311,7 +1313,7 @@ analysis({
         </li>
       `,
 
-      circle: `<li><a href="<#=url#>"><img src="" data-img="<#=imgsrc#>"></a></li>`,
+      circle: `<li><a href="<#=url#>"><img src="http://img4.cache.netease.com/3g/img14/backpage/px.png" data-echo="<#=imgsrc#>"></a></li>`,
 
       //专题
       special: `
@@ -1327,7 +1329,7 @@ analysis({
       activity: `
         <li>
           <a href="<#=url#>">
-            <div class="active-img" style="background-image: url(<#=imgsrc#>)" data-type="activeimg"></div>
+            <div class="active-img" style="background-image:url(http://img4.cache.netease.com/3g/img14/backpage/px.png);background-size:cover;" data-echo-background="<#=imgsrc#>"></div>
           </a>
         </li>
       `
@@ -1335,7 +1337,6 @@ analysis({
     }
 
     return my
-
   })($)
 
   let bodyContent = {}
@@ -1403,6 +1404,7 @@ analysis({
     newDataArray = {}
     document.querySelector('.g-main-body').innerHTML = ''
     bodyContent.content = RENGUI.displayHTML('.g-main-body', bodyContent.content)
+
     //根据index顺序化docs
     newDataArray = NTES.jsonSort(dataCache.topics, dataCache.topicsplus, dataCache.topicslatest, dataCache.topicspatch)
     let navArray = []
@@ -1501,5 +1503,8 @@ analysis({
     }
 
     RenGui(renMapGui)
+
+    lazyload({})
   } 
 }
+

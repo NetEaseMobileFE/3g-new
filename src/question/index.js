@@ -186,7 +186,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp" data-stat="questionTipBar">
+      <div class="open-newsapp-tip open-newsapp" data-stat="O_questionTipBar">
         打开网易新闻，查看更多问吧讨论
       </div>
       <div class="clearfix card-wrap card-wrap-top">

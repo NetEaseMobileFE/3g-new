@@ -57,7 +57,7 @@ export default function post(data) {
     document.querySelector('.m-comment').innerHTML = `
       <div class="u-title"> 热门跟贴 </div>
       <div class="comment-list">${html}</div>
-      <div class="m-down-tie"><a href="${a}" data-stat="${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>
+      <div class="m-down-tie"><a href="${a}" data-stat="O_${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>
     `
   }
 

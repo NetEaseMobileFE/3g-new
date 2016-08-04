@@ -15,7 +15,7 @@ export default function footer(data) {
 
   return `
     <footer class="g-footer${isIos9 ? ' ios9' : ''}">
-      <a href="http://m.163.com/newsapp/applinks.html?${param}" class="u-open-newsapp" data-stat="${type}FooterOpen">
+      <a href="http://m.163.com/newsapp/applinks.html?${param}" class="u-open-newsapp" data-stat="O_${type}FooterOpen">
         <i class="m-share-home-icon"></i>
         <span>立即打开 &gt;</span>
       </a>

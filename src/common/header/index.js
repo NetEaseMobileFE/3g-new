@@ -13,7 +13,7 @@ export default function header(data) {
   }
   return `
     <header class="g-header">
-      <a href="http://m.163.com/newsapp/applinks.html?${param}" data-stat="${type}HeaderOpen"></a>
+      <a href="http://m.163.com/newsapp/applinks.html?${param}" data-stat="O_${type}HeaderOpen"></a>
     </header>
   `
 }
