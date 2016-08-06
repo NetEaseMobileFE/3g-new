@@ -1,3 +1,8 @@
+/**
+ * 热门新闻和视频列表
+ * [article、photo] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }
@@ -216,7 +221,6 @@ export default function popular(_type, _data) {
       })
       document.querySelector('.m-hotnews').insertAdjacentHTML('afterend', `<article class="m-videos"><div class="u-title">热门视频</div><ul class="list-wrap">${html}</ul></article><article class="m-videos-last">${lastVideoHtml}</article>`)
     }
-    
   }
 
   // 滚动加载更多新闻和视频

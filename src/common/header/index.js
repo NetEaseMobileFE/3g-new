@@ -1,3 +1,8 @@
+/**
+ * 公共头部
+ * [article、photo、question、topic、video] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

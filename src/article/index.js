@@ -10,14 +10,16 @@ if (module && module.hot) {
 
 import analysis from '../common/analysis'
 import share from '../common/share'
+import lazyload from '../common/lazyload'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import more from '../common/more'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
-import model from '../common/model'
+import modal from '../common/modal'
 import footer from '../common/footer'
+import advert from '../common/advert'
 
 require('../common/reset.css')
 require('./index.less')
@@ -30,6 +32,12 @@ analysis({
   spst: 0,
   type: "article",
   docid: docid
+})
+
+lazyload({
+  offset: 0,
+  throttle: 1000,
+  unload: false
 })
 
 // common header
@@ -173,6 +181,19 @@ $('.m-middle-share')[0].innerHTML = middleShare({
   origin: "article"
 })
 
+// ad
+utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BGR/0-1.html')
+window.newAdvertiseList00340BGR = (data) => {
+  const _data = data['00340BGR'][0]
+  if (_data) {
+    $('.m-ad')[0].innerHTML = advert({
+      url: _data.url,
+      imgsrc: _data.imgsrc,
+      digest: _data.digest || 'jsonp测试测试测试,换个jsonp接口'
+    })
+  }
+}
+
 // hotNews videoNews shareNews
 utils.ajax({
   method: "GET",
@@ -180,7 +201,7 @@ utils.ajax({
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
     popular('article', data)
-    model(data)
+    modal(data)
   }
 })
 

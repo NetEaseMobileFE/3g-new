@@ -384,7 +384,7 @@ analysis({
       }
       
       return (
-        <div>
+        <div className="f-height">
           <div className={className} style={style} onClick={this.click}>
             <div className="title ellipsis">{this.props.title}</div>
             <div className="subtitle">{this.props.subtitle}</div>

@@ -1,0 +1,34 @@
+.advert {
+  display: block;
+  width: 7.5rem;
+  min-height: 2.93rem;
+  margin-bottom: 0.04rem;
+  padding: 0 .2rem;
+  img {
+    max-width: 100%;
+    width: 7.1rem;
+    height: 2.37rem;
+  }
+  span {
+    display: block;
+    position: relative;
+    padding-left: 0.67rem;
+    color: #1E1E1E;
+    font-size: 0.27rem;
+    line-height: 0.56rem;
+    &::before {
+      content: '推广';
+      position: absolute;
+      top: 0.13rem;
+      left: 0;
+      width: 0.54rem;
+      height: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: .03rem;
+      font-size: .22rem;
+      text-align: center;
+      line-height: .3rem;
+      color: #686868;
+    }
+  }
+}

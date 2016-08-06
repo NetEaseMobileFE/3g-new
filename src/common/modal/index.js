@@ -1,8 +1,13 @@
+/**
+ * 分享成功后弹框
+ * [article] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }
 require('./index.less')
-export default function model(data) {
+export default function modal(data) {
   if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
     console.error('Have not any hot news')
   }

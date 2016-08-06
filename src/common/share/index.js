@@ -1,3 +1,7 @@
+/**
+ * 通用分享组件
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

@@ -1,7 +1,13 @@
+/**
+ * 公共尾部固定栏
+ * [article、photo、question、topic、video] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }
 require('./index.less')
+
 export default function footer(data) {
   const { type } = data
   let param = ''
