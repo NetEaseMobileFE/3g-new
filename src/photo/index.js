@@ -136,7 +136,6 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       const photosData = data.photos
 
       let photoScroll = null
-
       // share component
       {
         const spss = search.s || 'newsapp'
@@ -277,14 +276,12 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       articleContent.innerHTML = photosHtml
 
       const mainBody = document.querySelector('.main-body')
-      if (articleContent.offsetHeight > mainBody.offsetHeight) {
-        articleContent.insertAdjacentHTML('afterend', more({ origin: 'photo' }))
-        const showAllArticle = document.querySelector('.js-all-article')
-        showAllArticle.addEventListener('click', function(){
-          mainBody.style.maxHeight = 'none'
-          this.parentElement.style.display = 'none'
-        })
-      }
+      articleContent.insertAdjacentHTML('afterend', more({ origin: 'photo' }))
+      const showAllArticle = document.querySelector('.js-all-article')
+      showAllArticle.addEventListener('click', function(){
+        mainBody.style.maxHeight = 'none'
+        this.parentElement.style.display = 'none'
+      })
     }
 
     utils.importJs(`http://c.3g.163.com/photo/api/jsonp/set/${channelid}/${setid}.json`)

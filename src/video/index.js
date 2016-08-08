@@ -9,6 +9,7 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
+import advert from '../common/advert'
 import footer from '../common/footer'
 
 require('../common/reset.css')
@@ -331,6 +332,19 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // 中间分享
 $('.m-middle-share')[0].innerHTML = middleShare({ origin: 'video' })
+
+// ad
+utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BGR/0-1.html')
+window.newAdvertiseList00340BGR = (data) => {
+  const _data = data['00340BGR'][0]
+  if (_data) {
+    $('.m-ad')[0].innerHTML = advert({
+      url: _data.url,
+      imgsrc: _data.imgsrc,
+      digest: _data.digest || 'jsonp测试测试测试,换个jsonp接口'
+    })
+  }
+}
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
