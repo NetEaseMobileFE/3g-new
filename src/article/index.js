@@ -16,7 +16,7 @@ import more from '../common/more'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
-import model from '../common/model'
+import modal from '../common/modal'
 import footer from '../common/footer'
 
 require('../common/reset.css')
@@ -26,7 +26,7 @@ const search = utils.localParam().search
 const docid = search.docid || window.location.href.match(/\/a\/(\w*)\./)[1]
 
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 0,
   type: "article",
   docid: docid
@@ -68,7 +68,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const mainBody = document.querySelector('#contentHolder')
 
     if (articleContent.offsetHeight > mainBody.offsetHeight) {
-      $(mainBody).append(more({ origin: 'article'} ))
+      $('#contentHolder').append(more({ origin: 'article'} ))
 
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
@@ -159,9 +159,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     // 获取跟帖
     const replyCount = $('.js-reply-link').text().split('（')[1].split('）')[0] || 0
-    post({ 
-      boardid: replyBoard, 
-      id: docid, 
+    post({
+      boardid: replyBoard,
+      id: docid,
       votecount: replyCount,
       origin: 'article'
     })
@@ -170,17 +170,17 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // 中间分享
 $('.m-middle-share')[0].innerHTML = middleShare({
-  origin: "article"
+  origin: 'article'
 })
 
 // hotNews videoNews shareNews
 utils.ajax({
-  method: "GET",
+  method: 'GET',
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
     popular('article', data)
-    model(data)
+    modal(window.RELATIVE_NEWS || data['T1348647909107'])
   }
 })
 
@@ -219,4 +219,3 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
     }
   })
 }
-
