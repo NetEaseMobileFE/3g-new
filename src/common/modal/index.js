@@ -1,3 +1,8 @@
+/**
+ * 分享成功后弹框
+ * [article] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

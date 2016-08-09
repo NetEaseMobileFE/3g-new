@@ -1,3 +1,8 @@
+/**
+ * loading
+ * [photo、question、topic、video、special] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

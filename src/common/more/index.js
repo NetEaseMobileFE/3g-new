@@ -1,3 +1,8 @@
+/**
+ * 加载全文遮罩层
+ * [article、photo] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

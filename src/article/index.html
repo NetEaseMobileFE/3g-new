@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="zh" data-docid="${data.docid}" data-boardid="${data.replyBoard}" data-digest="${data.digest || data.body.replace(/<.*?>/g,'').replace(/(^\s*)/g, '').substr(0, 30)}">
+=======
+<html lang="zh" data-docid="${data.docid}" data-boardid="${data.replyBoard}" data-digest="${data.digest || data.body.replace(/<.*?>/g, "").replace(/(^\s*)/g, "").substr(0, 30)}">
+>>>>>>> dff78c78b424ad29e365076079705adb2c1a5183
 <head>
   <meta charset="UTF-8">
   <title>${data.title}</title>
@@ -10,6 +14,7 @@
   </script>
   <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
   <meta name="format-detection" content="telephone=no" />
+<<<<<<< HEAD
   <script>
     (function (doc, win) {
       var docEl = doc.documentElement,
@@ -36,8 +41,14 @@
   <!-- build:articleStyle -->
   <!-- endbuild -->
   <script>${globalVariable || ''}</script>
+=======
+  <link type="text/css" rel="stylesheet" href="http://img6.cache.netease.com/utf8/3g-new/css/article.f9cbd8d6c42b6ef50660.css">
+>>>>>>> dff78c78b424ad29e365076079705adb2c1a5183
 </head>
 <body ontouchstart="">
+  <script>
+    (function(e,d){var f=e.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream,c=function(){var g=f.clientWidth;if(!g){return}if(g>=750){g=750;e.body.style.width=750+"px"}else{e.body.style.width=g+"px"}f.style.fontSize=100*(g/750)+"px";f.dataset.width=g;f.dataset.percent=100*(g/750)};c();e.documentElement.classList.add("iosx"+d.devicePixelRatio);if(!e.addEventListener){return}d.addEventListener(b,c,false)})(document,window);
+  </script>
   <iframe id="iframe" style="display: none !important;"></iframe>
   <img src="http://img1.cache.netease.com/travel/2014/7/22/20140722172931b2127.png" style="display: none!important;">
   <div class="js-analysis">
@@ -61,6 +72,7 @@
             </div>
           </article>
         </div>
+<<<<<<< HEAD
       </div>
       <div class="m-comment">
       </div>
@@ -69,16 +81,19 @@
       <div class="m-ad js-ad">
       </div>
       <div class="m-hotnews">
+=======
+>>>>>>> dff78c78b424ad29e365076079705adb2c1a5183
       </div>
+      <div class="m-comment"></div>
+      <div class="m-middle-share"></div>
+      <div class="m-ad"></div>
+      <div class="m-hotnews"></div>
     </div>
   </div>
   <script src="http://img3.cache.netease.com/apps/3g/1.1.4/zepto.min.js" type="text/javascript"></script>
   <!-- END NetEase Devilfish 2006 -->
   <!-- build:articleScript -->
-  <script type="text/javascript" src="http://localhost:3100/js/article.bundle.js"></script>
+  <script type="text/javascript" src="http://img6.cache.netease.com/utf8/3g-new/js/article.f9cbd8d6c42b6ef50660.js"></script>
   <!-- endbuild -->
-  <script>
-    (function(){(function(a,b){if(typeof define==="function"&&define.amd){define(function(){return b(a)})}else{if(typeof exports==="object"){module.exports=b}else{a.echo=b(a)}}})(this,function(h){var j,b,d,a,k,f,c,g,e,i;a={};j=function(){};c=void 0;g=void 0;d=void 0;i=void 0;e=void 0;f=function(l){return l.offsetParent===null};k=function(m,l){var n;if(f(m)){return false}n=m.getBoundingClientRect();return n.right>=l.l&&n.bottom>=l.t&&n.left<=l.r&&n.top<=l.b};b=function(){if(!i&&!!g){return}clearTimeout(g);g=setTimeout((function(){a.render();g=null}),d)};a.init=function(p){var n,m,l,o;p=p||{};n=p.offset||0;l=p.offsetVertical||n;m=p.offsetHorizontal||n;o=function(q,r){return parseInt(q||r,10)};c={t:o(p.offsetTop,l),b:o(p.offsetBottom,l),l:o(p.offsetLeft,m),r:o(p.offsetRight,m)};d=o(p.throttle,250);i=p.debounce!==false;e=!!p.unload;j=p.callback||j;a.render();if(document.addEventListener){h.addEventListener("scroll",b,false);h.addEventListener("load",b,false)}else{h.attachEvent("onscroll",b);h.attachEvent("onload",b)}};a.render=function(){var p,o,m,n,q,l;n=document.querySelectorAll("img[data-echo], [data-echo-background]");m=n.length;q=void 0;p=void 0;l={l:0-c.l,t:0-c.t,b:(h.innerHeight||document.documentElement.clientHeight)+c.b,r:(h.innerWidth||document.documentElement.clientWidth)+c.r};o=0;while(o<m){p=n[o];if(k(p,l)){if(e){p.setAttribute("data-echo-placeholder",p.src)}if(p.getAttribute("data-echo-background")!==null){p.style.backgroundImage="url("+p.getAttribute("data-echo-background")+")"}else{p.src=p.getAttribute("data-echo")}if(!e){p.removeAttribute("data-echo");p.removeAttribute("data-echo-background")}j(p,"load")}else{if(e&&!!(q=p.getAttribute("data-echo-placeholder"))){if(p.getAttribute("data-echo-background")!==null){p.style.backgroundImage="url("+q+")"}else{p.src=q}p.removeAttribute("data-echo-placeholder");j(p,"unload")}}o++}if(!m){a.detach()}};a.detach=function(){if(document.removeEventListener){h.removeEventListener("scroll",b)}else{h.detachEvent("onscroll",b)}clearTimeout(g)};return a});return echo.init({offset:100,throttle:250,unload:false})})();
-  </script>
 </body>
 </html>

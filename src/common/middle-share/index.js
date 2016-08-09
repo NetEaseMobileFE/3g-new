@@ -1,3 +1,8 @@
+/**
+ * 中间分享
+ * [article、photo、video] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }

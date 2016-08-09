@@ -10,6 +10,7 @@ if (module && module.hot) {
 
 import analysis from '../common/analysis'
 import share from '../common/share'
+import lazyload from '../common/lazyload'
 import * as utils from '../common/utils'
 import header from '../common/header'
 import more from '../common/more'
@@ -18,6 +19,7 @@ import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import modal from '../common/modal'
 import footer from '../common/footer'
+import advert from '../common/advert'
 
 require('../common/reset.css')
 require('./index.less')
@@ -30,6 +32,12 @@ analysis({
   spst: 0,
   type: "article",
   docid: docid
+})
+
+lazyload({
+  offset: 0,
+  throttle: 1000,
+  unload: false
 })
 
 // common header
@@ -163,12 +171,7 @@ window.newAdvertiseList00340BNC = (data) => {
     return
   }
   const ad = data['00340BNC'][0]
-  $('.js-ad').html(`
-    <a href="${ad.url}">
-      <img src="${ad.imgsrc}">
-      <span>${ad.title}</span>
-    </a>
-  `)
+  $('.js-ad').html(advert(ad))
 }
 
 // hotNews videoNews shareNews

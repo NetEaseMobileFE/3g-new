@@ -29,13 +29,20 @@ export function localParam(search, hash) {
   }
 }
 
-export function optImage(src = '', width, height) {
-  if (src.match(/(jpg|png)$/)) {
-    return "http://s.cimg.163.com/i/" + (src.replace('http://', '')) + "." + width + "x" + (height || 10000) + ".75.auto.jpg";
+export function optImage(url, width, height) {
+  let avatar = url || 'http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png'
+  if (!!avatar.match(/nos/)) {
+    if (avatar.slice(-1,avatar.length) != '?') {
+      avatar += `?imageView&thumbnail=${width}x${height || 1000}&quality=50`
+    } else {
+      avatar += `&thumbnail=${width}x${height || 1000}&quality=50`
+    }
   } else {
-    return src;
+    avatar = `http://s.cimg.163.com/i/${avatar.replace('http://', '')}.${width}x${height || 10000}.75.auto.jpg`
   }
+  return avatar
 }
+
 
 export function simpleParse(tpl, values) {
   if (values) {

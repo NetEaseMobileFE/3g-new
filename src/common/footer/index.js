@@ -1,8 +1,14 @@
+/**
+ * 公共尾部固定栏
+ * [article、photo、question、topic、video] 调用
+ */
+
 if (module && module.hot) {
   module.hot.accept()
 }
 import { isNewsapp } from '../utils'
 require('./index.less')
+
 export default function footer(data) {
   if (isNewsapp) {
     return ''
