@@ -9,7 +9,6 @@ const entry = packageJson.pages.reduce((prev, curr) => {
     [curr]: [`./${curr}/index`, 'webpack-hot-middleware/client?reload=true']
   })
 }, {})
-
 module.exports = {
   devtool: '#cheap-module-eval-source-map',
   context: path.join(__dirname, 'src'),
