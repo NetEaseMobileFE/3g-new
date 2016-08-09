@@ -25,15 +25,14 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const docid = search.docid || window.location.href.match(/\/a\/(\w*)\./)[1]
+const { docid, boardid } = document.documentElement.dataset
 
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 0,
   type: "article",
   docid: docid
 })
-
 lazyload({
   offset: 0,
   throttle: 1000,
@@ -61,12 +60,10 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const width = document.documentElement.dataset.width
     const containerWidth = Math.floor(width * 6.9 / 7.5)
     $('.js-img').each(function(i) {
-      const { width, height, echo } = this.dataset
+      const { width, height } = this.dataset
       const imgHeight = Math.floor(containerWidth / width * height)
-      const src = utils.optImage(echo, 690)
       this.width = containerWidth
       this.height = imgHeight
-      this.dataset.echo = src
     })
   }
 
@@ -76,7 +73,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const mainBody = document.querySelector('#contentHolder')
 
     if (articleContent.offsetHeight > mainBody.offsetHeight) {
-      $(mainBody).append(more({ origin: 'article'} ))
+      $('#contentHolder').append(more({ origin: 'article'} ))
 
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
@@ -138,27 +135,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       }
     }
   })
-  const search = utils.localParam().search
-  const { docid, boardid } = document.documentElement.dataset
-
-  // 打开客户端逻辑
-  {
-    const ua = navigator.userAgent
-    const applink = `http://m.163.com/newsapp/applinks.html?docid=${docid}&s=sps`
-    setTimeout(function() {
-      // 判断safari 且不是易信 且参数no不等于1， 则打开客户端
-      if (ua.match(/IOS/ig) && ua.match(/safari/ig) && ua.match(/safari/ig) && !ua.match(/baidu/ig) && !ua.match(/yixin/ig) && +search['no'] !== 1) {
-        $('#iframe').src = applink
-      }
-      // 判断URL中含有&o=1时，打开客户端
-      if (+search['o'] === 1) {
-        $('#iframe').src = applink
-      }
-    }, 1000)
-  }
 
   // 跟帖
-  ((replyBoard, docid) => {
+  ;((replyBoard, docid) => {
     if (!replyBoard) {
       return
     }
@@ -167,9 +146,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     // 获取跟帖
     const replyCount = $('.js-reply-link').text().split('（')[1].split('）')[0] || 0
-    post({ 
-      boardid: replyBoard, 
-      id: docid, 
+    post({
+      boardid: replyBoard,
+      id: docid,
       votecount: replyCount,
       origin: 'article'
     })
@@ -178,30 +157,29 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // 中间分享
 $('.m-middle-share')[0].innerHTML = middleShare({
-  origin: "article"
+  origin: 'article'
 })
 
-// ad
-utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BGR/0-1.html')
-window.newAdvertiseList00340BGR = (data) => {
-  const _data = data['00340BGR'][0]
-  if (_data) {
-    $('.m-ad')[0].innerHTML = advert({
-      url: _data.url,
-      imgsrc: _data.imgsrc,
-      digest: _data.digest || 'jsonp测试测试测试,换个jsonp接口'
-    })
+// 广告
+utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BNC/0-1.html')
+window.newAdvertiseList00340BNC = (data) => {
+  window.newAdvertiseList00340BNC = null
+  if (!data || !data['00340BNC'] || !data['00340BNC'].length) {
+    return
   }
+  const ad = data['00340BNC'][0]
+  $('.js-ad').html(advert(ad))
 }
 
 // hotNews videoNews shareNews
 utils.ajax({
-  method: "GET",
+  method: 'GET',
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
     popular('article', data)
-    modal(data)
+    const news = window.RELATIVE_NEWS.length ? window.RELATIVE_NEWS : data['T1348647909107']
+    modal(news)
   }
 })
 
@@ -240,4 +218,3 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
     }
   })
 }
-

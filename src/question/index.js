@@ -8,17 +8,17 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
+import '../common/is-newsapp'
 
 require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
 const id = search.id
-
 loading()
 
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 8,
   type: "article",
   modelid: id
@@ -36,7 +36,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   let $ = document.querySelector.bind(document)
   const answerId = search.answerId
   var initPage = ()=>{
-    
+
     // 渲染页面
     utils.ajax({
       method: "GET",
@@ -46,9 +46,9 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
         var relativeNewsHtml = getNewsHtml(data.expert.relatedNews)
-        var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
+        var oneAnswerWrap = '<ul class="one-answer-wrap"></ul>'
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = "<div class='m-down'><a class='open-qa open-newsapp'></a></div>"
+        var openNewsappHtml = '<div class="m-down u-hide-in-newsapp"><a class="open-qa open-newsapp"></a></div>'
         var totalHtml = bannerHtml + relativeNewsHtml + oneAnswerWrap + moreListHtml + openNewsappHtml
         $(".page-content").innerHTML = totalHtml
 
@@ -78,7 +78,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             }
           })
         }
-        
+
         oneAnswerItem();
         // 最新最热List切换
 
@@ -146,7 +146,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 截取文字
   var substr = (text, length = 56)=>{
     var forShortText = "";
-    
+
     if(text.length>length){
       forShortText = text.substr(0,length - 2) + "...";
     }else{
@@ -156,15 +156,15 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   }
   // 获取字符串真实长度
   // var realLength = (text)=>{
-  //   var len = 0;  
-  //   for (var i=0; i<text.length; i++) {  
-  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {  
-  //        len += 2;  
-  //      } else {  
-  //        len ++;  
-  //      }  
-  //    }  
-  //   return len; 
+  //   var len = 0;
+  //   for (var i=0; i<text.length; i++) {
+  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {
+  //        len += 2;
+  //      } else {
+  //        len ++;
+  //      }
+  //    }
+  //   return len;
   // }
   // 判断是否超长
   var tooLong = (text, length = 56)=>{
@@ -186,7 +186,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp" data-stat="O_questionTipBar">
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="O_questionTipBar">
         打开网易新闻，查看更多问吧讨论
       </div>
       <div class="clearfix card-wrap card-wrap-top">
@@ -202,7 +202,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 处理时间，n小时前之类
   const formatTime = (time)=>{
     let date = null
-    
+
     if(typeof time == 'number'){
       date = time
     }else{
@@ -214,7 +214,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     const distance = {
       day: Math.floor((now - date) / (1000*60*60*24)),
       hour: Math.floor((now - date) / (1000*60*60)),
-      minute: Math.floor((now - date) / (1000*60)) 
+      minute: Math.floor((now - date) / (1000*60))
     }
     if(distance.day > 0){
       if(distance.day === 1){
@@ -230,7 +230,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   }
   // 相关新闻html
   var getNewsHtml = (news)=>{
-    if(!news){
+    if (!news || !news.length) {
       return ''
     }
     var itemsHtml = ""
@@ -264,7 +264,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   function qaHtml(item){
     let html = ''
     // item.answer.content += '测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
-      
+
     var showShort = '', showNormal = 'active', showBtn = ''
 
     if(tooLong(item.answer.content, 114)){
@@ -303,7 +303,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         </a>
       </li>
     `
-    return html 
+    return html
   }
 
   // 更多问答html
@@ -326,7 +326,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
     return `
       <div class="more-wrap">
-        ${titleHtml}        
+        ${titleHtml}
         <div class="sort-type" id＝"sort-type">
           <a data-type="hot" href="javascript:void(0)" class="cur">最热</a>
           <a data-type="latest" href="javascript:void(0)" >最新</a>

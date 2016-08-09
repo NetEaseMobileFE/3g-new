@@ -82,7 +82,6 @@ export default function lazyload(opts) {
       const _img = elem.getAttribute('data-echo')
       const _ph = elem.getAttribute('data-echo-placeholder')
       if (inView(elem, view)) {
-
         if (unload) {
           elem.setAttribute('data-echo-placeholder', elem.src)
         }

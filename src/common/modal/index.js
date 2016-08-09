@@ -8,10 +8,10 @@ if (module && module.hot) {
 }
 require('./index.less')
 export default function modal(data) {
-  if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
-    console.error('Have not any hot news')
-  }
-  let { normalNews } = data.T1348647909107.reduce((pre, data) => {
+  // if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
+  //   console.error('Have not any hot news')
+  // }
+  let { normalNews } = data.reduce((pre, data) => {
     const { normalNews } = pre
     const n = isNormalNews(data)
     n && normalNews.push(n)
@@ -19,7 +19,8 @@ export default function modal(data) {
   }, { normalNews: [] })
 
   let html = ''
-  for (let i = 0; i < 3; i++) {
+  const len = normalNews.length > 3 ? 3 : normalNews.length
+  for (let i = 0; i < len; i++) {
     const item = normalNews.splice(random(normalNews.length), 1)[0]
     html += `
       <li><a href="http://c.m.163.com/news/a/${item.id}.html?f=share_dialog"><div class="news-title">${item.title}</div></a></li>
@@ -38,10 +39,11 @@ export default function modal(data) {
   `)
 
   function isNormalNews(data) {
-    if (data.docid.length === 16 && !data.skipType) {
+    const id = data.docid || data.docID
+    if (id && id.length === 16 && !data.skipType) {
       const result = {
         title: data.title,
-        id: data.docid
+        id
       }
       return result
     }
@@ -69,5 +71,3 @@ export default function modal(data) {
     e.preventDefault()
   })
 }
-
-
