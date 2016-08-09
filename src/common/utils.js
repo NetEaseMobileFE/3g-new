@@ -30,17 +30,17 @@ export function localParam(search, hash) {
 }
 
 export function optImage(url, width, height) {
-  let avatar = url || 'http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png'
-  if (!!avatar.match(/nos/)) {
-    if (avatar.slice(-1,avatar.length) != '?') {
-      avatar += `?imageView&thumbnail=${width}x${height || 1000}&quality=50`
+  let image = url || 'http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png'
+  if (!!image.match(/nos/)) {
+    if (!image.match(/\?/)) {
+      image += `?imageView&thumbnail=${width}x${height || 10000}&quality=50`
     } else {
-      avatar += `&thumbnail=${width}x${height || 1000}&quality=50`
+      image += `&thumbnail=${width}x${height || 10000}&quality=50`
     }
   } else {
-    avatar = `http://s.cimg.163.com/i/${avatar.replace('http://', '')}.${width}x${height || 10000}.75.auto.jpg`
+    image = `http://s.cimg.163.com/i/${image.replace('http://', '')}.${width}x${height || 10000}.75.auto.jpg`
   }
-  return avatar
+  return image
 }
 
 

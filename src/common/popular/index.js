@@ -50,7 +50,7 @@ export default function popular(_type, _data) {
         return url
       }
     }
-    const getNewsLink = (data) => { 
+    const getNewsLink = (data) => {
       return newsLink[data.type](data)
     }
 

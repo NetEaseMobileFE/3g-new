@@ -33,7 +33,6 @@ analysis({
   type: "article",
   docid: docid
 })
-
 lazyload({
   offset: 0,
   throttle: 1000,
@@ -61,12 +60,10 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const width = document.documentElement.dataset.width
     const containerWidth = Math.floor(width * 6.9 / 7.5)
     $('.js-img').each(function(i) {
-      const { width, height, echo } = this.dataset
+      const { width, height } = this.dataset
       const imgHeight = Math.floor(containerWidth / width * height)
-      const src = utils.optImage(echo, 690)
       this.width = containerWidth
       this.height = imgHeight
-      this.dataset.echo = src
     })
   }
 
@@ -181,7 +178,8 @@ utils.ajax({
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
     popular('article', data)
-    modal(window.RELATIVE_NEWS || data['T1348647909107'])
+    const news = window.RELATIVE_NEWS.length ? window.RELATIVE_NEWS : data['T1348647909107']
+    modal(news)
   }
 })
 
