@@ -1,23 +1,22 @@
 if (module && module.hot) {
   module.hot.accept()
 }
+import { assign } from '../utils'
 require('./index.css')
-
 export default function share(config) {
   const ua = navigator.userAgent
-  config = config || {}
-  config = {
-    title: config.title || document.title,
-    desc: config.desc || '',
-    url: config.url || location.href,
-    img: config.img || 'http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png',
-    statistics: config.statistics || {},
-    other: config.other || '',
-    wbText: config.wbText || config.title || document.title,
-    wbImg: config.wbImg || config.img || '',
-    site: config.site || location.host,
-    callback: typeof config.callback == 'function' ? config.callback : function() {}
-  }
+  assign({
+    title: document.title,
+    url: window.location.href,
+    desc: '',
+    img: 'http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png',
+    statistics: {},
+    other: '',
+    wbText: document.title,
+    wbImg:'',
+    site: window.location.host,
+    callback: function() {}
+  }, config)
 
   //分享相关
   const wapShare = {
@@ -89,7 +88,7 @@ export default function share(config) {
     const targetHref = document.querySelectorAll('.share-icon')
     const name = wapShare.targetInfo
     const statistics = shareParam(config.statistics)
-    
+
     Array.prototype.forEach.call(targetHref, (link) => {
       // 非微信打开，隐藏微信icon
       if (!isWeixin && link.classList.contains('u-weixin')) {
@@ -129,23 +128,24 @@ export default function share(config) {
 
   /**
    * 微信分享回调函数
-   * 
+   *
    * @method shareCallback
    */
   const shareCallback = (args) => {
     const statistics = shareParam(config.statistics)
     if (args.err_msg.match(/(confirm|ok)/)) {
-      this.config.callback(true)
-      neteaseTracker&&neteaseTracker(false,`http://sps.163.com/func/?func=sharedone&${statistics}spsf=wx`, '', 'sps')
+      alert(config.callback)
+      config.callback(true)
+      neteaseTracker && neteaseTracker(false,`http://sps.163.com/func/?func=sharedone&${statistics}spsf=wx`, '', 'sps')
     } else {
-      this.config.callback(false)
-      neteaseTracker&&neteaseTracker(false,`http://sps.163.com/func/?func=shareerror&${statistics}spsf=wx`, '', 'sps')
+      config.callback(false)
+      neteaseTracker && neteaseTracker(false,`http://sps.163.com/func/?func=shareerror&${statistics}spsf=wx`, '', 'sps')
     }
   }
 
   /**
    * 微信分享
-   * 
+   *
    * @method setWeixinJSBridge
    */
   const setWeixinJSBridge = () => {
@@ -195,7 +195,7 @@ export default function share(config) {
       "tContent": config.desc,
       "fTitle": config.title,
       "fContent": config.desc,
-      "wContent": config.wbText 
+      "wContent": config.wbText
     }
     // 易信朋友圈
     document.addEventListener('YixinJSBridgeReady', () => {

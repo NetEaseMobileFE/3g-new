@@ -101,7 +101,7 @@ export function ajax(option) {
  * @param  {[type]} dight [需要格式化的数]
  * @param  {[type]} dot   [保留的小数位]
  */
-export function forDight(dight, dot) {  
+export function forDight(dight, dot) {
   dight = Math.round(dight * Math.pow(10, dot)) / Math.pow(10, dot)
   return dight
 }
@@ -112,7 +112,7 @@ export function forDight(dight, dot) {
  */
 export function formatTime(time) {
   let date = null
-  
+
   if(typeof time == 'number'){
     date = time
   }else{
@@ -124,7 +124,7 @@ export function formatTime(time) {
   const distance = {
     day: Math.floor((now - date) / (1000*60*60*24)),
     hour: Math.floor((now - date) / (1000*60*60)),
-    minute: Math.floor((now - date) / (1000*60)) 
+    minute: Math.floor((now - date) / (1000*60))
   }
   if(distance.day > 0){
     if(distance.day === 1){
@@ -164,4 +164,22 @@ export function timeFormat(t) {
   m = m < 10 ? `0${m}` : m
   s = s < 10 ? `0${s}` : s
   return `${m}:${s}`
+}
+
+export const assign = Object.assign || function(target) {
+  if (target == null) {
+    throw new TypeError('Cannot convert undefined or null to object')
+  }
+  target = Object(target)
+  for (var index = 1; index < arguments.length; index++) {
+    var source = arguments[index]
+    if (source != null) {
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key]
+        }
+      }
+    }
+  }
+  return target
 }

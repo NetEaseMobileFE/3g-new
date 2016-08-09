@@ -23,7 +23,7 @@ require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
-const docid = search.docid || window.location.href.match(/\/a\/(\w*)\./)[1]
+const { docid, boardid } = document.documentElement.dataset
 
 // mapp and sps analysis
 analysis({
@@ -130,27 +130,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       }
     }
   })
-  const search = utils.localParam().search
-  const { docid, boardid } = document.documentElement.dataset
-
-  // 打开客户端逻辑
-  {
-    const ua = navigator.userAgent
-    const applink = `http://m.163.com/newsapp/applinks.html?docid=${docid}&s=sps`
-    setTimeout(function() {
-      // 判断safari 且不是易信 且参数no不等于1， 则打开客户端
-      if (ua.match(/IOS/ig) && ua.match(/safari/ig) && ua.match(/safari/ig) && !ua.match(/baidu/ig) && !ua.match(/yixin/ig) && +search['no'] !== 1) {
-        $('#iframe').src = applink
-      }
-      // 判断URL中含有&o=1时，打开客户端
-      if (+search['o'] === 1) {
-        $('#iframe').src = applink
-      }
-    }, 1000)
-  }
 
   // 跟帖
-  ((replyBoard, docid) => {
+  ;((replyBoard, docid) => {
     if (!replyBoard) {
       return
     }
@@ -172,6 +154,22 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 $('.m-middle-share')[0].innerHTML = middleShare({
   origin: 'article'
 })
+
+// 广告
+utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BNC/0-1.html')
+window.newAdvertiseList00340BNC = (data) => {
+  window.newAdvertiseList00340BNC = null
+  if (!data || !data['00340BNC'] || !data['00340BNC'].length) {
+    return
+  }
+  const ad = data['00340BNC'][0]
+  $('.js-ad').html(`
+    <a href="${ad.url}">
+      <img src="${ad.imgsrc}">
+      <span>${ad.title}</span>
+    </a>
+  `)
+}
 
 // hotNews videoNews shareNews
 utils.ajax({

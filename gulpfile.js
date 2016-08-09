@@ -88,6 +88,7 @@ gulp.task('test', ['f2e'], function(cb) {
   return gulp.src(which ? `./src/${which}/index.html` : 'src/**/index.html')
     .pipe(htmlreplace(replacement))
     .pipe(htmlmin({
+      removeEmptyAttributes: true,
       collapseWhitespace: true,
       removeComments: true
     }))
@@ -106,7 +107,7 @@ gulp.task('ftp', ['assets'], function(cb) {
     // .pipe(conn.dest('/utf8/test/'))
 })
 
-gulp.task('deploy', ['ftp'], function(cb) {
+gulp.task('html', ['assets'], function(cb) {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const apr = 'http://img6.cache.netease.com/utf8/3g-new/'
@@ -126,7 +127,9 @@ gulp.task('deploy', ['ftp'], function(cb) {
     .pipe(htmlreplace(replacement))
     .pipe(htmlmin({
       collapseWhitespace: true,
-      removeComments: true
+      removeComments: true,
+      minifyCSS: true,
+      minifyJS: true,
     }))
     .pipe(rename((path) => {
       path.basename = which || path.dirname
@@ -134,6 +137,37 @@ gulp.task('deploy', ['ftp'], function(cb) {
     }))
     .pipe(gulp.dest('dist'))
 })
+gulp.task('deploy', ['ftp', 'html'])
+// gulp.task('deploy', ['ftp'], function(cb) {
+//   const which = argv.w || null
+//   checkArgs(which, NEWS_TYPE)
+//   const apr = 'http://img6.cache.netease.com/utf8/3g-new/'
+//   const assetsNames = webpackStats.assetsByChunkName
+//   let replacement = {}
+//   for (const key of Object.keys(assetsNames)) {
+//     let style = assetsNames[key][1]
+//     let script = assetsNames[key][0]
+//     if (!style.match(/css$/)) {
+//       style = assetsNames[key][0]
+//       script = assetsNames[key][1]
+//     }
+//     replacement[`${key}Style`] = apr + style
+//     replacement[`${key}Script`] = apr + script
+//   }
+//   return gulp.src(which ? `./src/${which}/index.html` : 'src/**/index.html')
+//     .pipe(htmlreplace(replacement))
+//     .pipe(htmlmin({
+//       collapseWhitespace: true,
+//       removeComments: true,
+//       minifyCSS: true,
+//       minifyJS: true,
+//     }))
+//     .pipe(rename((path) => {
+//       path.basename = which || path.dirname
+//       path.dirname = ''
+//     }))
+//     .pipe(gulp.dest('dist'))
+// })
 
 function checkArgs(args, types) {
   if (args === true) {
@@ -165,4 +199,3 @@ function createConnection(ftpConfig) {
 
   return vftp.create(options);
 }
-

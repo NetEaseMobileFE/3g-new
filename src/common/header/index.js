@@ -1,8 +1,12 @@
 if (module && module.hot) {
   module.hot.accept()
 }
+import { isNewsapp } from '../utils'
 require('./index.css')
 export default function header(data) {
+  if (isNewsapp) {
+    return ''
+  }
   const { type } = data
   let param = ''
   for (let item in data) {

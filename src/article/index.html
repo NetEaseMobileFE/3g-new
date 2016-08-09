@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" data-docid="${data.docid}" data-boardid="${data.replyBoard}" data-digest="${data.digest || data.body.replace(/<.*?>/g, "").replace(/(^\s*)/g, "").substr(0, 30)}">
+<html lang="zh" data-docid="${data.docid}" data-boardid="${data.replyBoard}" data-digest="${data.digest || data.body.replace(/<.*?>/g,'').replace(/(^\s*)/g, '').substr(0, 30)}">
 <head>
   <meta charset="UTF-8">
   <title>${data.title}</title>
@@ -13,29 +13,29 @@
   <script>
     (function (doc, win) {
       var docEl = doc.documentElement,
-        isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+        isIOS = !!navigator.userAgent.match(/ipad|iphone|ipod/i),
         dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
         dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
       docEl.dataset.dpr = dpr;
       var recalc = function () {
-          var width = docEl.clientWidth;
-          if (width / dpr > 750) {
-              width = 750 * dpr;
-          }
-          docEl.dataset.width = width
-          docEl.dataset.percent = 100 * (width / 750);
-          docEl.style.fontSize = 100 * (width / 750) + 'px';
-        };
-      recalc()
-      doc.documentElement.classList.add('iosx' + win.devicePixelRatio)
+        var width = docEl.clientWidth;
+        if (width / dpr > 750) {
+            width = 750 * dpr;
+        }
+        docEl.dataset.width = width;
+        docEl.dataset.percent = 100 * (width / 750);
+        docEl.style.fontSize = 100 * (width / 750) + 'px';
+      };
+      recalc();
+      doc.documentElement.classList.add('iosx' + win.devicePixelRatio);
       if (!doc.addEventListener) return;
       win.addEventListener(resizeEvt, recalc, false);
     })(document, window);
   </script>
   <!-- build:articleStyle -->
   <!-- endbuild -->
-  <script>${window.GLOBAL_VARIABLE || ''}</script>
+  <script>${globalVariable || ''}</script>
 </head>
 <body ontouchstart="">
   <iframe id="iframe" style="display: none !important;"></iframe>
@@ -65,6 +65,8 @@
       <div class="m-comment">
       </div>
       <div class="m-middle-share">
+      </div>
+      <div class="m-ad js-ad">
       </div>
       <div class="m-hotnews">
       </div>

@@ -1,8 +1,12 @@
 if (module && module.hot) {
   module.hot.accept()
 }
+import { isNewsapp } from '../utils'
 require('./index.less')
 export default function footer(data) {
+  if (isNewsapp) {
+    return ''
+  }
   const { type } = data
   let param = ''
   for (let item in data) {
@@ -29,5 +33,3 @@ export default function footer(data) {
     </footer>
   `
 }
-
-

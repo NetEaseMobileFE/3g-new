@@ -3,7 +3,7 @@ if (module && module.hot) {
 }
 
 require('./index.less')
-import { importJs, isIos9 } from '../utils'
+import { importJs, isIos9, isNewsapp } from '../utils'
 export default function post(data) {
   const { boardid, id, votecount, origin } = data
 
@@ -11,13 +11,13 @@ export default function post(data) {
   importJs(`http://comment.api.163.com/api/json/post/list/new/hot/${boardid}/${id}/0/3/7/3/1?jsoncallback=hotList`)
 
   window.hotList = (data) => {
+    window.hotList = null
     if (data.hotPosts.length) {
       document.querySelector('.m-comment').style.display = 'block'
     } else {
       return
     }
     let html = ''
-    window.hotList = null
     if (+data.code !== 1) {
       $('.m-comment').hide()
       $('.m-down-tie').hide()
@@ -54,10 +54,14 @@ export default function post(data) {
     })
 
     let a = isIos9 ? `http://m.163.com/newsapp/applinks.html?docid=${id}&s=sps` : `http://m.163.com/newsapp/applinks.html?boardid=${boardid}&docid=${id}&title=${encodeURIComponent(document.title)}`
+    let more = `<div class="m-down-tie"><a href="${a}" data-stat="O_${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>`
+    if (isNewsapp) {
+      more = ''
+    }
     document.querySelector('.m-comment').innerHTML = `
       <div class="u-title"> 热门跟贴 </div>
       <div class="comment-list">${html}</div>
-      <div class="m-down-tie"><a href="${a}" data-stat="O_${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>
+      ${more}
     `
   }
 

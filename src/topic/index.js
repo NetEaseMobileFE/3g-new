@@ -8,6 +8,7 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
+import '../common/is-newsapp'
 
 require('../common/reset.css')
 require('./index.less')
@@ -18,7 +19,7 @@ const id = search.id
 loading()
 
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 10,
   type: "article",
   modelid: id
@@ -36,7 +37,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   let $ = document.querySelector.bind(document)
   const talkId = search.talkid
   var initPage = () => {
-    
+
     // 渲染页面
     utils.ajax({
       method: "GET",
@@ -77,7 +78,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         var relativeNewsHtml = getNewsHtml(data.subject.relatedNews)
         var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = "<div class='m-down'><a class='open-qa open-newsapp'></a></div>"
+        var openNewsappHtml = '<div class="m-down u-hide-in-newsapp"><a class="open-qa open-newsapp"></a></div>'
         let tabHtml = relativeNewsHtml + oneAnswerWrap + moreListHtml
         if (data.subject.timeline && data.subject.timeline.length > 0) {
           tabHtml = `
@@ -96,7 +97,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         var totalHtml = bannerHtml + tabHtml + openNewsappHtml
 
         $(".page-content").innerHTML = totalHtml
-        
+
         oneAnswerItem();
         // 讨论新闻切换
         document.querySelector('.m-tab') && document.querySelector('.m-tab').addEventListener('click', function(e){
@@ -160,7 +161,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         })
       }
     }
-    
+
     $('.m-loading').style.display = 'none'
     var content = $('.g-content')
     content.style.display = 'block'
@@ -171,7 +172,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 截取文字
   var substr = (text, length = 56)=>{
     var forShortText = "";
-    
+
     if(text.length>length){
       forShortText = text.substr(0,length - 2) + "...";
     }else{
@@ -181,15 +182,15 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   }
   // 获取字符串真实长度
   // var realLength = (text)=>{
-  //   var len = 0;  
-  //   for (var i=0; i<text.length; i++) {  
-  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {  
-  //        len += 2;  
-  //      } else {  
-  //        len ++;  
-  //      }  
-  //    }  
-  //   return len; 
+  //   var len = 0;
+  //   for (var i=0; i<text.length; i++) {
+  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {
+  //        len += 2;
+  //      } else {
+  //        len ++;
+  //      }
+  //    }
+  //   return len;
   // }
   // 判断是否超长
   var tooLong = (text, length = 56)=>{
@@ -212,7 +213,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${subjectData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp" data-stat="O_topicTipBar">
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="O_topicTipBar">
         打开网易新闻，查看更多话题讨论
       </div>
     `
@@ -220,7 +221,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 处理时间，n小时前之类
   const formatTime = (time)=>{
     let date = null
-    
+
     if(typeof time == 'number'){
       date = time
     }else{
@@ -232,7 +233,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const distance = {
       day: Math.floor((now - date) / (1000*60*60*24)),
       hour: Math.floor((now - date) / (1000*60*60)),
-      minute: Math.floor((now - date) / (1000*60)) 
+      minute: Math.floor((now - date) / (1000*60))
     }
     if(distance.day > 0){
       if(distance.day === 1){
@@ -309,7 +310,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   function itemHtml(item){
     let html = ''
     // item.answer.content += '测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
-      
+
     var showShort = '', showNormal = 'active', showBtn = ''
 
     if(tooLong(item.content, 114)){
@@ -356,7 +357,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
         </a>
       </li>
     `
-    return html 
+    return html
   }
   // 更多问答html
   function getMoreListHtml(data) {
@@ -378,7 +379,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
     return `
       <div class="more-wrap">
-        ${titleHtml}        
+        ${titleHtml}
         <div class="sort-type">
           <a data-type="hot" href="javascript:void(0)" class="cur">最热</a>
           <a data-type="latest" href="javascript:void(0)" >最新</a>
