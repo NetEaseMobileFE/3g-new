@@ -37,12 +37,13 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   const id = search.id
   const talkId = search.talkid
   var initPage = () => {
-    
+    const _get = `http://c.3g.163.com/newstopic/subject/details/${id}.html`
     // 渲染页面
     utils.ajax({
       method: "GET",
       dataType: 'json',
-      url: `http://c.3g.163.com/newstopic/subject/details/${id}.html`,
+      url: _get,
+      // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://3g.163.com')}`,
       success: (json)=>{
         var data = json.data
         document.title = `#${data.subject.name}#`
@@ -76,9 +77,10 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
         var bannerHtml = getBannerHtml(data.subject)
         var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
-        var hotReplyWrap = "<ul class='hot-reply-wrap'></ul><div class='m-down'><a class='open-board open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
+        var openReply = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-board open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
+        var hotReplyWrap = `<ul class='hot-reply-wrap'></ul>${openReply}`
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = "<div class='m-down'><a class='open-qa open-newsapp'>想看更多精彩话题讨论，打开网易新闻</a></div>"
+        var openNewsappHtml = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-qa open-newsapp'>想看更多精彩话题讨论，打开网易新闻</a></div>"
         let tabHtml = oneAnswerWrap + hotReplyWrap + moreListHtml
         if (data.subject.timeline && data.subject.timeline.length > 0) {
           tabHtml = `<div class="tab-panel active tab-panel-0">${tabHtml}</div>`
@@ -111,8 +113,10 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     // 如果来自单条，插入单条问答
     var oneAnswerItem = ()=>{
       if(talkId){
+        const post = `http://c.3g.163.com/newstopic/talk/${talkId}.html`
         utils.ajax({
-          url : `http://c.3g.163.com/newstopic/talk/${talkId}.html`,
+          url : post,
+          // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(post)}&cors=${encodeURIComponent('http://3g.163.com')}`,
           method : "GET",
           dataType : 'json',
           success: (data)=>{
@@ -170,6 +174,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 话题介绍html
   function getBannerHtml(subjectData) {
     var showShort = '', showNormal = 'active', showBtn = ''
+    var openTopic = utils.isNewsapp ? '' : "<div class='open-newsapp-tip open-newsapp'>打开网易新闻，查看更多话题讨论</div>"
     return `
       <div class="persion-info" style="background-image:url(${subjectData.picurl})">
         <div class="info-text">
@@ -178,9 +183,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${subjectData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp">
-        打开网易新闻，查看更多话题讨论
-      </div>
+      ${openTopic}
     `
   }
 

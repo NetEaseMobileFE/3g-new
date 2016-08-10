@@ -37,19 +37,22 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
   const id = search.id
   const answerId = search.answerId
   var initPage = ()=>{
-    
+    const _get = `http://c.3g.163.com/newstopic/qa/${id}.html`
     // 渲染页面
     utils.ajax({
       method: "GET",
       dataType: 'json',
-      url: `http://c.3g.163.com/newstopic/qa/${id}.html`,
+      url: _get,
+      // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://3g.163.com')}`,
       success: (data)=>{
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
         var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
-        var hotReplyWrap = "<div class='m-hot-reply'><ul class='hot-reply-wrap'></ul><div class='m-down'><a class='open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div></div>"
+        var openReply = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
+        var hotReplyWrap = `<div class='m-hot-reply'><ul class='hot-reply-wrap'></ul>${openReply}</div>`
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = "<div class='m-down'><a class='open-qa open-newsapp'>想看更多精彩问吧讨论，打开网易新闻</a></div>"
+        var openDiscuss = utils.isNewsapp ? '' : "<a class='open-qa open-newsapp'>想看更多精彩问吧讨论，打开网易新闻</a>"
+        var openNewsappHtml = `<div class='m-down'>${openDiscuss}</div>`
         var totalHtml = bannerHtml + oneAnswerWrap + hotReplyWrap + moreListHtml + openNewsappHtml
         $(".page-content").innerHTML = totalHtml
 
@@ -104,8 +107,10 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
     // 如果来自单条，插入单条问答
     var oneAnswerItem = ()=>{
       if(answerId){
+        const _get = `http://c.3g.163.com/newstopic/answer/${answerId}.html`
         utils.ajax({
-          url : `http://c.3g.163.com/newstopic/answer/${answerId}.html`,
+          url : _get,
+          // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://3g.163.com')}`,
           method : "GET",
           dataType : 'json',
           success: (data)=>{
@@ -216,6 +221,7 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
       showNormal = ""
       showBtn = 'show'
     }
+    var openQuestion = utils.isNewsapp ? '' : "<div class='open-newsapp-tip open-newsapp'>打开网易新闻，查看更多问吧讨论</div>"
     return `
       <div class="persion-info" style="background-image:url(${expertData.picurl})">
         <div class="info-text">
@@ -223,9 +229,7 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp">
-        打开网易新闻，查看更多问吧讨论
-      </div>
+      ${openQuestion}
       <div class="clearfix card-wrap card-wrap-top">
         <span style="background-image: url(${expertData.headpicurl})" class="avatar-wrap"></span>
         <div class="info-wrap">
@@ -312,6 +316,7 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
     </div>
     `
   }
+
   initPage()
 }
 

@@ -36,12 +36,13 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   let $ = document.querySelector.bind(document)
   const answerId = search.answerId
   var initPage = ()=>{
-
+    const _get = `http://c.3g.163.com/newstopic/qa/${id}.html`
     // 渲染页面
     utils.ajax({
       method: "GET",
       dataType: 'json',
-      url: `http://c.3g.163.com/newstopic/qa/${id}.html`,
+      // url: _get,
+      url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
       success: (data)=>{
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
@@ -119,9 +120,11 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     // 如果来自单条，插入单条问答
     var oneAnswerItem = ()=>{
       if(answerId){
+        const _get = `http://c.3g.163.com/newstopic/answer/${answerId}.html`
         $('.one-answer-wrap').style.display = 'block'
         utils.ajax({
-          url : `http://c.3g.163.com/newstopic/answer/${answerId}.html`,
+          // url : _get,
+          url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
           method : "GET",
           dataType : 'json',
           success: (data)=>{
