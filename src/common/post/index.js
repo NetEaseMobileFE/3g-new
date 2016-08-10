@@ -10,7 +10,16 @@ if (module && module.hot) {
 require('./index.less')
 import { importJs, isIos9, isNewsapp } from '../utils'
 export default function post(data) {
-  const { boardid, id, votecount, origin } = data
+  const { boardid, id, votecount} = data
+
+  let applink = `http://m.163.com/newsapp/applinks.html?s=sps`
+  let stat = null
+  for (let item in data) {
+    if (item == 'pid') {
+      applink += `&${item}=${data[item]}`
+      stat = `o-${item}-post`
+    }
+  }
 
   // 获取跟帖
   importJs(`http://comment.api.163.com/api/json/post/list/new/hot/${boardid}/${id}/0/3/7/3/1?jsoncallback=hotList`)
@@ -58,8 +67,8 @@ export default function post(data) {
       </div>`
     })
 
-    let a = isIos9 ? `http://m.163.com/newsapp/applinks.html?docid=${id}&s=sps` : `http://m.163.com/newsapp/applinks.html?boardid=${boardid}&docid=${id}&title=${encodeURIComponent(document.title)}`
-    let more = `<div class="m-down-tie"><a href="${a}" data-stat="O_${origin}Post"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>`
+    let a = isIos9 ? applink : `http://m.163.com/newsapp/applinks.html?boardid=${boardid}&docid=${id}&title=${encodeURIComponent(document.title)}`
+    let more = `<div class="m-down-tie"><a href="${a}" data-stat="${stat}"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>`
     if (isNewsapp) {
       more = ''
     }

@@ -8,6 +8,7 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
+import '../common/is-newsapp'
 
 require('../common/reset.css')
 require('./index.less')
@@ -77,10 +78,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
         var bannerHtml = getBannerHtml(data.subject)
         var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
-        var openReply = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-board open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
-        var hotReplyWrap = `<ul class='hot-reply-wrap'></ul>${openReply}`
+        var hotReplyWrap = "<ul class='hot-reply-wrap'></ul><div class='m-down u-hide-in-newsapp'><a class='open-board open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-qa open-newsapp'>想看更多精彩话题讨论，打开网易新闻</a></div>"
+        var openNewsappHtml = "<div class='m-down u-hide-in-newsapp'><a class='open-qa open-newsapp'>想看更多精彩话题讨论，打开网易新闻</a></div>"
         let tabHtml = oneAnswerWrap + hotReplyWrap + moreListHtml
         if (data.subject.timeline && data.subject.timeline.length > 0) {
           tabHtml = `<div class="tab-panel active tab-panel-0">${tabHtml}</div>`
@@ -174,7 +174,6 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 话题介绍html
   function getBannerHtml(subjectData) {
     var showShort = '', showNormal = 'active', showBtn = ''
-    var openTopic = utils.isNewsapp ? '' : "<div class='open-newsapp-tip open-newsapp'>打开网易新闻，查看更多话题讨论</div>"
     return `
       <div class="persion-info" style="background-image:url(${subjectData.picurl})">
         <div class="info-text">
@@ -183,7 +182,9 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${subjectData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      ${openTopic}
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp">
+        打开网易新闻，查看更多话题讨论
+      </div>
     `
   }
 

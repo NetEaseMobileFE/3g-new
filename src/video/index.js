@@ -100,7 +100,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
                 </div>
                 <div class="visitor-wrap">
                   <span class="view"><#=playCount#></span>
-                  <div class="comment"><span><#=replyCount#>跟帖</span></div>
+                  <#=replyHtml#>
                 </div>
               </div>
             </div>
@@ -191,7 +191,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           if (index < 3) {
             let time = utils.timeFormat(item.length)
             const playCount = utils.round(item.playCount)
-            const replyCount = utils.round(item.replyCount)
+            let replyHtml = `<div class="comment"><span>${utils.round(item.replyCount)}跟帖</span></div>`
             html += utils.simpleParse(TPL.videoList, {
               videoid: item.vid,
               cover: item.cover,
@@ -199,7 +199,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
               title: item.title,
               topicName: item.topicName,
               playCount: playCount,
-              replyCount: replyCount,
+              replyHtml: replyHtml,
               originImg: '',
               index: index + 1
             })
@@ -228,7 +228,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
                 item.description = `${item.description.slice(0, 15)}...`
               }
               const playCount = utils.round(item.playCount)
-              const replyCount = utils.round(item.replyCount)
+              let replyHtml = utils.isOwnEmpty(item.replyCount) ? "" : `<div class="comment"><span>${utils.round(item.replyCount)}跟帖</span></div>`
               const originImg = `<span class="origin-icon" style="background:#828282 url(${item.topicImg});background-size:cover;"></span>`
               html += utils.simpleParse(TPL.videoList, {
                 videoid: item.vid,
@@ -237,7 +237,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
                 title: item.title,
                 topicName: item.topicName,
                 playCount: playCount,
-                replyCount: replyCount,
+                replyHtml: replyHtml,
                 originImg: originImg,
                 index: index + 4
               })
@@ -333,17 +333,15 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 // 中间分享
 $('.m-middle-share')[0].innerHTML = middleShare({ origin: 'video' })
 
-// ad
-utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BGR/0-1.html')
-window.newAdvertiseList00340BGR = (data) => {
-  const _data = data['00340BGR'][0]
-  if (_data) {
-    $('.m-ad')[0].innerHTML = advert({
-      url: _data.url,
-      imgsrc: _data.imgsrc,
-      digest: _data.digest || 'jsonp测试测试测试,换个jsonp接口'
-    })
+// 广告
+utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BNC/0-1.html')
+window.newAdvertiseList00340BNC = (data) => {
+  window.newAdvertiseList00340BNC = null
+  if (!data || !data['00340BNC'] || !data['00340BNC'].length) {
+    return
   }
+  const ad = data['00340BNC'][0]
+  $('.js-ad').html(advert(ad))
 }
 
 // common footer

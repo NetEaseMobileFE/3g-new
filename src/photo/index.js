@@ -241,7 +241,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
               boardid: board, 
               id: docid, 
               votecount: data.votecount || 0,
-              origin: 'photo'
+              pid: modelid
             })
           }
         }

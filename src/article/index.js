@@ -150,7 +150,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       boardid: replyBoard,
       id: docid,
       votecount: replyCount,
-      origin: 'article'
+      docid: docid
     })
   })(boardid, docid)
 }

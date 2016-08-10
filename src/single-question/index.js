@@ -8,6 +8,7 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
+import '../common/is-newsapp'
 
 require('../common/reset.css')
 require('./index.less')
@@ -48,11 +49,9 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
         var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
-        var openReply = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
-        var hotReplyWrap = `<div class='m-hot-reply'><ul class='hot-reply-wrap'></ul>${openReply}</div>`
+        var hotReplyWrap = "<div class='m-hot-reply'><ul class='hot-reply-wrap'></ul><div class='m-down u-hide-in-newsapp'><a class='open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div></div>"
         var moreListHtml = getMoreListHtml(data)
-        var openDiscuss = utils.isNewsapp ? '' : "<a class='open-qa open-newsapp'>想看更多精彩问吧讨论，打开网易新闻</a>"
-        var openNewsappHtml = `<div class='m-down'>${openDiscuss}</div>`
+        var openNewsappHtml = "<div class='m-down u-hide-in-newsapp'><a class='open-qa open-newsapp'>想看更多精彩问吧讨论，打开网易新闻</a></div>"
         var totalHtml = bannerHtml + oneAnswerWrap + hotReplyWrap + moreListHtml + openNewsappHtml
         $(".page-content").innerHTML = totalHtml
 
@@ -221,7 +220,6 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
       showNormal = ""
       showBtn = 'show'
     }
-    var openQuestion = utils.isNewsapp ? '' : "<div class='open-newsapp-tip open-newsapp'>打开网易新闻，查看更多问吧讨论</div>"
     return `
       <div class="persion-info" style="background-image:url(${expertData.picurl})">
         <div class="info-text">
@@ -229,7 +227,7 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      ${openQuestion}
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp">打开网易新闻，查看更多问吧讨论</div>
       <div class="clearfix card-wrap card-wrap-top">
         <span style="background-image: url(${expertData.headpicurl})" class="avatar-wrap"></span>
         <div class="info-wrap">
