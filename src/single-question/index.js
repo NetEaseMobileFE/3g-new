@@ -8,25 +8,25 @@ import * as utils from '../common/utils'
 import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
-import '../common/is-newsapp'
 
 require('../common/reset.css')
 require('./index.less')
 
 const search = utils.localParam().search
 const id = search.id
+
 loading()
 
 // mapp and sps analysis
-analysis({
+analysis({ 
   spst: 8,
   type: "article",
   modelid: id
 })
 
 // common header
-document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'question',
+document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
+  type: 'single-question',
   expertid: id
 }))
 
@@ -34,6 +34,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 {
   const ua = navigator.userAgent
   let $ = document.querySelector.bind(document)
+  const id = search.id
   const answerId = search.answerId
   var initPage = ()=>{
     const _get = `http://c.3g.163.com/newstopic/qa/${id}.html`
@@ -41,16 +42,18 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     utils.ajax({
       method: "GET",
       dataType: 'json',
-      // url: _get,
-      url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
+      url: _get,
+      // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://3g.163.com')}`,
       success: (data)=>{
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
-        var relativeNewsHtml = getNewsHtml(data.expert.relatedNews)
-        var oneAnswerWrap = '<ul class="one-answer-wrap"></ul>'
+        var oneAnswerWrap = "<ul class='one-answer-wrap'></ul>"
+        var openReply = utils.isNewsapp ? '' : "<div class='m-down'><a class='open-newsapp'>打开网易新闻，查看更多跟贴回复</a></div>"
+        var hotReplyWrap = `<div class='m-hot-reply'><ul class='hot-reply-wrap'></ul>${openReply}</div>`
         var moreListHtml = getMoreListHtml(data)
-        var openNewsappHtml = '<div class="m-down u-hide-in-newsapp"><a class="open-qa open-newsapp"></a></div>'
-        var totalHtml = bannerHtml + relativeNewsHtml + oneAnswerWrap + moreListHtml + openNewsappHtml
+        var openDiscuss = utils.isNewsapp ? '' : "<a class='open-qa open-newsapp'>想看更多精彩问吧讨论，打开网易新闻</a>"
+        var openNewsappHtml = `<div class='m-down'>${openDiscuss}</div>`
+        var totalHtml = bannerHtml + oneAnswerWrap + hotReplyWrap + moreListHtml + openNewsappHtml
         $(".page-content").innerHTML = totalHtml
 
         // share component
@@ -81,16 +84,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         }
 
         oneAnswerItem();
-        // 最新最热List切换
-
-        document.querySelector('.sort-type').addEventListener('click', (e)=>{
-          let target = e.target
-          document.querySelector('.sort-type .cur').classList.remove('cur')
-          target.classList.add('cur')
-          document.querySelector('.qa-list ul.active').classList.remove('active')
-          document.querySelector('.qa-list ul.' + target.dataset.type).classList.add('active')
-        }, false)
-        document.querySelector('.sort-type a:last-child').click()
 
         // 展开收起
         document.querySelector('.m-content').addEventListener('click', function(e){
@@ -108,12 +101,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             window.location.href = "http://m.163.com/newsapp/applinks.html?s=sps&expertid=" + id
           }, false)
         })
-
-        if(data.hotList.length == data.expert.answerCount){
-          document.querySelector(".open-qa").textContent = "打开网易新闻客户端，我要去提问！"
-        }else if(data.hotList.length < data.expert.answerCount){
-          document.querySelector(".open-qa").textContent = "打开网易新闻客户端，查看更多精彩问答！"
-        }
       }
     })
 
@@ -121,10 +108,9 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     var oneAnswerItem = ()=>{
       if(answerId){
         const _get = `http://c.3g.163.com/newstopic/answer/${answerId}.html`
-        $('.one-answer-wrap').style.display = 'block'
         utils.ajax({
-          // url : _get,
-          url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
+          url : _get,
+          // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://3g.163.com')}`,
           method : "GET",
           dataType : 'json',
           success: (data)=>{
@@ -134,11 +120,75 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
             var oneAnswerHtml = qaHtml(data)
             $(".one-answer-wrap").innerHTML = oneAnswerHtml
+            hotReply(data.answer.board, data.answer.commentId)
           }
         })
       }
     }
 
+    // 取客户端前三条热门回复，若没有，就取前三条最新回复，若都没有则不显示
+    var hotReply = (boardid, commentid) => {
+      if(answerId){
+        window.replyCount = (data) => {
+          const hotPosts = data.hotPosts
+          if (hotPosts.length < 1) {
+            newReply(boardid, commentid)
+          } else {
+            var hotReplyHtml = ''
+            $('.m-hot-reply').style.display = 'block'
+            hotPosts.forEach((item, index) => {
+              var _item = item[1]
+              var username = _item.f.trim().replace('：','').split('&nbsp;')[0]
+              hotReplyHtml += `
+                <li>
+                  <div class="userInfo">
+                    <span class="user-header"></span>
+                    <div class="user-text">
+                      <p class="userName">${username}</p>
+                      <p class="replyDesc">${_item.b}</p>
+                    </div>
+                  </div>
+                  <div class="ding">${_item.v || 0}顶</div>
+                </li>
+              `
+            })
+            $('.hot-reply-wrap').innerHTML = hotReplyHtml 
+          }
+        }
+        utils.importJs(`http://comment.api.163.com/api/json/post/list/new/hot/${boardid}/${commentid}/0/3/3/2/2?jsoncallback=replyCount`)
+      }
+    }
+
+    var newReply = (boardid, commentid) => {
+      if(answerId){
+        window.replyCount = (data) => {
+          const newPosts = data.newPosts
+          var newReplyHtml = ''
+          if (newPosts.length > 0) {
+            $('.m-hot-reply').style.display = 'block'
+            newPosts.forEach((item, index) => {
+              var _item = item[1]
+              var username = _item.f.trim().replace('：','').split('&nbsp;')[0]
+              newReplyHtml += `
+                <li>
+                  <div class="userInfo">
+                    <span class="user-header"></span>
+                    <div class="user-text">
+                      <p class="userName">${username}</p>
+                      <p class="replyDesc">${_item.b}</p>
+                    </div>
+                  </div>
+                  <div class="ding">${_item.v || 0}顶</div>
+                </li>
+              `
+            })
+          }
+          $('.hot-reply-wrap').innerHTML = newReplyHtml 
+        }
+        utils.importJs(`http://comment.api.163.com/api/json/post/list/new/normal/${boardid}/${commentid}/desc/0/3/3/2/2?jsoncallback=replyCount`)
+      }
+    }
+    
     $('.m-loading').style.display = 'none'
     var content = $('.m-content')
     content.style.display = 'block'
@@ -149,7 +199,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   // 截取文字
   var substr = (text, length = 56)=>{
     var forShortText = "";
-
+    
     if(text.length>length){
       forShortText = text.substr(0,length - 2) + "...";
     }else{
@@ -157,18 +207,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     return forShortText
   }
-  // 获取字符串真实长度
-  // var realLength = (text)=>{
-  //   var len = 0;
-  //   for (var i=0; i<text.length; i++) {
-  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {
-  //        len += 2;
-  //      } else {
-  //        len ++;
-  //      }
-  //    }
-  //   return len;
-  // }
+
   // 判断是否超长
   var tooLong = (text, length = 56)=>{
     return (text.length > length) ? true : false
@@ -182,6 +221,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       showNormal = ""
       showBtn = 'show'
     }
+    var openQuestion = utils.isNewsapp ? '' : "<div class='open-newsapp-tip open-newsapp'>打开网易新闻，查看更多问吧讨论</div>"
     return `
       <div class="persion-info" style="background-image:url(${expertData.picurl})">
         <div class="info-text">
@@ -189,9 +229,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="O_questionTipBar">
-        打开网易新闻，查看更多问吧讨论
-      </div>
+      ${openQuestion}
       <div class="clearfix card-wrap card-wrap-top">
         <span style="background-image: url(${expertData.headpicurl})" class="avatar-wrap"></span>
         <div class="info-wrap">
@@ -202,72 +240,11 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       </div>
     `
   }
-  // 处理时间，n小时前之类
-  const formatTime = (time)=>{
-    let date = null
-
-    if(typeof time == 'number'){
-      date = time
-    }else{
-      const arr = time.split(/[- :]/)
-      date = +new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4], arr[5])
-    }
-    time = new Date(time)
-    const now = Date.now()
-    const distance = {
-      day: Math.floor((now - date) / (1000*60*60*24)),
-      hour: Math.floor((now - date) / (1000*60*60)),
-      minute: Math.floor((now - date) / (1000*60))
-    }
-    if(distance.day > 0){
-      if(distance.day === 1){
-        return '1天前'
-      }else{
-        return `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
-      }
-    }else if(distance.hour > 0){
-      return distance.hour + '小时前'
-    }else{
-      return (distance.minute || 1) + '分钟前'
-    }
-  }
-  // 相关新闻html
-  var getNewsHtml = (news)=>{
-    if (!news || !news.length) {
-      return ''
-    }
-    var itemsHtml = ""
-    news.map(function(item,key){
-      let url = `http://m.163.com/news/a/${item.docid}.html`
-      if(item.skipType == 'photoset'){
-        let id = item.skipId.split('|')
-        url = `http://3g.163.com/ntes/special/0034073A/photoshare.html?setid=${id[1]}&channelid=${id[0].slice(-4)}`
-      }else if(item.skipType == 'special'){
-        url = `http://3g.163.com/ntes/special/00340EPA/wapSpecialModule.html?sid=${item.skipId}`
-      }else if(item.skipType == 'live'){
-        url = `http://3g.163.com/ntes/special/00340BF8/seventlive.html?spss=newsapp&roomid=${item.skipId}`
-      }
-      itemsHtml += `<li>
-        <a href="${url}">
-          <p>${item.title}</p>
-        </a>
-      </li>`
-    })
-
-    return `
-      <div class="rel-news">
-        <p class="tit">相关新闻</p>
-        <ul>
-          ${itemsHtml}
-        </ul>
-      </div>
-    `
-  }
 
   function qaHtml(item){
     let html = ''
     // item.answer.content += '测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'
-
+      
     var showShort = '', showNormal = 'active', showBtn = ''
 
     if(tooLong(item.answer.content, 114)){
@@ -282,31 +259,29 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     html = `
       <li>
-        <a href="http://c.3g.163.com/nc/qa/newsapp/single_question.html?id=${id}&answerId=${item.answer.answerId}">
-          <div class="clearfix card-wrap ">
-            <span style="${style}" class="avatar-wrap"></span>
-            <div class="info-wrap">
-              <h4 class="name">${item.question.userName}</h4>
-              <div class="comment">${item.question.content}</div>
-            </div>
+        <div class="clearfix card-wrap ">
+          <span style="${style}" class="avatar-wrap"></span>
+          <div class="info-wrap">
+            <h4 class="name">${item.question.userName}</h4>
+            <div class="comment">${item.question.content}</div>
           </div>
-          <div class="clearfix card-wrap">
-            <span style="background-image: url(${item.answer.specialistHeadPicUrl})" class="avatar-wrap"></span>
-            <div class="info-wrap">
-              <h4 class="name">${item.answer.specialistName}</h4>
-              <div class="comment normal answer">${item.answer.content}</div>
-              <a class="open-arrow ${showBtn}"></a>
-              <p class="answer-info">
-                ${formatTime(item.answer.cTime)}
-                <span class="little-circle"></span>${item.answer.replyCount}回复
-                <span class="little-circle"></span>${item.answer.supportCount}赞
-              </p>
-            </div>
+        </div>
+        <div class="clearfix card-wrap">
+          <span style="background-image: url(${item.answer.specialistHeadPicUrl})" class="avatar-wrap"></span>
+          <div class="info-wrap">
+            <h4 class="name">${item.answer.specialistName}</h4>
+            <div class="comment normal answer">${item.answer.content}</div>
+            <a class="open-arrow ${showBtn}"></a>
+            <p class="answer-info">
+              ${utils.formatTime(item.answer.cTime)}
+              <span class="little-circle"></span>${item.answer.replyCount}回复
+              <span class="little-circle"></span>${item.answer.supportCount}赞
+            </p>
           </div>
-        </a>
+        </div>
       </li>
     `
-    return html
+    return html 
   }
 
   // 更多问答html
@@ -314,10 +289,14 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
     var hotListHtml = '',
         latestListHtml = '',
-        openNewsappHtml = ''
+        openNewsappHtml = '',
+        num = 0
 
-    data.hotList.forEach(function(item){
-      hotListHtml += qaHtml(item)
+    data.hotList.forEach(function(item, index){
+      if (item.answer.answerId != answerId && num < 3) {
+        hotListHtml += qaHtml(item)
+        num ++ 
+      }
     })
     data.latestList.forEach(function(item){
       latestListHtml += qaHtml(item)
@@ -329,15 +308,10 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
     return `
       <div class="more-wrap">
-        ${titleHtml}
-        <div class="sort-type" id＝"sort-type">
-          <a data-type="hot" href="javascript:void(0)" class="cur">最热</a>
-          <a data-type="latest" href="javascript:void(0)" >最新</a>
-        </div>
+        ${titleHtml}        
       </div>
       <div class="qa-list">
         <ul class="hot active">${hotListHtml}</ul>
-        <ul class="latest">${latestListHtml}</ul>
       </div>
     </div>
     `
@@ -347,7 +321,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // common footer
-document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
+document.querySelector('.m-content').insertAdjacentHTML('afterend', footer({
   type: 'question',
   expertid: id
 }))

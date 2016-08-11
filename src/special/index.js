@@ -1080,7 +1080,7 @@ analysis({
 
       videoList: ` 
         <a class="b-video" href="<#=url#>">
-          <div class="b-img" style="background-image:url(http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png);" data-echo-background="<#=imgsrc#>"></div>
+          <div class="b-img" data-echo-background="<#=imgsrc#>"></div>
           <p class="ttl"><#=title#></p>
           <span class="play-btn"></span>
         </a>
@@ -1089,7 +1089,7 @@ analysis({
       imgNewsList: `
         <li class="news-list">
           <a  href="<#=url#>">
-            <div class="news-img" style="background-image:url(http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png);" data-echo-background="<#=imgsrc#>"></div>
+            <div class="news-img" data-echo-background="<#=imgsrc#>"></div>
             <div class="news-wrap">
               <div class="news-title"><#=title#></div>
               <p class="news-desc"><#=digest#></p>
@@ -1106,7 +1106,7 @@ analysis({
         <li class="big-img-news">
           <a href="<#=url#>">
             <p class="newsTitle"><#=title#></p>
-            <div class="cover" style="background-image:url(http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png);" data-echo-background="<#=img#>"></div>
+            <div class="cover" data-echo-background="<#=img#>"></div>
           </a>
           <div class="newsTips"><#=replyCount#></div>
         </li>
@@ -1243,7 +1243,7 @@ analysis({
       activity: `
         <li>
           <a href="<#=url#>">
-            <div class="active-img" style="background-image:url(http://img1.cache.netease.com/3g/img11/3gtouch13/imglist.png);" data-echo-background="<#=imgsrc#>"></div>
+            <div class="active-img" data-echo-background="<#=imgsrc#>"></div>
           </a>
         </li>
       `

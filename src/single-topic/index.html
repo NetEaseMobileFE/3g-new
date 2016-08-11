@@ -6,7 +6,6 @@
   <base href="http://localhost:3100/" />
   <!-- endbuild -->
   <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-  <meta name="format-detection" content="telephone=no" />
   <script>
     (function (doc, win) {
       var docEl = doc.documentElement,
@@ -30,32 +29,21 @@
       win.addEventListener(resizeEvt, recalc, false);
     })(document, window);
   </script>
-  <!-- build:videoStyle -->
+  <!-- build:single-topicStyle -->
   <!-- endbuild -->
 </head>
 <body>
-  <iframe id="iframe" style="display: none !important;"></iframe>
-  <img src="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png" style="display: none!important;">
+  <div class="m-loading"></div>
   <div class="js-analysis">
-    <section class="m-loading"></section>
-    <section class="g-body-wrap">
-      <article class="m-video-player js-video-player">
+    <section class="m-body-wrap">
+      <article class="g-content">
+        <div class="page-content"></div>
       </article>
-      <article class="m-comment">
-      </article>
-      <article class="m-middle-share">
-      </article>
-      <article class="m-ad"></article>
-      <article class="m-video-recommond">
-      </article>
-      <article class="m-video-hot">
-      </article>
-      <article class="m-video-last"></article>
+      <div id="photoes"></div>
     </section>
   </div>
-  <script src="http://img3.cache.netease.com/apps/3g/1.1.4/zepto.min.js" type="text/javascript"></script>
-  <!-- build:videoScript -->
-  <script type="text/javascript" src="http://localhost:3100/js/video.bundle.js"></script>
+  <!-- build:single-topicScript -->
+  <script type="text/javascript" src="http://localhost:3100/js/single-topic.bundle.js"></script>
   <!-- endbuild -->
 </body>
 </html>
