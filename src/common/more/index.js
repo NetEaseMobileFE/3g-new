@@ -10,7 +10,7 @@ require('./index.less')
 export default function more(data) {
   const { origin } = data
   return `
-    <div class="m-more" data-stat="${origin}LoadMore">
+    <div class="m-more" data-stat="${origin}-all">
       <span class="js-all-article">加载全文</span>
     </div>
   `

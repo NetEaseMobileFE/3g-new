@@ -12,6 +12,7 @@ import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import footer from '../common/footer'
+import redpacket from '../common/redpacket'
 
 require('../common/reset.css')
 require('./index.less')
@@ -38,7 +39,6 @@ analysis({
 
 // common header
 document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'photo',
   pid: modelid
 }))
 
@@ -276,7 +276,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       articleContent.innerHTML = photosHtml
 
       const mainBody = document.querySelector('.main-body')
-      articleContent.insertAdjacentHTML('afterend', more({ origin: 'photo' }))
+      articleContent.insertAdjacentHTML('afterend', more({ origin: 'pid' }))
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
         mainBody.style.maxHeight = 'none'
@@ -289,7 +289,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // 中间分享
-document.querySelector('.m-middle-share').innerHTML = middleShare({ origin: 'photo' })
+document.querySelector('.m-middle-share').innerHTML = middleShare({ origin: 'pid' })
 
 // hotNews videoNews
 utils.ajax({
@@ -297,14 +297,16 @@ utils.ajax({
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
-    popular('photo', data)
+    popular('pid', data)
   }
 })
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'photo',
   pid: modelid
 }))
+
+// 红包ab测试
+redpacket()
 
 

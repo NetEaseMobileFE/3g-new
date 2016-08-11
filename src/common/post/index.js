@@ -68,7 +68,7 @@ export default function post(data) {
     })
 
     let a = isIos9 ? applink : `http://m.163.com/newsapp/applinks.html?boardid=${boardid}&docid=${id}&title=${encodeURIComponent(document.title)}`
-    let more = `<div class="m-down-tie"><a href="${a}" data-stat="${stat}"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>`
+    let more = `<div class="m-down-tie u-hide-in-newsapp"><a href="${a}" data-stat="${stat}"> 打开网易新闻,查看更多跟贴 <span class="replyCount"> (${votecount})</span></a></div>`
     if (isNewsapp) {
       more = ''
     }

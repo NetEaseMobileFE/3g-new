@@ -43,7 +43,6 @@ export function optImage(url, width, height) {
   return image
 }
 
-
 export function simpleParse(tpl, values) {
   if (values) {
     return String(tpl).replace(/<#=(\w+)#>/g, (function($1, $2) {

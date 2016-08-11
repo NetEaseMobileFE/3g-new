@@ -412,7 +412,7 @@ analysis({
             }
           </div>
           {
-            (video || mutilVideo) ? <div className="open-newsapp-tip" data-stat="O_liveTipBar" onClick={this.openNewsapp}>打开网易新闻，参与直播体验更加流畅</div> : null
+            (video || mutilVideo) ? <div className="open-newsapp-tip" data-stat="o-live-tip" onClick={this.openNewsapp}>打开网易新闻，参与直播体验更加流畅</div> : null
           }
         </div>
       )
@@ -1311,8 +1311,8 @@ analysis({
       return (
         <footer className={'g-footer' + (this.props.isFull ? ' full-video' : '')}>
           { this.state.showTip && <div className="share-tip" /> }
-          <div className="open-newsapp" data-stat="O_liveFooterOpen" onClick={this.openNewsapp}>立即打开&gt;</div>
-          <div className="share-list">
+          <div className="open-newsapp" data-stat="o-live-footer" onClick={this.openNewsapp}>立即打开&gt;</div>
+          <div className="share-list" data-stat="live-footer-share">
             分享
             {utils.isWeixin && <span className="wechat" onClick={this.handleClick.bind(null, 'wechat')} />}
             <span className="weibo" onClick={this.handleClick.bind(null, 'wb')} />

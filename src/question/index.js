@@ -9,6 +9,7 @@ import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
 import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -26,7 +27,6 @@ analysis({
 
 // common header
 document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'question',
   expertid: id
 }))
 
@@ -157,18 +157,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     return forShortText
   }
-  // 获取字符串真实长度
-  // var realLength = (text)=>{
-  //   var len = 0;
-  //   for (var i=0; i<text.length; i++) {
-  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {
-  //        len += 2;
-  //      } else {
-  //        len ++;
-  //      }
-  //    }
-  //   return len;
-  // }
+  
   // 判断是否超长
   var tooLong = (text, length = 56)=>{
     return (text.length > length) ? true : false
@@ -189,7 +178,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="O_questionTipBar">
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="o-expertid-tip">
         打开网易新闻，查看更多问吧讨论
       </div>
       <div class="clearfix card-wrap card-wrap-top">
@@ -348,6 +337,5 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'question',
   expertid: id
 }))
