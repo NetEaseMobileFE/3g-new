@@ -138,7 +138,6 @@ export default function share(config) {
   const shareCallback = (args) => {
     const statistics = shareParam(config.statistics)
     if (args.err_msg.match(/(confirm|ok)/)) {
-      alert(config.callback)
       config.callback(true)
       neteaseTracker && neteaseTracker(false,`http://sps.163.com/func/?func=sharedone&${statistics}spsf=wx`, '', 'sps')
     } else {

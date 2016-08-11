@@ -145,7 +145,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       NRUM.mark('tieload', true)
     }
     // 获取跟帖
-    const replyCount = $('.js-reply-link').text().split('（')[1].split('）')[0] || 0
+    const replyText = $('.js-reply-link').text()
+    const replyCount = replyText ? replyText.split('（')[1].split('）')[0] : 0
     post({
       boardid: replyBoard,
       id: docid,
