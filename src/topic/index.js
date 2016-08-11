@@ -9,6 +9,7 @@ import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
 import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -27,7 +28,6 @@ analysis({
 
 // common header
 document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'topic',
   subjectid: id
 }))
 
@@ -213,7 +213,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
           <h4><span></span>${subjectData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="O_topicTipBar">
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="o-subjectid-tip">
         打开网易新闻，查看更多话题讨论
       </div>
     `
@@ -436,6 +436,5 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'topic',
   subjectid: id
 }))

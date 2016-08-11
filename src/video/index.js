@@ -29,7 +29,6 @@ analysis({
 
 // common header
 document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'video',
   vid: videoid
 }))
 
@@ -62,7 +61,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             <video src="<#=videoUrl#>" type="video/mp4" webkit-playsinline="true" controls=""></video>
             <div class="u-play-btn"></div>
           </div>
-          <div class="u-open-tip open-newsapp" data-open="openVideo">
+          <div class="u-open-tip open-newsapp" data-open="openVideo" data-stat="o-vid-tip">
             打开网易新闻，观看视频体验更加流畅
           </div>
           <div class="video-desc-wrap" style="display:<#=style#>">
@@ -291,7 +290,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         boardid: data.replyBoard, 
         id: data.replyid, 
         votecount: data.replyCount,
-        origin: 'video'
+        vid: videoid
       })
       $('.m-middle-share').show()
 
@@ -331,7 +330,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // 中间分享
-$('.m-middle-share')[0].innerHTML = middleShare({ origin: 'video' })
+$('.m-middle-share')[0].innerHTML = middleShare({ origin: 'vid' })
 
 // 广告
 utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BNC/0-1.html')
@@ -346,6 +345,5 @@ window.newAdvertiseList00340BNC = (data) => {
 
 // common footer
 document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'video',
   vid: videoid
 }))

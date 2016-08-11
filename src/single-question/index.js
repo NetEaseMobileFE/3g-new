@@ -9,6 +9,7 @@ import header from '../common/header'
 import share from '../common/share'
 import footer from '../common/footer'
 import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -27,7 +28,6 @@ analysis({
 
 // common header
 document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
-  type: 'single-question',
   expertid: id
 }))
 
@@ -227,7 +227,7 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
           <h4><span></span>${expertData.concernCount}关注<span></span></h4>
         </div>
       </div>
-      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp">打开网易新闻，查看更多问吧讨论</div>
+      <div class="open-newsapp-tip open-newsapp u-hide-in-newsapp" data-stat="o-expertid-tip">打开网易新闻，查看更多问吧讨论</div>
       <div class="clearfix card-wrap card-wrap-top">
         <span style="background-image: url(${expertData.headpicurl})" class="avatar-wrap"></span>
         <div class="info-wrap">
@@ -320,6 +320,5 @@ document.querySelector('.m-content').insertAdjacentHTML('beforebegin', header({
 
 // common footer
 document.querySelector('.m-content').insertAdjacentHTML('afterend', footer({
-  type: 'question',
   expertid: id
 }))

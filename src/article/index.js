@@ -20,6 +20,8 @@ import popular from '../common/popular'
 import modal from '../common/modal'
 import footer from '../common/footer'
 import advert from '../common/advert'
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -41,7 +43,6 @@ lazyload({
 
 // common header
 document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  type: 'article',
   docid: docid
 }))
 
@@ -73,7 +74,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const mainBody = document.querySelector('#contentHolder')
 
     if (articleContent.offsetHeight > mainBody.offsetHeight) {
-      $('#contentHolder').append(more({ origin: 'article'} ))
+      $('#contentHolder').append(more({ origin: 'docid'} ))
 
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
@@ -145,7 +146,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       NRUM.mark('tieload', true)
     }
     // 获取跟帖
-    const replyCount = $('.js-reply-link').text().split('（')[1].split('）')[0] || 0
+    const replyText = $('.js-reply-link').text()
+    const replyCount = replyText ? replyText.split('（')[1].split('）')[0] : 0
     post({
       boardid: replyBoard,
       id: docid,
@@ -157,7 +159,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
 // 中间分享
 $('.m-middle-share')[0].innerHTML = middleShare({
-  origin: 'article'
+  origin: 'docid'
 })
 
 // 广告
@@ -177,7 +179,7 @@ utils.ajax({
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
   success: function(data) {
-    popular('article', data)
+    popular('docid', data)
     const news = window.RELATIVE_NEWS.length ? window.RELATIVE_NEWS : data['T1348647909107']
     modal(news)
   }
@@ -185,7 +187,6 @@ utils.ajax({
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  type: 'article',
   docid: docid
 }))
 
