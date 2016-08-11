@@ -157,18 +157,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     }
     return forShortText
   }
-  // 获取字符串真实长度
-  // var realLength = (text)=>{
-  //   var len = 0;
-  //   for (var i=0; i<text.length; i++) {
-  //     if (text.charCodeAt(i)>127 || text.charCodeAt(i)==94) {
-  //        len += 2;
-  //      } else {
-  //        len ++;
-  //      }
-  //    }
-  //   return len;
-  // }
+  
   // 判断是否超长
   var tooLong = (text, length = 56)=>{
     return (text.length > length) ? true : false
