@@ -24,7 +24,7 @@ loading()
 // mapp and sps analysis
 analysis({ 
   spst: 6,
-  type: "article",
+  type: 'article',
   modelid: videoid
 })
 
@@ -37,16 +37,16 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 {
   const getUrl = (data) => {
     const newsLink = {
-      openVideo(data) {
-        const { id } = data
+      openVideo(_d) {
+        const { id } = _d
         return `http://m.163.com/newsapp/applinks.html?vid=${id}&s=sps`
       },
-      openNewsapp(data) {
+      openNewsapp(_d) {
         return 'http://m.163.com/newsapp/applinks.html?s=sps'
       }
     }
-    const getNewsLink = (data) => { 
-      return newsLink[data.type](data)
+    const getNewsLink = (d) => { 
+      return newsLink[d.type](d.id)
     }
 
     return getNewsLink(data)
@@ -132,8 +132,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         const holder = $('.js-video-player')
         // const topicDesc = data.topicDesc
         const topicDesc = data.desc
-        const search = utils.localParam().search
-        const videoid = search.videoid
         let style = null
         let tid = ''
         if (data.videoTopic) {
@@ -156,8 +154,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           sid,
           style
         }))
-        holder[0].offsetWidth
-        $('.u-play-btn').on('click', function(e) {
+        $('.u-play-btn').on('click', function (e) {
           const video = $(this).parent().find('video')
           video[0].play()
           video.show()
@@ -167,7 +164,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         if (topicDesc && topicDesc.length > 34) {
           holder.find('.btn').show()
         }
-        holder.find('.btn').on('click', function() {
+        holder.find('.btn').on('click', function () {
           if (~this.className.indexOf('rotate')) {
             $('.video-subtitle').css('max-height', '0.8rem')
             $(this).removeClass('rotate')
@@ -176,7 +173,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             $(this).addClass('rotate')
           }
         })
-
       },
 
       // 相关视频列表
@@ -193,11 +189,11 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             html += utils.simpleParse(TPL.videoList, {
               videoid: item.vid,
               cover: item.cover,
-              time: time,
+              time,
               title: item.title,
               topicName: item.topicName,
-              playCount: playCount,
-              replyHtml: replyHtml,
+              playCount,
+              replyHtml,
               originImg: '',
               index: index + 1
             })
@@ -216,7 +212,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           window.videoCallback = null
           let html = ''
           let lastVideoHtml = ''
-          data['VATL2LQO4'].forEach((item, index) => {
+          data.VATL2LQO4.forEach((item, index) => {
             if (index < 3) {
               let time = utils.timeFormat(item.length)
               if (item.title.length > 22) {
