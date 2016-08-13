@@ -104,7 +104,7 @@ export default function analysis(userOptions) {
         const target = e.target
         const stat = target.getAttribute('data-stat')
         if (stat) {
-          neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr}&target=${stat}`, '', 'sps')
+          neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr.slice(1,queryStr.length)}&target=${stat}`, '', 'sps')
         }
       })
     }

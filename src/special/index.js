@@ -717,7 +717,6 @@ analysis({
           },
           map: {
             validate: (data, tIndex) => {
-              debugger
               bodyContent.content += `
                 <article class="m-news" type="${data.type}" id="${data.shortname}">
                   <h2><span class="red">${data.index}</span>/${tIndex}  ${data.tname}</h2>

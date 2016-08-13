@@ -184,7 +184,7 @@ analysis({
       if (this.props.show) {
           return (
             <section className="m-down">
-              <a onClick={this.openNewsapp.bind(this, null)}></a>
+              <a onClick={this.openNewsapp.bind(this, null)} data-stat="o-live-header"></a>
               <iframe ref="iframe" className="u-hide"></iframe>
             </section>
           )
@@ -571,7 +571,9 @@ analysis({
                   }
                   {
                     item.url !== 'live' && item.url !== 'chat' && active === i && <div className="tab3-wrap">
-                      <iframe className="tab3-iframe" src={item.sid ? `http://3g.163.com/ntes/special/00340EPA/wapSpecialModule.html?sid=${item.sid}` : item.url}></iframe>
+                      {
+                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://3g.163.com/ntes/special/00340EPA/wapSpecialModule.html?sid=${item.sid}` : item.url}></iframe>
+                      }
                     </div>
                   }
                   </div>
