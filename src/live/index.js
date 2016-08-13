@@ -1,9 +1,9 @@
+import analysis from '../common/analysis'
+import * as utils from '../common/utils'
+
 if (module && module.hot) {
   module.hot.accept()
 }
-
-import analysis from '../common/analysis'
-import * as utils from '../common/utils'
 
 require('../common/reset.css')
 require('./index.less')

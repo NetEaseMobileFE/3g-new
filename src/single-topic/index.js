@@ -1,7 +1,3 @@
-if (module && module.hot) {
-  module.hot.accept()
-}
-
 import analysis from '../common/analysis'
 import loading from '../common/loading'
 import * as utils from '../common/utils'
@@ -10,6 +6,10 @@ import share from '../common/share'
 import footer from '../common/footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
+
+if (module && module.hot) {
+  module.hot.accept()
+}
 
 require('../common/reset.css')
 require('./index.less')
