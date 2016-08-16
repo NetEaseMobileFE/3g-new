@@ -1,7 +1,3 @@
-if (module && module.hot) {
-  module.hot.accept()
-}
-
 import analysis from '../common/analysis'
 import loading from '../common/loading'
 import share from '../common/share'
@@ -14,6 +10,11 @@ import footer from '../common/footer'
 
 require('../common/reset.css')
 require('./index.less')
+
+if (module && module.hot) {
+  module.hot.accept()
+}
+
 
 const search = utils.localParam().search
 const videoid = search.videoid || window.location.href.match(/\/v\/(\w*)\./)[1]
@@ -35,15 +36,13 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 // main body 
 {
   const getUrl = (data) => {
-    const search = utils.localParam().search
     const newsLink = {
-      "openVideo": (data) => {
+      openVideo(data) {
         const { id } = data
         return `http://m.163.com/newsapp/applinks.html?vid=${id}&s=sps`
       },
-      "openNewsapp": (data) => {
-        const { id } = data
-        return `http://m.163.com/newsapp/applinks.html?s=sps`
+      openNewsapp(data) {
+        return 'http://m.163.com/newsapp/applinks.html?s=sps'
       }
     }
     const getNewsLink = (data) => { 
@@ -146,16 +145,16 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         holder.find('.articleList').hide()
         videoUrl = data.pano_mp4_url ? data.pano_mp4_url : data.mp4_url
         holder.prepend(utils.simpleParse(TPL.videoHolder, {
-          videoUrl: videoUrl,
+          videoUrl,
           cover: data.cover,
           title: data.title,
           desc: data.desc,
           topicImg: data.topicImg,
           topicDesc: data.topicDesc,
           topicName: data.topicName,
-          tid: tid,
-          sid: sid,
-          style: style
+          tid,
+          sid,
+          style
         }))
         holder[0].offsetWidth
         $('.u-play-btn').on('click', function(e) {
