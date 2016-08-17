@@ -12,13 +12,16 @@ import analysis from '../common/analysis'
 import share from '../common/share'
 import lazyload from '../common/lazyload'
 import * as utils from '../common/utils'
+import abtest from '../common/abtest'
 import header from '../common/header'
+import testHeader from '../common/test-header'
 import more from '../common/more'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import modal from '../common/modal'
 import footer from '../common/footer'
+import testFooter from '../common/test-footer'
 import advert from '../common/advert'
 import '../common/is-newsapp'
 import '../common/is-iframe'
@@ -35,6 +38,7 @@ analysis({
   type: "article",
   docid: docid
 })
+
 lazyload({
   offset: 0,
   throttle: 1000,
@@ -42,9 +46,17 @@ lazyload({
 })
 
 // common header
-document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  docid: docid
-}))
+const abFlag = abtest()
+let headerHtml = ''
+let footerHtml = ''
+if (abFlag != '0') {
+  headerHtml = abFlag == 'a' ? testHeader({docid: docid}) : ''
+  footerHtml = abFlag == 'a' ? '' : testFooter({docid: docid}) 
+} else {
+  headerHtml = header({docid: docid})
+  footerHtml = footer({docid: docid})
+}
+document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', headerHtml)
 
 // main body
 {
@@ -75,7 +87,6 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
     if (articleContent.offsetHeight > mainBody.offsetHeight) {
       $('#contentHolder').append(more({ origin: 'docid'} ))
-
       const showAllArticle = document.querySelector('.js-all-article')
       showAllArticle.addEventListener('click', function(){
         mainBody.style.maxHeight = 'none'
@@ -150,9 +161,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     const replyCount = replyText ? replyText.split('（')[1].split('）')[0] : 0
     post({
       boardid: replyBoard,
-      id: docid,
-      votecount: replyCount,
-      docid: docid
+      params: `postid=${docid}&docid=${docid}`, 
+      votecount: replyCount
     })
   })(boardid, docid)
 }
@@ -186,9 +196,7 @@ utils.ajax({
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  docid: docid
-}))
+document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footerHtml)
 
 // share component
 {

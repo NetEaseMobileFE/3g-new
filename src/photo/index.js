@@ -13,6 +13,8 @@ import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import footer from '../common/footer'
 import redpacket from '../common/redpacket'
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -242,9 +244,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
             // 获取跟帖
             post({ 
               boardid: board, 
-              id: docid, 
-              votecount: data.votecount || 0,
-              pid: modelid
+              params: `postid=${docid}&pid=${modelid}`, 
+              votecount: data.votecount || 0
             })
           }
         }

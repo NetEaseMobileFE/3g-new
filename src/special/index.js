@@ -158,7 +158,7 @@ analysis({
           },
           "special": (data) => {
             const { id } = data
-            let url = `http://c.m.163.com/news/l/${id}.html?from=special`
+            let url = `http://c.m.163.com/news/s/${id}.html?from=special`
             if(NTUI.isNewsapp) {
               url = `newsapp://topic/${id}`
             }
@@ -406,6 +406,7 @@ analysis({
                   </a>
                 `
               }
+
               const mustach = data.digest ? TPL.banner : TPL.liveBanner
               bodyContent.content += NTUI.simpleParse(mustach, {
                 url: url, 
@@ -1075,7 +1076,7 @@ analysis({
       albumList: `
         <div class="gallery-item">
           <a class="img-wrapper" href="<#=url#>"><img src="" data-echo="<#=cover#>"></a>
-          <p><#=title#></p>
+          <p class="ellipsis"><#=title#></p>
         </div>
       `, //图集模板
 

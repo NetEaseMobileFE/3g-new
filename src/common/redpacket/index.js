@@ -7,7 +7,7 @@ if (module && module.hot) {
   module.hot.accept()
 }
 
-import { getCookie, isWeixin } from '../utils'
+import { getCookie, isWeixin, isAndroid } from '../utils'
 require('./index.less')
 
 export default function redpacket() {
@@ -39,7 +39,7 @@ export default function redpacket() {
       })
     }
   } else {
-    if (isWeixin && Math.random() < 0.3) {
+    if (isAndroid && isWeixin && Math.random() < 0.3) {
       localStorage.setItem('_redpacket_test', _ntes_nuid + '1')
     } else {
       localStorage.setItem('_redpacket_test', _ntes_nuid + '0')

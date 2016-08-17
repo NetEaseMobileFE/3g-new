@@ -137,7 +137,7 @@ export default function popular(_type, _data) {
       document.querySelector('.m-hotnews').innerHTML = `
         <div class="u-title">热门新闻</div>
         <ul class="news-list">${html}</ul>
-        <a class="u-more" data-stat="o-${_type}-news-more" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多新闻 &gt;</a>
+        <a class="u-more u-hide-in-newsapp" data-stat="o-${_type}-news-more" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多新闻 &gt;</a>
       `
     }
     function isPhotoset(data) {
@@ -215,11 +215,11 @@ export default function popular(_type, _data) {
                 <span class="u-tip-icon">打开网易新闻</span>
               </div>
             </a>
-            <a class="u-more" data-stat="o-${_type}-video-more" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多视频 &gt;</a>
+            <a class="u-more u-hide-in-newsapp" data-stat="o-${_type}-video-more" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多视频 &gt;</a>
           `
         }
       })
-      document.querySelector('.m-hotnews').insertAdjacentHTML('afterend', `<article class="m-videos"><div class="u-title">热门视频</div><ul class="list-wrap">${html}</ul></article><article class="m-videos-last">${lastVideoHtml}</article>`)
+      document.querySelector('.m-hotnews').insertAdjacentHTML('afterend', `<article class="m-videos"><div class="u-title">热门视频</div><ul class="list-wrap">${html}</ul></article><article class="m-videos-last u-hide-in-newsapp">${lastVideoHtml}</article>`)
     }
   }
 

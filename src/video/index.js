@@ -7,6 +7,8 @@ import post from '../common/post'
 import middleShare from '../common/middle-share'
 import advert from '../common/advert'
 import footer from '../common/footer'
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -38,10 +40,9 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
   const getUrl = (data) => {
     const newsLink = {
       openVideo(_d) {
-        const { id } = _d
-        return `http://m.163.com/newsapp/applinks.html?vid=${id}&s=sps`
+        return `http://m.163.com/newsapp/applinks.html?vid=${_id}&s=sps`
       },
-      openNewsapp(_d) {
+      openNewsapp() {
         return 'http://m.163.com/newsapp/applinks.html?s=sps'
       }
     }
@@ -79,7 +80,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             <p><#=topicName#></p>
             <p><#=topicDesc#></p>
           </div>
-          <a href="http://m.163.com/newsapp/applinks.html?url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-sid="<#=sid#>" class="u-more">查看更多</a>
+          <a href="http://m.163.com/newsapp/applinks.html?s=sps&url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-sid="<#=sid#>" class="u-more u-hide-in-newsapp">查看更多</a>
         </div>
       `,
       videoList: `
@@ -117,7 +118,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             <span class="u-tip-icon">打开网易新闻</span>
           </div>
         </a>
-        <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+        <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
       `
     }
     return myTpl
@@ -202,7 +203,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         document.querySelector('.m-video-recommond').innerHTML = `
             <div class="u-title">相关视频</div>
             <ul class="video-list">${html}</ul>
-            <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+            <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
           `
       },
 
@@ -248,7 +249,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             $('.m-video-hot')[0].innerHTML = `
               <div class="u-title">热门视频</div>
               <ul class="video-list">${html}</ul>
-              <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+              <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
             `
             $('.m-video-last').html(lastVideoHtml)
           })
@@ -283,12 +284,10 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       // 获取跟帖
       post({ 
         boardid: data.replyBoard, 
-        id: data.replyid, 
-        votecount: data.replyCount,
-        vid: videoid
+        params: `postid=${data.replyid}&vid=${videoid}`,
+        votecount: data.replyCount
       })
       $('.m-middle-share').show()
-
       $('.m-loading').hide()
       // share component
       {
