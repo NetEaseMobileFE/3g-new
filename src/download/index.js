@@ -7,8 +7,8 @@ if (module && module.hot) {
 if (window.NRUM && window.NRUM.mark) {
   window.NRUM.mark('pageload', true)
 }
-// 阻止页面滚动
-document.addEventListener('touchmove', (e) => {
+// 安卓阻止页面滚动
+isAndroid && document.addEventListener('touchmove', (e) => {
   e.preventDefault()
 }, false)
 
