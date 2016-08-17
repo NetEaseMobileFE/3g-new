@@ -13,17 +13,27 @@
   <!-- endbuild -->
 </head>
 <body>
-  <img src="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png" style="display: none!important;">
-	<img src="http://img4.cache.netease.com/3g/img14/download/doenload-bg02.jpg" class="background" />
-	<div class="tip">若已安装网易新闻，请下拉页面点击"打开" 按钮 ↑↑</div>
-	<div class="intro"></div>
-	<div class="buttons">
-		<div class="btn open android">打开App</div>
-		<div class="btn down android">立即下载</div>
-		<div class="btn down ios">立即下载</div>
-	</div>
+  <div id="guide"></div>
+  <div class="container">
+    <iframe id="iframe" style="display: none!important;"></iframe>
+    <img src="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png" style="display: none!important;">
+  	<img src="http://img4.cache.netease.com/3g/img14/download/doenload-bg02.jpg" class="background" />
+  	<div class="tip">若已安装网易新闻，请下拉页面点击"打开" 按钮 ↑↑</div>
+  	<div class="intro"></div>
+  	<div class="buttons">
+  		<div class="btn open android js-open">打开App</div>
+  		<div class="btn down android js-down">立即下载</div>
+  		<div class="btn down ios js-down">立即下载</div>
+  	</div>
+  </div>
   <!-- build:downloadScript -->
   <script type="text/javascript" src="http://localhost:3100/js/download.bundle.js"></script>
   <!-- endbuild -->
+  <script src="http://img6.cache.netease.com/utf8/3g/libs/ntes-stat.js"></script>
+  <script>
+    _ntes_nacc = "mapp";
+    neteaseTracker();
+    neteaseTracker(false, 'http://sps.163.com/func/?func=launchapp&modelid=' + window.STATS.modelid + '&spst=' + window.STATS.spst + '&spsf&spss=' + window.STATS.spss, '', 'sps');
+  </script>
 </body>
 </html>

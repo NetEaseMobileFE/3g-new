@@ -1,7 +1,7 @@
-'use strict'
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
 process.env.NODE_ENV = 'development'
 const entry = packageJson.pages.reduce((prev, curr) => {
@@ -20,17 +20,17 @@ module.exports = {
   },
   module: {
     loaders: [
-      { 
-        test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" 
+      {
+        test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'
       }, {
-        test: /\.css$/, exclude: /node_modules/, loader: "style-loader!css-loader"
+        test: /\.css$/, exclude: /node_modules/, loader: 'style-loader!css-loader'
       }, {
-        test: /\.scss$/, exclude: /node_modules/, loader: "style-loader!css-loader!sass-loader"
+        test: /\.scss$/, exclude: /node_modules/, loader: 'style-loader!css-loader!sass-loader'
       }, {
-        test: /\.less$/, exclude: /node_modules/, loader: "style-loader!css-loader!less-loader"
+        test: /\.less$/, exclude: /node_modules/, loader: 'style-loader!css-loader!less-loader'
       }, {
         test: /\.png|jpe?g|gif$/,
-        loader: "url-loader?limit=1",
+        loader: 'url-loader?limit=1',
         include: path.join(__dirname, 'src/img')
       }
     ]
@@ -43,4 +43,4 @@ module.exports = {
       DEBUG: true
     })
   ]
-};
+}
