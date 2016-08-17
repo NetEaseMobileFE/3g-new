@@ -1,0 +1,110 @@
+body {
+	margin: 0 auto;
+	max-width: 750px;
+  min-height: 100%;
+	line-height: 1;
+	opacity: 0;
+	will-change: opacity;
+	transition: opacity .2s ease-in-out;
+	background-color: #080607;
+	&.active {
+		opacity: 1;
+	}
+  &.wechat {
+    background-color: #f7f8f3;
+    .container {
+      display: none;
+    }
+  }
+}
+body.android {
+	.android {
+		display: flex;
+	}
+}
+body.ios {
+	.ios {
+		display: flex;
+	}
+}
+.background {
+	width: 100%;
+}
+.intro {
+	position: absolute;
+	bottom: 90px; left: 0; right: 0;
+	z-index: 1;
+	height: 122px;
+	background: url('http://img4.cache.netease.com/3g/img14/download/download-text.png') center center no-repeat;
+	background-size: 335px 122px;
+	body.ios & {
+		bottom: 112px;
+	}
+}
+
+.buttons {
+	display: flex;
+	position: absolute;
+	left: 0; right: 0; bottom: 37px;
+	z-index: 1;
+	flex-direction: row;
+	justify-content: center;
+	padding: 0 15px;
+	body.ios & {
+		bottom: 46px;
+	}
+	.btn {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		flex-grow: 1;
+		box-sizing: border-box;
+		padding: 11px 0;
+		border-radius: 6px;
+	}
+	.open {
+		margin-right: 8px;
+		border: 1px solid #e10000;
+		color: #e10000;
+	}
+	.down {
+		color: #fff;
+		background-color: #e10000;
+	}
+	.down.ios {
+		width: 255px;
+		flex-grow: 0;
+		padding: 15px 0;
+		font-size: 28px;
+		border-radius: 29px;
+		&:before {
+			content: '';
+		  display: inline-block;
+		  margin-right: 6px;
+		  width: 22px;
+		  height: 24px;
+		  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAApCAMAAACFghBKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAqUExURUxpcf///////////////////////////////////////////////////+bWS5kAAAANdFJOUwCxYBPE1p2KdK0mCu/P6mZrAAAAyElEQVQ4Ee3SyxaEIAgAUHw0lcb//+6ARqJDuZhtbjjilZQEGIdHP6aMuUNnZMfUq6QjbycmnUhbEMFx6FfwdXXHJSnWq7DgXhY94qKqdYqQPPCNWKumFaNVvsPsqqZU1ghAs6ZCVJWoYlbsUiMi15goAwGscrZTMfrIwVtklmlaVbZRqRbppkXdImGsHtDJHO6PCOCDGCO6uzPJJYiVUf+wZH9iZUYLeslsUok30On7ffasPSJ7/d9s8vOR4Dg79BQOoD5PR/wCwckLUBvIK+0AAAAASUVORK5CYII=) no-repeat;
+		  background-size: cover;
+		}
+	}
+}
+.tip {
+	display: none;
+	position: absolute;
+	top: 3px;
+	left: 0; right: 0;
+	color: #f0a258;
+	font-size: 12px;
+	line-height: 1.25;
+	text-align: center;
+	padding: 2px 20px 0;
+}
+#guide {
+  display: none;
+  width: 100%;
+  height: 400px;
+  background-image: url("http://img2.cache.netease.com/m/newsapp/share/2015iosopen1.jpg");
+  background-size: 320px 425px;
+  background-position: center top;
+  background-repeat: no-repeat;
+}

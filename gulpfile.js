@@ -1,6 +1,4 @@
-'use strict'
 const fs = require('fs')
-const path = require('path')
 const exec = require('child_process').exec
 
 const argv = require('yargs').argv
@@ -8,7 +6,7 @@ const vftp = require('vinyl-ftp')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
 const rimraf = require('rimraf')
-const rename = require("gulp-rename")
+const rename = require('gulp-rename')
 const htmlmin = require('gulp-htmlmin')
 const gulpIgnore = require('gulp-ignore')
 const htmlreplace = require('gulp-html-replace')
@@ -19,23 +17,24 @@ const projectName = packageJson.name
 const profile = JSON.parse(fs.readFileSync('.profile', 'utf-8'))
 
 let webpackConfig = require('./webpack.config.prod')
+
 const testMode = gutil.env._.indexOf('test') >= 0
 if (testMode) {
-  webpackConfig = require('./webpack.config.test');
+  webpackConfig = require('./webpack.config.test')
 }
 let webpackStats = null
 const NEWS_TYPE = packageJson.pages
 
-gulp.task('clean', function(cb) {
-  rimraf('dist', function(err) {
+gulp.task('clean', (cb) => {
+  rimraf('dist', (err) => {
     if (err) {
-      throw new gutil.PluginError("clean", err)
+      throw new gutil.PluginError('clean', err)
     }
     cb()
   })
 })
 
-gulp.task('assets', ['clean'], function() {
+gulp.task('assets', ['clean'], () => {
   const which = argv.w
   checkArgs(which, NEWS_TYPE)
   let config = webpackConfig
@@ -47,8 +46,7 @@ gulp.task('assets', ['clean'], function() {
     })
   }
   return gulp.src(which ? `src/${which}/index.js` : 'src/**/index.js')
-  // return gulp.src(`src/article/index.js`)
-    .pipe(webpackStream(config, null, function(err, stats) {
+  .pipe(webpackStream(config, null, (err, stats) => {
     webpackStats = stats.toJson({
       chunks: true,
       modules: true,
@@ -60,22 +58,22 @@ gulp.task('assets', ['clean'], function() {
     return fs.writeFile('./analyse.log', JSON.stringify(webpackStats), null, 2)
   })).pipe(gulp.dest('dist'))
 })
-gulp.task('f2e', ['assets'], function(cb) {
+gulp.task('f2e', ['assets'], (cb) => {
   const f2e = profile.f2e
   const cmd = `scp -r -P ${f2e.port} dist/* ${f2e.name}@${f2e.host}:/home/${f2e.name}/${projectName}/`
-  exec(cmd, function(err, stdout, stderr) {
+  exec(cmd, (err) => {
     if (err) {
-      throw new gutil.PluginError("clean", err)
+      throw new gutil.PluginError('clean', err)
     }
     gutil.log('Done!')
     return cb()
   })
 })
-gulp.task('test', ['f2e'], function(cb) {
+gulp.task('test', ['f2e'], () => {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const f2e = profile.f2e
-  const apr = "http://f2e.developer.163.com/" + f2e.name + "/" + projectName
+  const apr = 'http://f2e.developer.163.com/' + f2e.name + '/' + projectName
   const replacement = which ? {
     [which + 'Style']: `${apr}/css/${which}.css`,
     [which + 'Script']: `${apr}/js/${which}.js`
@@ -93,21 +91,22 @@ gulp.task('test', ['f2e'], function(cb) {
       removeComments: true
     }))
     .pipe(rename((path) => {
+      /* eslint-disable no-param-reassign*/
       path.basename = which || path.dirname
       path.dirname = ''
+      /* eslint-enable no-param-reassign*/
     }))
     .pipe(gulp.dest('dist'))
 })
 
-gulp.task('ftp', ['assets'], function(cb) {
-  var conn = createConnection(profile.ftp.img);
+gulp.task('ftp', ['assets'], () => {
+  const conn = createConnection(profile.ftp.img)
   return gulp.src(['dist/**/*'])
     .pipe(gulpIgnore.exclude(['**/*.map', '*.html']))
     .pipe(conn.dest('/utf8/' + projectName + '/'))
-    // .pipe(conn.dest('/utf8/test/'))
 })
 
-gulp.task('html', ['assets'], function(cb) {
+gulp.task('html', ['assets'], () => {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const apr = 'http://img6.cache.netease.com/utf8/3g-new/'
@@ -132,8 +131,10 @@ gulp.task('html', ['assets'], function(cb) {
       minifyJS: true,
     }))
     .pipe(rename((path) => {
+      /* eslint-disable no-param-reassign*/
       path.basename = which || path.dirname
       path.dirname = ''
+      /* eslint-enable no-param-reassign*/
     }))
     .pipe(gulp.dest('dist'))
 })
@@ -172,30 +173,28 @@ gulp.task('deploy', ['ftp', 'html'])
 function checkArgs(args, types) {
   if (args === true) {
     throw new Error('Type is needed here, such as gulp deploy -w article')
-    return null
   }
   if (args && types.indexOf(args) < 0) {
     throw new Error('Type is not exsit, it should be one of below [' + types.join(', ') + ']')
-    return null
   }
   return args
 }
 function createConnection(ftpConfig) {
-  var options = {
+  const options = {
     host: ftpConfig.host,
     port: ftpConfig.port,
     user: ftpConfig.username,
     password: ftpConfig.password,
     parallel: 5
-  };
+  }
 
-  if ( ftpConfig.secure ) {
-    options.secure = true;
+  if (ftpConfig.secure) {
+    options.secure = true
     options.secureOptions = {
       requestCert: true,
       rejectUnauthorized: false
     }
   }
 
-  return vftp.create(options);
+  return vftp.create(options)
 }

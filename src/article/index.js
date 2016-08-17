@@ -7,7 +7,6 @@ if (module && module.hot) {
     NRUM.mark('static_pageload', true)
   }
 }
-
 import analysis from '../common/analysis'
 import share from '../common/share'
 import lazyload from '../common/lazyload'
@@ -28,7 +27,6 @@ import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
-
 const search = utils.localParam().search
 const { docid, boardid } = document.documentElement.dataset
 

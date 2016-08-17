@@ -12,7 +12,8 @@
     "question",
     "video",
     "single-question",
-    "single-topic"
+    "single-topic",
+    "download"
   ],
   "scripts": {
     "start": "node devServer.js",
