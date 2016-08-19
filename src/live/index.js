@@ -1,18 +1,17 @@
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
-
-if (module && module.hot) {
-  module.hot.accept()
-}
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
-
-const search = utils.localParam().search
+/* eslint-disable */
+if (module && module.hot) {
+  module.hot.accept()
+}
 const liveid = window.location.href.match(/\/l\/(\w*)\./)[1]
-
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 4,
   type: "article",
   modelid: liveid
@@ -91,22 +90,22 @@ analysis({
         requestAnimationFrame = function( callback, element ) {
           let currTime = new Date().getTime();
           //为了使setTimteout的尽可能的接近每秒60帧的效果
-          let timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ); 
+          let timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) );
           let id = window.setTimeout( function() {
           callback( currTime + timeToCall );
           }, timeToCall );
           lastTime = currTime + timeToCall;
           return id;
         };
-        
+
         cancelAnimationFrame = function( id ) {
           window.clearTimeout( id );
         };
       }
 
       //得到兼容各浏览器的API
-      window.requestAnimationFrame = requestAnimationFrame; 
-      window.cancelAnimationFrame = cancelAnimationFrame; 
+      window.requestAnimationFrame = requestAnimationFrame;
+      window.cancelAnimationFrame = cancelAnimationFrame;
     }
     let nav = navigator.userAgent
     window.NTES = {
@@ -114,9 +113,9 @@ analysis({
         let _time = time
         if(typeof time !== 'number'){
           let arr = time.split(/[- :]/)
-          _time = new Date(arr[0], arr[1]-1, arr[2], arr[3]||'00', arr[4]||'00', arr[5]||'00')      
+          _time = new Date(arr[0], arr[1]-1, arr[2], arr[3]||'00', arr[4]||'00', arr[5]||'00')
         }else{
-          _time = new Date(time)        
+          _time = new Date(time)
         }
         return {
           date: (_time.getMonth()+1) + '月' + _time.getDate() + '日',
@@ -184,7 +183,7 @@ analysis({
       if (this.props.show) {
           return (
             <section className="m-down">
-              <a onClick={this.openNewsapp.bind(this, null)}></a>
+              <a onClick={this.openNewsapp.bind(this, null)} data-stat="o-live-header"></a>
               <iframe ref="iframe" className="u-hide"></iframe>
             </section>
           )
@@ -382,9 +381,9 @@ analysis({
       if (!this.props.show) {
         className += ' expanded'
       }
-      
+
       return (
-        <div className="f-height">
+        <div className={!this.props.show ? '' : 'f-height'}>
           <div className={className} style={style} onClick={this.click}>
             <div className="title ellipsis">{this.props.title}</div>
             <div className="subtitle">{this.props.subtitle}</div>
@@ -571,12 +570,14 @@ analysis({
                   }
                   {
                     item.url !== 'live' && item.url !== 'chat' && active === i && <div className="tab3-wrap">
-                      <iframe className="tab3-iframe" src={item.sid ? `http://3g.163.com/ntes/special/00340EPA/wapSpecialModule.html?sid=${item.sid}` : item.url}></iframe>
+                      {
+                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://c.m.163.com/news/s/${item.sid}.html` : item.url}></iframe>
+                      }
                     </div>
                   }
                   </div>
                 )
-              })              
+              })
             }
 
           </div>
@@ -588,7 +589,7 @@ analysis({
     const t = +(new Date(time.replace(/-/g,"/")))
     if (t - Date.now() < 1000 * 60 * 60 * 24){
       return `今天${time.slice(11, 16)}`
-    } 
+    }
     if (t - Date.now() < 1000 * 60 * 60 * 24 * 2){
       return `明天${time.slice(11, 16)}`
     }
@@ -638,7 +639,7 @@ analysis({
       const now = Date.now()
       const nextPage = this.state.nextPage
       // if(now - this.lastScroll < 300){
-      //   return 
+      //   return
       // }
       this.lastScroll = now
       requestAnimationFrame(() => {
@@ -956,7 +957,7 @@ analysis({
     return <a className="media album" href={'http://3g.163.com/touch/photoview.html?setid=' + album.articleId + '&channelid=' + album.channelId}>
       <img src={album.coverImg} />
       <span className="tip">图集</span>
-    </a> 
+    </a>
   }
   // 消息体 -> 新闻
   function News(props) {
@@ -1015,7 +1016,7 @@ analysis({
       if (!this.props.active) { return }
       const now = Date.now()
       if(now - this.lastScroll < 300){
-        return 
+        return
       }
       this.lastScroll = now
       requestAnimationFrame(() => {
@@ -1038,7 +1039,7 @@ analysis({
       const time = Date.now()
       if(this.loading || this.minIndex <= 0 || !chatData.code || chatData.code != 1){
         return
-      }  
+      }
       this.loading = true
       utils.importJs('http://data.chat.126.net/chat_log?callback=callback'+time+'&topicid='+roomId+'&roomid='+chatData.msg.room_id+'&userid='+chatData.msg.user_id+'&len=20&start='+(this.minIndex))
       window['callback' + time] = (data) => {
@@ -1200,7 +1201,7 @@ analysis({
       const time = Date.now()
       if(this.loading || !chatData.code || chatData.code != 1){
         return
-      }  
+      }
       this.loading = true
       utils.importJs('http://data.chat.126.net/chat_log?callback=callback'+time+'&topicid='+roomId+'&roomid='+chatData.msg.room_id+'&userid='+chatData.msg.user_id+'&start='+(chatData.max_index))
       window['callback' + time] = (data) => {
@@ -1374,7 +1375,7 @@ analysis({
       if (e.touches.length > 1) {
         return
       }
-      
+
       this.start = Date.now()
       this.x = e.touches[0].clientX
       this.y = e.touches[0].clientY
@@ -1400,7 +1401,7 @@ analysis({
           this.prevImageScroll(e, pos.absX)
           cancelPageSwipe = true
         }
-      } 
+      }
 
       this.swiping = true
 
@@ -1606,7 +1607,7 @@ analysis({
       this.setState({ header: !this.state.header })
       // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
       const video = document.querySelector('video')
-      if (video.paused && !this.state.header) {
+      if (video && video.paused && !this.state.header) {
         video.play()
       } else {
         video.pause()
@@ -1619,14 +1620,14 @@ analysis({
       const params = utils.localParam().search
       const liveData = this.state.liveData
       const userCount = this.state.userCount
-      
+
       // const chatData = this.state.chatData
       if (!liveData.roomId) {
         return <div className="loading"></div>
       }
       let header = <NormalHeader userCount={userCount} liveData={liveData} show={this.state.header} expandHeader={this.expandHeader}/>
       if (!!liveData.sportsApiUrl) {
-        header = <NBAHeader userCount={userCount} url={liveData.sportsApiUrl} show={this.state.header} gameInfo={liveData.messages[0]} started={liveData.nextPage >= 0} /> 
+        header = <NBAHeader userCount={userCount} url={liveData.sportsApiUrl} show={this.state.header} gameInfo={liveData.messages[0]} started={liveData.nextPage >= 0} />
       }
 
       let content = (
@@ -1636,7 +1637,7 @@ analysis({
           {header}
           <Tab nuid={this.nuid} liveData={liveData} expandHeader={this.expandHeader} header={this.state.header} />
           <footer className="footer-placeholder" />
-        </div>        
+        </div>
       )
       if (liveData.video && liveData.video.videoFull === 'on') {
         content = (

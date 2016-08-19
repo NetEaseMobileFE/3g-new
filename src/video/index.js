@@ -7,6 +7,8 @@ import post from '../common/post'
 import middleShare from '../common/middle-share'
 import advert from '../common/advert'
 import footer from '../common/footer'
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -24,7 +26,7 @@ loading()
 // mapp and sps analysis
 analysis({ 
   spst: 6,
-  type: "article",
+  type: 'article',
   modelid: videoid
 })
 
@@ -37,16 +39,15 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 {
   const getUrl = (data) => {
     const newsLink = {
-      openVideo(data) {
-        const { id } = data
-        return `http://m.163.com/newsapp/applinks.html?vid=${id}&s=sps`
+      openVideo(_d) {
+        return `http://m.163.com/newsapp/applinks.html?vid=${_id}&s=sps`
       },
-      openNewsapp(data) {
+      openNewsapp() {
         return 'http://m.163.com/newsapp/applinks.html?s=sps'
       }
     }
-    const getNewsLink = (data) => { 
-      return newsLink[data.type](data)
+    const getNewsLink = (d) => { 
+      return newsLink[d.type](d.id)
     }
 
     return getNewsLink(data)
@@ -79,7 +80,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             <p><#=topicName#></p>
             <p><#=topicDesc#></p>
           </div>
-          <a href="http://m.163.com/newsapp/applinks.html?url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-sid="<#=sid#>" class="u-more">查看更多</a>
+          <a href="http://m.163.com/newsapp/applinks.html?s=sps&url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-sid="<#=sid#>" class="u-more u-hide-in-newsapp">查看更多</a>
         </div>
       `,
       videoList: `
@@ -117,7 +118,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             <span class="u-tip-icon">打开网易新闻</span>
           </div>
         </a>
-        <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+        <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
       `
     }
     return myTpl
@@ -132,8 +133,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         const holder = $('.js-video-player')
         // const topicDesc = data.topicDesc
         const topicDesc = data.desc
-        const search = utils.localParam().search
-        const videoid = search.videoid
         let style = null
         let tid = ''
         if (data.videoTopic) {
@@ -156,8 +155,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           sid,
           style
         }))
-        holder[0].offsetWidth
-        $('.u-play-btn').on('click', function(e) {
+        $('.u-play-btn').on('click', function (e) {
           const video = $(this).parent().find('video')
           video[0].play()
           video.show()
@@ -167,7 +165,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         if (topicDesc && topicDesc.length > 34) {
           holder.find('.btn').show()
         }
-        holder.find('.btn').on('click', function() {
+        holder.find('.btn').on('click', function () {
           if (~this.className.indexOf('rotate')) {
             $('.video-subtitle').css('max-height', '0.8rem')
             $(this).removeClass('rotate')
@@ -176,7 +174,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             $(this).addClass('rotate')
           }
         })
-
       },
 
       // 相关视频列表
@@ -193,11 +190,11 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             html += utils.simpleParse(TPL.videoList, {
               videoid: item.vid,
               cover: item.cover,
-              time: time,
+              time,
               title: item.title,
               topicName: item.topicName,
-              playCount: playCount,
-              replyHtml: replyHtml,
+              playCount,
+              replyHtml,
               originImg: '',
               index: index + 1
             })
@@ -206,7 +203,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         document.querySelector('.m-video-recommond').innerHTML = `
             <div class="u-title">相关视频</div>
             <ul class="video-list">${html}</ul>
-            <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+            <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
           `
       },
 
@@ -216,7 +213,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           window.videoCallback = null
           let html = ''
           let lastVideoHtml = ''
-          data['VATL2LQO4'].forEach((item, index) => {
+          data.VATL2LQO4.forEach((item, index) => {
             if (index < 3) {
               let time = utils.timeFormat(item.length)
               if (item.title.length > 22) {
@@ -252,7 +249,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             $('.m-video-hot')[0].innerHTML = `
               <div class="u-title">热门视频</div>
               <ul class="video-list">${html}</ul>
-              <a class="u-more" href="http://m.163.com/newsapp/applinks.html?s=spss">查看更多&gt;</a>
+              <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
             `
             $('.m-video-last').html(lastVideoHtml)
           })
@@ -287,12 +284,10 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
       // 获取跟帖
       post({ 
         boardid: data.replyBoard, 
-        id: data.replyid, 
-        votecount: data.replyCount,
-        vid: videoid
+        params: `postid=${data.replyid}&vid=${videoid}`,
+        votecount: data.replyCount
       })
       $('.m-middle-share').show()
-
       $('.m-loading').hide()
       // share component
       {

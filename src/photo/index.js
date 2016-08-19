@@ -13,6 +13,8 @@ import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import footer from '../common/footer'
 import redpacket from '../common/redpacket'
+import '../common/is-newsapp'
+import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
@@ -113,7 +115,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
               src: item.imgurl,
               imgtitle: item.imgtitle,
               imgnote: item.note,
-              index: 1
+              index: i
             })
           }
         })
@@ -209,8 +211,11 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
           photoScroll.goToPage(imgIndex, 0, 0)
           const imgs = wrap.querySelectorAll('img')
+
           imgs[imgIndex].src = imgs[imgIndex].dataset.src
-          imgs[imgIndex - 1].src = imgs[imgIndex - 1].dataset.src
+          if (imgIndex != 0) {
+            imgs[imgIndex - 1].src = imgs[imgIndex - 1].dataset.src
+          }
           imgs[imgIndex + 1].src = imgs[imgIndex + 1].dataset.src
         }
       }, false)
@@ -219,7 +224,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       XBack.listen(function() {
         window.location.hash = ''
         document.querySelector('.m-photoset').classList.remove('show')
-        document.body.removeEventListener('touchstart', preventDefault, false)
+        document.body.removeEventListener('touchstart', RENDER.preventDefault, false)
       })
 
       document.querySelector('.m-loading').style.display = 'none'
@@ -239,9 +244,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
             // 获取跟帖
             post({ 
               boardid: board, 
-              id: docid, 
-              votecount: data.votecount || 0,
-              pid: modelid
+              params: `postid=${docid}&pid=${modelid}`, 
+              votecount: data.votecount || 0
             })
           }
         }

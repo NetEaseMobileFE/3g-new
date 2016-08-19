@@ -31,7 +31,7 @@ export default function modal(data) {
     <div class="fixed-cover-share-dialog">
       <div class="dailog">
         <div class="dialog-title">分享成功<span class="dialog-close"></span></div>
-        <h2>热门推荐</h2>
+        <h2>相关推荐</h2>
         <ul class="hot-news" style="display:block !important;" data-stat="dialog-newslist">${html}</ul>
         <a class="dialog-more" data-stat="dialog-more">查看更多</a>
       </div>
@@ -64,7 +64,7 @@ export default function modal(data) {
     }
     if (target.classList.contains('dialog-more')) {
       neteaseTracker(false, 'http://sps.163.com/func/?func=clickStat&spst=0&target=dailog_more', '', 'sps')
-      window.location.href = 'http://m.163.com/newsapp/applinks.html?s=share_dailog'
+      window.location.href = 'http://m.163.com/newsapp/applinks.html?from=share_dailog&s=sps'
     }
   })
   dialog.on('touchmove', (e) => {

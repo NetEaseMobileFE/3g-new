@@ -189,3 +189,4 @@ export const assign = Object.assign || function(target) {
   }
   return target
 }
+

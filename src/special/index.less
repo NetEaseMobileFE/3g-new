@@ -314,10 +314,12 @@ body {
 [type|=photoset] {
   .gallery {
     display: flex;
-    margin: .2rem;
+    flex-flow: row wrap;
+    margin: .2rem .2rem 0;
   }
   .gallery-item {
     position: relative;
+    margin-bottom: .2rem;
     &:nth-child(2n-1) {
       margin-right: .15rem;
     }

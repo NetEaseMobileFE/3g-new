@@ -41,8 +41,8 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
     utils.ajax({
       method: "GET",
       dataType: 'json',
-      // url: _get,
-      url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
+      url: _get,
+      // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
       success: (data)=>{
         var data = data.data
         var bannerHtml = getBannerHtml(data.expert)
@@ -123,8 +123,8 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
         const _get = `http://c.3g.163.com/newstopic/answer/${answerId}.html`
         $('.one-answer-wrap').style.display = 'block'
         utils.ajax({
-          // url : _get,
-          url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
+          url : _get,
+          // url: `http://f2e.developer.163.com/cors/get?url=${encodeURIComponent(_get)}&cors=${encodeURIComponent('http://t.c.m.163.com')}`,
           method : "GET",
           dataType : 'json',
           success: (data)=>{
