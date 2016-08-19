@@ -57,7 +57,9 @@ const scheme = genScheme(search) + '?s=' + (CHANNLE || 'sps')
 
 // iOS中，尝试打开客户端
 if (isIOS) {
-  openNewsapp(false, scheme)
+  setTimeout(() => {
+    openNewsapp(false, scheme)
+  }, 100)
 }
 // android中，尝试iframe打开客户端
 if (isAndroid) {

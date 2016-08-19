@@ -1,12 +1,3 @@
-if (module && module.hot) {
-  module.hot.accept()
-}
-
-{
-  if (window.NRUM && typeof NRUM.mark === "function") {
-    NRUM.mark('static_pageload', true)
-  }
-}
 import analysis from '../common/analysis'
 import share from '../common/share'
 import lazyload from '../common/lazyload'
@@ -24,14 +15,25 @@ import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
+
+/* eslint-disable func-names */
+
+if (module && module.hot) {
+  module.hot.accept()
+}
+
+if (window.NRUM && typeof window.NRUM.mark === 'function') {
+  window.NRUM.mark('static_pageload', true)
+}
+
 const search = utils.localParam().search
 const { docid, boardid } = document.documentElement.dataset
 
 // mapp and sps analysis
 analysis({
   spst: 0,
-  type: "article",
-  docid: docid
+  type: 'article',
+  docid
 })
 lazyload({
   offset: 0,
@@ -40,14 +42,12 @@ lazyload({
 })
 
 // common header
-document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  docid: docid
-}))
+document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({ docid }))
 
 // main body
 {
   // 视频
-  $('.video-holder').on('click', '.play-icon', function() {
+  $('.video-holder').on('click', '.play-icon', function () {
     const video = $(this).parent().find('video')
     video.width('100%')
     video.height('100%')
@@ -56,11 +56,11 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
 
   // 正文图片
   {
-    const width = document.documentElement.dataset.width
-    const containerWidth = Math.floor(width * 6.9 / 7.5)
-    $('.js-img').each(function(i) {
+    const w = document.documentElement.dataset.width
+    const containerWidth = Math.floor((w * 6.9) / 7.5)
+    $('.js-img').each(function () {
       const { width, height } = this.dataset
-      const imgHeight = Math.floor(containerWidth / width * height)
+      const imgHeight = Math.floor((containerWidth / width) * height)
       this.width = containerWidth
       this.height = imgHeight
     })
@@ -70,12 +70,13 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
   {
     const articleContent = document.querySelector('.articleList')
     const mainBody = document.querySelector('#contentHolder')
-
-    if (articleContent.offsetHeight > mainBody.offsetHeight) {
-      $('#contentHolder').append(more({ origin: 'docid'} ))
-
+    if (window.self !== window.top) {
+      // 被iframe嵌套，隐藏加载全文
+      mainBody.style.maxHeight = 'none'
+    } else if (articleContent.offsetHeight > mainBody.offsetHeight) {
+      $('#contentHolder').append(more({ origin: 'docid' }))
       const showAllArticle = document.querySelector('.js-all-article')
-      showAllArticle.addEventListener('click', function(){
+      showAllArticle.addEventListener('click', function () {
         mainBody.style.maxHeight = 'none'
         this.parentElement.style.display = 'none'
       })
@@ -87,11 +88,11 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     $.getJSON(`http://c.m.163.com/nc/vote/result/${voteid}.html`, (data) => {
       let html = ''
       data.voteitem.forEach((item, i) => {
-        const rate = item.num * 100 / data.sumnum
+        const rate = (item.num * 100) / data.sumnum
         html += `
           <li>
             <div>${i + 1}. ${item.name} </div>
-            <div class="bar"><span style="width: ${rate}%"></span></div>
+            <div class='bar'><span style='width: ${rate}%'></span></div>
           </li>
         `
       })
@@ -103,7 +104,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     })
   }
   // 投票事件
-  $('.m-body-wrap').on('click', '.type-vote', function(e) {
+  $('.m-body-wrap').on('click', '.type-vote', function (e) {
     const target = $(e.target)
     const voteid = $(this).data('voteid')
     const voteType = $(this).data('optiontype')
@@ -140,8 +141,8 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
     if (!replyBoard) {
       return
     }
-    if (window.NRUM && typeof NRUM.mark === "function") {
-      NRUM.mark('tieload', true)
+    if (window.NRUM && typeof window.NRUM.mark === 'function') {
+      window.NRUM.mark('tieload', true)
     }
     // 获取跟帖
     const replyText = $('.js-reply-link').text()
@@ -150,7 +151,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header(
       boardid: replyBoard,
       id: docid,
       votecount: replyCount,
-      docid: docid
+      docid
     })
   })(boardid, docid)
 }
@@ -176,41 +177,39 @@ utils.ajax({
   method: 'GET',
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
-  success: function(data) {
+  success: (data) => {
     popular('docid', data)
-    const news = window.RELATIVE_NEWS.length ? window.RELATIVE_NEWS : data['T1348647909107']
+    const news = window.RELATIVE_NEWS.length ? window.RELATIVE_NEWS : data.T1348647909107
     modal(news)
   }
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
-  docid: docid
-}))
+document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({ docid }))
 
 // share component
 {
   const spss = search.s || 'newsapp'
-  let _url = window.location.origin + location.pathname
+  let url = window.location.origin + location.pathname
   let spsw = 2
   let w = +search.w
   if (w) {
     w++
     spsw = w
   }
-  _url += `?s=newsapp&w=${spsw}`
+  url += `?s=newsapp&w=${spsw}`
   share({
     title: document.title,
     desc: document.documentElement.dataset.digest,
-    url: _url,
+    url,
     img: 'http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png',
     statistics: {
       spst: 0,
-      docid: docid,
-      spss: spss,
-      spsw: spsw
+      docid,
+      spss,
+      spsw
     },
-    callback: function(status) {
+    callback: (status) => {
       if (status) {
         $('.fixed-cover-share-dialog').show()
       }
