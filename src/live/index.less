@@ -807,15 +807,18 @@ html, body, .container{
   }
 }
 .tab3-wrap{
+  position: relative;
   display: flex;
   flex-grow: 1;
   width: 100%;
   min-height: 100%;
   border: 0;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   iframe {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     min-height: 100%;
     width: 100%;
   }

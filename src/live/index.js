@@ -1,11 +1,11 @@
+if (module && module.hot) {
+  module.hot.accept()
+}
+
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
 import '../common/is-newsapp'
 import '../common/is-iframe'
-
-if (module && module.hot) {
-  module.hot.accept()
-}
 
 require('../common/reset.css')
 require('./index.less')
@@ -386,7 +386,7 @@ analysis({
       }
       
       return (
-        <div className="f-height">
+        <div>
           <div className={className} style={style} onClick={this.click}>
             <div className="title ellipsis">{this.props.title}</div>
             <div className="subtitle">{this.props.subtitle}</div>
@@ -574,7 +574,7 @@ analysis({
                   {
                     item.url !== 'live' && item.url !== 'chat' && active === i && <div className="tab3-wrap">
                       {
-                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://3g.163.com/ntes/special/00340EPA/wapSpecialModule.html?sid=${item.sid}` : item.url} scrolling="yes"></iframe>
+                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://c.m.163.com/news/s/${item.sid}.html` : item.url}></iframe>
                       }
                     </div>
                   }

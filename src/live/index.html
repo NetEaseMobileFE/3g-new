@@ -3,28 +3,34 @@
 <head>
   <title>网易新闻_直播</title>
   <!-- build:remove -->
-  <base href="http://localhost:3100/" />
+  <base href="http://abc.163.com:3100/" />
   <!-- endbuild -->
   <meta name="format-detection" content="telephone=no" />
   <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
   <meta name="yixin-share-desc" content="">
   <meta name="yixin-share-image" content="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png">
+  <!-- build:liveStyle -->
+  <!-- endbuild -->
+</head>
+<body>
   <script>
     (function (doc, win) {
       var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
         isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-        dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
-        dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-      docEl.dataset.dpr = dpr;
-      var recalc = function () {
-          var width = docEl.clientWidth;
-          if (width / dpr > 750) {
-              width = 750 * dpr;
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          var clientHeight = docEl.clientHeight;
+          if (!clientWidth) return;
+          if(clientWidth >= 750 ){
+            clientWidth = 750
+            doc.body.style.width = 750 + 'px'
+          }else{
+            doc.body.style.width = clientWidth + 'px'
           }
-          docEl.dataset.width = width
-          docEl.dataset.percent = 100 * (width / 750);
-          docEl.style.fontSize = 100 * (width / 750) + 'px';
+          doc.body.style.height = clientHeight + 'px'
+          docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+          docEl.dataset.percent = 100 * (clientWidth / 750)
         };
       recalc()
       doc.documentElement.classList.add('iosx' + win.devicePixelRatio)
@@ -32,10 +38,6 @@
       win.addEventListener(resizeEvt, recalc, false);
     })(document, window);
   </script>
-  <!-- build:liveStyle -->
-  <!-- endbuild -->
-</head>
-<body>
   <img src="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png" style="display: none!important;">
   <div class="container js-analysis" id="container">
     <div class="loading"></div>
@@ -44,7 +46,7 @@
   <script src="http://img4.cache.netease.com/utf8/3g/libs/react-0.14.7/build/react.js"></script>
   <script src="http://img4.cache.netease.com/utf8/3g/libs/react-0.14.7/build/react-dom.min.js"></script>
   <!-- build:liveScript -->
-  <script type="text/javascript" src="http://localhost:3100/js/live.bundle.js"></script>
+  <script type="text/javascript" src="http://abc.163.com:3100/js/live.bundle.js"></script>
   <!-- endbuild -->
 </body>
 </html>

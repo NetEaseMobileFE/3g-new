@@ -115,7 +115,9 @@ export default function popular(_type, _data) {
             </li>
           `
         } else {
-          const item = normalNews.splice(random(normalNews.length), 1)[0]
+          const newsLen = normalNews.length
+          // 前四条新闻按权重读取，后面随机读取
+          const item = i < 4 ? normalNews.slice(0, 4)[i] : normalNews.slice(4, newsLen).splice(random(newsLen - 4), 1)[0]
           const _url = getUrl({
             source: _type,
             type: 'doc',

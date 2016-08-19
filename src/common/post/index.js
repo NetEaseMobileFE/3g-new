@@ -11,7 +11,6 @@ require('./index.less')
 import { importJs, isIos9, isNewsapp } from '../utils'
 export default function post(data) {
   const { boardid, params, votecount } = data
-
   const param = params.split('&')
   const id = param[0].split('=')[1]
   const stat = param[1].split('=')[0]
