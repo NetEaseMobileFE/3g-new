@@ -58,18 +58,7 @@ gulp.task('assets', ['clean'], () => {
     return fs.writeFile('./analyse.log', JSON.stringify(webpackStats), null, 2)
   })).pipe(gulp.dest('dist'))
 })
-gulp.task('f2e', ['assets'], (cb) => {
-  const f2e = profile.f2e
-  const cmd = `scp -r -P ${f2e.port} dist/* ${f2e.name}@${f2e.host}:/home/${f2e.name}/${projectName}/`
-  exec(cmd, (err) => {
-    if (err) {
-      throw new gutil.PluginError('clean', err)
-    }
-    gutil.log('Done!')
-    return cb()
-  })
-})
-gulp.task('test', ['f2e'], () => {
+gulp.task('testHtml', ['assets'], (cb) => {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const f2e = profile.f2e
@@ -84,19 +73,30 @@ gulp.task('test', ['f2e'], () => {
     })
   }, {})
   return gulp.src(which ? `./src/${which}/index.html` : 'src/**/index.html')
-    .pipe(htmlreplace(replacement))
-    .pipe(htmlmin({
-      removeEmptyAttributes: true,
-      collapseWhitespace: true,
-      removeComments: true
-    }))
-    .pipe(rename((path) => {
-      /* eslint-disable no-param-reassign*/
-      path.basename = which || path.dirname
-      path.dirname = ''
-      /* eslint-enable no-param-reassign*/
-    }))
-    .pipe(gulp.dest('dist'))
+  .pipe(htmlreplace(replacement))
+  .pipe(htmlmin({
+    removeEmptyAttributes: true,
+    collapseWhitespace: true,
+    removeComments: true
+  }))
+  .pipe(rename((path) => {
+    /* eslint-disable no-param-reassign*/
+    path.basename = which || path.dirname
+    path.dirname = ''
+    /* eslint-enable no-param-reassign*/
+  }))
+  .pipe(gulp.dest('dist'))
+})
+gulp.task('test', ['testHtml'], (cb) => {
+  const f2e = profile.f2e
+  const cmd = `scp -r -P ${f2e.port} dist/* ${f2e.name}@${f2e.host}:/home/${f2e.name}/${projectName}/`
+  exec(cmd, (err) => {
+    if (err) {
+      throw new gutil.PluginError('clean', err)
+    }
+    gutil.log('Done!')
+    return cb()
+  })
 })
 
 gulp.task('ftp', ['assets'], () => {
