@@ -48,8 +48,9 @@ img{
   vertical-align: top;
 }
 .ellipsis {
-  text-overflow: ellipsis;
   display: block;
+  max-width: 100%;
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
