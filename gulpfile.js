@@ -20,7 +20,9 @@ let webpackConfig = require('./webpack.config.prod')
 
 const testMode = gutil.env._.indexOf('test') >= 0
 if (testMode) {
+  /* eslint-disable global-require*/
   webpackConfig = require('./webpack.config.test')
+  /* eslint-enable global-require*/
 }
 let webpackStats = null
 const NEWS_TYPE = packageJson.pages
@@ -58,7 +60,7 @@ gulp.task('assets', ['clean'], () => {
     return fs.writeFile('./analyse.log', JSON.stringify(webpackStats), null, 2)
   })).pipe(gulp.dest('dist'))
 })
-gulp.task('testHtml', ['assets'], (cb) => {
+gulp.task('testHtml', ['assets'], () => {
   const which = argv.w || null
   checkArgs(which, NEWS_TYPE)
   const f2e = profile.f2e
@@ -179,6 +181,11 @@ function checkArgs(args, types) {
   }
   return args
 }
+/**
+ * [createConnection create ftp connection]
+ * @param  {[Object]} ftpConfig [description]
+ * @return {[type]}           [description]
+ */
 function createConnection(ftpConfig) {
   const options = {
     host: ftpConfig.host,

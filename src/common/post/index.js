@@ -2,15 +2,16 @@
  * 跟帖
  * [article、photo、video] 调用
  */
+import { importJs, isNewsapp } from '../utils'
+
+require('./index.less')
 
 if (module && module.hot) {
   module.hot.accept()
 }
 
-require('./index.less')
-import { importJs, isIos9, isNewsapp } from '../utils'
-export default function post(data) {
-  const { boardid, params, votecount } = data
+export default function post(postData) {
+  const { boardid, params, votecount } = postData
   const param = params.split('&')
   const id = param[0].split('=')[1]
   const stat = param[1].split('=')[0]
@@ -27,10 +28,10 @@ export default function post(data) {
     }
     let html = ''
     if (+data.code !== 1) {
-      $('.m-comment').hide()
+      document.querySelector('.m-comment').style.display = 'none'
       return
     }
-    const posts = data["hotPosts"]
+    const posts = data.hotPosts
     posts.forEach((_item) => {
       let i = 1
       let item = null
@@ -38,26 +39,26 @@ export default function post(data) {
         item = _item[i]
         i++
       }
-      let classList = ''
       let username = ''
       let p = ''
       const names = item.f.trim().replace('：', '').split('&nbsp;')
       if (names.length > 1) {
         username = names[1]
-        p = `<p>${names[0]}[${username}]</p>`
+        p = `<p class="ellipsis">${names[0]}[${username}]</p>`
       } else {
         p = `<p>${names[0]}</p>`
       }
       const content = item.b
       html += `
-      <div class="u-item">
-        <div class="item-title">
-          <div class="avatar"></div>
-          <div class="name">${p}</div>
-          <div class="ding">${item.v || 0}顶</div>
+        <div class="u-item">
+          <div class="item-title">
+            <div class="avatar"></div>
+            <div class="name">${p}</div>
+            <div class="ding">${item.v || 0}顶</div>
+          </div>
+          <div class="comment-content">${content}</div>
         </div>
-        <div class="comment-content">${content}</div>
-      </div>`
+      `
     })
 
     let a = `http://m.163.com/newsapp/applinks.html?boardid=${boardid}&${params}&title=${encodeURIComponent(document.title)}&s=sps`
@@ -69,5 +70,4 @@ export default function post(data) {
       ${more}
     `
   }
-
 }
