@@ -1,5 +1,6 @@
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
+import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
@@ -1316,15 +1317,7 @@ analysis({
     render() {
       return (
         <footer className={'g-footer u-hide-in-newsapp' + (this.props.isFull ? ' full-video' : '')}>
-          { this.state.showTip && <div className="share-tip" /> }
-          <div className="open-newsapp" data-stat="o-live-footer" onClick={this.openNewsapp}>立即打开&gt;</div>
-          <div className="share-list" data-stat="live-footer-share">
-            分享
-            {utils.isWeixin && <span className="wechat" onClick={this.handleClick.bind(null, 'wechat')} />}
-            <span className="weibo" onClick={this.handleClick.bind(null, 'wb')} />
-            <span className="qzone" onClick={this.handleClick.bind(null, 'qq')} />
-            <span className="yixin" onClick={this.handleClick.bind(null, 'yx')} />
-          </div>
+          <div className="open-newsapp" data-stat="o-live-footer" onClick={this.openNewsapp}></div>
         </footer>
       )
     }

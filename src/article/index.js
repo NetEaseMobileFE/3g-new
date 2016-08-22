@@ -2,15 +2,11 @@ import analysis from '../common/analysis'
 import share from '../common/share'
 import lazyload from '../common/lazyload'
 import * as utils from '../common/utils'
-import abtest from '../common/abtest'
-import header from '../common/header'
-import testHeader from '../common/test-header'
 import more from '../common/more'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import modal from '../common/modal'
-import footer from '../common/footer'
 import testFooter from '../common/test-footer'
 import advert from '../common/advert'
 import '../common/is-newsapp'
@@ -44,19 +40,6 @@ lazyload({
   throttle: 1000,
   unload: false
 })
-
-// common header
-const abFlag = abtest()
-let headerHtml = ''
-let footerHtml = ''
-if (+abFlag !== 0) {
-  headerHtml = abFlag === 'a' ? testHeader({ docid }) : ''
-  footerHtml = abFlag === 'a' ? '' : testFooter({ docid })
-} else {
-  headerHtml = header({ docid })
-  footerHtml = footer({ docid })
-}
-document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', headerHtml)
 
 // main body
 {
@@ -200,7 +183,7 @@ utils.ajax({
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footerHtml)
+document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({ docid }))
 
 // share component
 {

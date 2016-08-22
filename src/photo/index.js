@@ -6,12 +6,11 @@ import analysis from '../common/analysis'
 import loading from '../common/loading'
 import share from '../common/share'
 import * as utils from '../common/utils'
-import header from '../common/header'
 import more from '../common/more'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import popular from '../common/popular'
-import footer from '../common/footer'
+import testFooter from '../common/test-footer'
 import redpacket from '../common/redpacket'
 import '../common/is-newsapp'
 import '../common/is-iframe'
@@ -38,11 +37,6 @@ analysis({
   type: "article",
   modelid: modelid
 })
-
-// common header
-document.querySelector('.m-body-wrap').insertAdjacentHTML('beforebegin', header({
-  pid: modelid
-}))
 
 // body content
 {
@@ -306,7 +300,7 @@ utils.ajax({
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
+document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({
   pid: modelid
 }))
 

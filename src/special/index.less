@@ -1177,11 +1177,19 @@ body {
 .g-footer {
   display: none;
   position: fixed;
-  left: 50%;
   bottom: 0;
-  width: 7.5rem;
-  height: 1.12rem;
+  left: 50%;
+  z-index: 99999;
   margin-left: -3.75rem;
-  background: #777 url(../img/open-buttom.png) no-repeat center;
+  width: 7.5rem;
+  height: .9rem;
+  background: url(../img/new-top-banner.png) center center no-repeat;
+  background-color: #fff;
   background-size: cover;
+  will-change: transform;
+  .border(border-top,1px,solid,rgba(0,0,0,0.1));
+  &.ios9 {
+    background-color:rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+  }
 }
