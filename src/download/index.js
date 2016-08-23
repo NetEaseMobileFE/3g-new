@@ -30,7 +30,7 @@ const DOWNLOAD_URLS = {
 
 window.STATS = statsParams(search)
 let landscape = false
-if (window.matchMedia && window.matchMedia('(orientation: landscape)')) {
+if (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) {
   landscape = true
 }
 
@@ -45,6 +45,7 @@ window.addEventListener('orientationchange', () => {
 
 // 安卓阻止页面滚动
 isAndroid && document.addEventListener('touchmove', (e) => {
+  console.log(landscape)
   if (!landscape) {
     e.preventDefault()
   }
