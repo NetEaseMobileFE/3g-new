@@ -5,9 +5,8 @@ if (module && module.hot) {
 import analysis from '../common/analysis'
 import loading from '../common/loading'
 import * as utils from '../common/utils'
-import header from '../common/header'
 import share from '../common/share'
-import footer from '../common/footer'
+import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
@@ -24,11 +23,6 @@ analysis({
   type: "article",
   modelid: id
 })
-
-// common header
-document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  expertid: id
-}))
 
 // main body
 {
@@ -336,6 +330,6 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
 }
 
 // common footer
-document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
+document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', testFooter({
   expertid: id
 }))

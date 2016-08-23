@@ -1,5 +1,6 @@
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
+import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
@@ -10,6 +11,11 @@ if (module && module.hot) {
   module.hot.accept()
 }
 const liveid = window.location.href.match(/\/l\/(\w*)\./)[1]
+
+if (window.top != window.self) {
+  window.top.location = `http://c.m.163.com/news/l/${liveid}.html`
+}
+
 // mapp and sps analysis
 analysis({
   spst: 4,
@@ -182,7 +188,7 @@ analysis({
     render() {
       if (this.props.show) {
           return (
-            <section className="m-down">
+            <section className="m-down u-hide-in-newsapp">
               <a onClick={this.openNewsapp.bind(this, null)} data-stat="o-live-header"></a>
               <iframe ref="iframe" className="u-hide"></iframe>
             </section>
@@ -1310,16 +1316,8 @@ analysis({
     }
     render() {
       return (
-        <footer className={'g-footer' + (this.props.isFull ? ' full-video' : '')}>
-          { this.state.showTip && <div className="share-tip" /> }
-          <div className="open-newsapp" data-stat="o-live-footer" onClick={this.openNewsapp}>立即打开&gt;</div>
-          <div className="share-list" data-stat="live-footer-share">
-            分享
-            {utils.isWeixin && <span className="wechat" onClick={this.handleClick.bind(null, 'wechat')} />}
-            <span className="weibo" onClick={this.handleClick.bind(null, 'wb')} />
-            <span className="qzone" onClick={this.handleClick.bind(null, 'qq')} />
-            <span className="yixin" onClick={this.handleClick.bind(null, 'yx')} />
-          </div>
+        <footer className={'g-footer u-hide-in-newsapp' + (this.props.isFull ? ' full-video' : '')}>
+          <div className="open-newsapp" data-stat="o-live-footer" onClick={this.openNewsapp}></div>
         </footer>
       )
     }
@@ -1636,7 +1634,7 @@ analysis({
           {params.spss === 'imoney' && !utils.isNewsapp && <IMoney />}
           {header}
           <Tab nuid={this.nuid} liveData={liveData} expandHeader={this.expandHeader} header={this.state.header} />
-          <footer className="footer-placeholder" />
+          <footer className="footer-placeholder u-hide-in-newsapp" />
         </div>
       )
       if (liveData.video && liveData.video.videoFull === 'on') {

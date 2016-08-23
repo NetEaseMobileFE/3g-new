@@ -1,22 +1,20 @@
+if (module && module.hot) {
+  module.hot.accept()
+}
+
 import analysis from '../common/analysis'
 import loading from '../common/loading'
 import share from '../common/share'
 import * as utils from '../common/utils'
-import header from '../common/header'
 import post from '../common/post'
 import middleShare from '../common/middle-share'
 import advert from '../common/advert'
-import footer from '../common/footer'
+import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
-
-if (module && module.hot) {
-  module.hot.accept()
-}
-
 
 const search = utils.localParam().search
 const videoid = search.videoid || window.location.href.match(/\/v\/(\w*)\./)[1]
@@ -29,11 +27,6 @@ analysis({
   type: 'article',
   modelid: videoid
 })
-
-// common header
-document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header({
-  vid: videoid
-}))
 
 // main body 
 {
@@ -213,7 +206,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
           window.videoCallback = null
           let html = ''
           let lastVideoHtml = ''
-          data.VATL2LQO4.forEach((item, index) => {
+          data.VBJ4L28O7.forEach((item, index) => {
             if (index < 3) {
               let time = utils.timeFormat(item.length)
               if (item.title.length > 22) {
@@ -254,7 +247,7 @@ document.querySelector('.g-body-wrap').insertAdjacentHTML('beforebegin', header(
             $('.m-video-last').html(lastVideoHtml)
           })
         }
-        utils.importJs('http://c.m.163.com/nc/video/list/VATL2LQO4/n/0-10.html?callback=videoCallback')
+        utils.importJs('http://c.m.163.com/nc/video/list/VBJ4L28O7/n/0-10.html?callback=videoCallback')
       }
     }
     return render
@@ -338,6 +331,6 @@ window.newAdvertiseList00340BNC = (data) => {
 }
 
 // common footer
-document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', footer({
+document.querySelector('.g-body-wrap').insertAdjacentHTML('afterend', testFooter({
   vid: videoid
 }))
