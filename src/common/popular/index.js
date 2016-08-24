@@ -70,7 +70,7 @@ export default function popular(_type, _data) {
       ajax({
         method: "GET",
         dataType: 'json',
-        url: 'http://c.m.163.com/nc/video/list/VATL2LQO4/n/0-10.html',
+        url: 'http://c.m.163.com/nc/video/list/VBJ4L28O7/n/0-10.html',
         success: renderVideos
       })
     })

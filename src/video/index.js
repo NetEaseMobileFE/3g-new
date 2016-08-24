@@ -33,7 +33,7 @@ analysis({
   const getUrl = (data) => {
     const newsLink = {
       openVideo(_d) {
-        return `http://m.163.com/newsapp/applinks.html?vid=${_id}&s=sps`
+        return `http://m.163.com/newsapp/applinks.html?vid=${_d}&s=sps`
       },
       openNewsapp() {
         return 'http://m.163.com/newsapp/applinks.html?s=sps'

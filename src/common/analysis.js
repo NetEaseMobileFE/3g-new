@@ -1,5 +1,7 @@
 /*** 统计 ***/
 
+import { closest } from '../common/utils'
+
 if (module && module.hot) {
   module.hot.accept()
 }
@@ -102,7 +104,8 @@ export default function analysis(userOptions) {
     if (clickStat) {
       clickStat.addEventListener('click', function(e){
         const target = e.target
-        const stat = target.getAttribute('data-stat')
+        const stat = closest(e.target, '[data-stat]')
+        // const stat = target.getAttribute('data-stat')
         if (stat) {
           neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr.slice(1,queryStr.length)}&target=${stat}`, '', 'sps')
         }
