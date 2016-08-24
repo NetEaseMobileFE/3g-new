@@ -41,7 +41,6 @@ body.ios {
 		bottom: 112px;
 	}
 }
-
 .buttons {
 	display: flex;
 	position: absolute;
@@ -107,4 +106,20 @@ body.ios {
   background-size: 320px 425px;
   background-position: center top;
   background-repeat: no-repeat;
+}
+/* portrait */
+@media screen and (orientation:portrait) {
+	/* portrait-specific styles */
+}
+/* landscape */
+@media screen and (orientation:landscape) {
+  .container {
+    position: relative;
+  }
+  .buttons {
+    bottom: 50px;
+  }
+  .intro {
+    bottom: 107px;
+  }
 }

@@ -7,10 +7,6 @@ if (module && module.hot) {
 if (window.NRUM && window.NRUM.mark) {
   window.NRUM.mark('pageload', true)
 }
-// 安卓阻止页面滚动
-isAndroid && document.addEventListener('touchmove', (e) => {
-  e.preventDefault()
-}, false)
 
 const ua = navigator.userAgent
 const search = localParam().search
@@ -20,7 +16,10 @@ const isIOS = !!ua.match(/ipad|ipod|iphone/i)
 const iOSVersion = isIOS ? +ua.match(/OS\s(\d*)/)[1] : 0
 const isIE = (/MSIE/gi).test(ua)
 const isWechat = !!ua.match(/MicroMessenger/i)
+const isQQ = !!ua.match(/QQ\//) || !!ua.match(/Qzone/i)
 const isX5 = !!ua.match(/MQQBrowser/i)
+const isWeibo = !!ua.match(/weibo/i)
+const isYixin = !!ua.match(/yixin/i)
 
 const CHANNLE = search.s || ''
 const DOWNLOAD_URLS = {
@@ -30,6 +29,26 @@ const DOWNLOAD_URLS = {
 }
 
 window.STATS = statsParams(search)
+let landscape = false
+if (window.matchMedia && window.matchMedia('(orientation: landscape)')) {
+  landscape = true
+}
+
+window.addEventListener('orientationchange', () => {
+  if (window.screen.orientation.angle !== 0) {
+    // 横屏
+    landscape = true
+  } else {
+    landscape = false
+  }
+}, false)
+
+// 安卓阻止页面滚动
+isAndroid && document.addEventListener('touchmove', (e) => {
+  if (!landscape) {
+    e.preventDefault()
+  }
+}, false)
 
 // 加载包管理
 jsonp('http://active.163.com/service/form/v1/5847/view/1047.jsonp')
@@ -90,7 +109,6 @@ function render(config) {
 }
 function statsParams(params) {
   const { docid, sid, pid, vid, liveRoomid, url, subjectid, expertid, readerid, luoboid } = params
-
   const modelid = docid || vid || liveRoomid || pid || sid || url || subjectid || expertid || readerid || luoboid || ''
   let spst = 0
   sid && (spst = 2)
@@ -101,9 +119,16 @@ function statsParams(params) {
   expertid && (spst = 8)
   subjectid && (spst = 10)
   luoboid && (spst = 11)
+
+  let spsf = ''
+  isQQ && (spsf = 'qq')
+  isWechat && (spsf = 'wx')
+  isWeibo && (spsf = 'wb')
+  isYixin && (spsf = 'yx')
   return {
     spst,
     modelid,
+    spsf,
     spss: CHANNLE
   }
 }
@@ -170,7 +195,7 @@ document.querySelector('.buttons').addEventListener('click', (e) => {
     return
   }
   const event = e.target.classList.contains('js-open') ? 'clicklaunch' : 'downloadapp'
-  window.neteaseTracker && window.neteaseTracker(false, `http://sps.163.com/func/?func=${event}&modelid=${window.STATS.modelid}&spst=${window.STATS.spst}&spsf&spss=${window.STATS.spss}`, '', 'sps')
+  window.neteaseTracker && window.neteaseTracker(false, `http://sps.163.com/func/?func=${event}&modelid=${window.STATS.modelid}&spst=${window.STATS.spst}&spsf=${window.STATS.spsf}&spss=${window.STATS.spss}`, '', 'sps')
   if (isIOS) {
     openNewsapp(true, scheme)
   }
@@ -181,6 +206,7 @@ document.querySelector('.buttons').addEventListener('click', (e) => {
     window.location.href = e.target.dataset.href
   }, 100)
 }, false)
+
 function jsonp(a, b, c) {
   /* eslint no-unused-expressions: ["error", { "allowShortCircuit": true }] */
   let d = document.createElement('script')
