@@ -97,7 +97,7 @@ export default function analysis(userOptions) {
     window._ntes_nacc = "mapp"
     neteaseTracker()
 
-    neteaseTracker(false, link, '', 'sps' )
+    window.neteaseTracker && window.neteaseTracker(false, link, '', 'sps' )
 
     // click analysis
     const clickStat = document.querySelector('.js-analysis')
@@ -105,9 +105,9 @@ export default function analysis(userOptions) {
       clickStat.addEventListener('click', function(e){
         const target = e.target
         const stat = closest(e.target, '[data-stat]')
-        // const stat = target.getAttribute('data-stat')
-        if (stat) {
-          neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr.slice(1,queryStr.length)}&target=${stat}`, '', 'sps')
+        const dataStat = stat.getAttribute('data-stat')
+        if (dataStat) {
+          window.neteaseTracker && window.neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr.slice(1,queryStr.length)}&target=${dataStat}`, '', 'sps')
         }
       })
     }

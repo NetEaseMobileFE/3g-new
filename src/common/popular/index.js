@@ -171,7 +171,7 @@ export default function popular(_type, _data) {
     const renderVideos = (data) => {
       let html = ''
       let lastVideoHtml = ''
-      data['VATL2LQO4'].forEach((item, index) => {
+      data['VBJ4L28O7'].forEach((item, index) => {
         if (index < 4) {
           if (item.title.length > 22) {
             item.title = (item.title.slice(0, 22)) + "..."
