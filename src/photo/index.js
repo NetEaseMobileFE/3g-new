@@ -8,7 +8,7 @@ import share from '../common/share'
 import * as utils from '../common/utils'
 import more from '../common/more'
 import post from '../common/post'
-import middleShare from '../common/middle-share'
+// import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import testFooter from '../common/test-footer'
 import redpacket from '../common/redpacket'
@@ -287,7 +287,7 @@ analysis({
 }
 
 // 中间分享
-document.querySelector('.m-middle-share').innerHTML = middleShare({ origin: 'pid' })
+// document.querySelector('.m-middle-share').innerHTML = middleShare({ origin: 'pid' })
 
 // hotNews videoNews
 utils.ajax({

@@ -7,7 +7,7 @@ import loading from '../common/loading'
 import share from '../common/share'
 import * as utils from '../common/utils'
 import post from '../common/post'
-import middleShare from '../common/middle-share'
+// import middleShare from '../common/middle-share'
 import advert from '../common/advert'
 import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
@@ -317,7 +317,7 @@ analysis({
 }
 
 // 中间分享
-$('.m-middle-share')[0].innerHTML = middleShare({ origin: 'vid' })
+// $('.m-middle-share')[0].innerHTML = middleShare({ origin: 'vid' })
 
 // 广告
 utils.importJs('http://3g.163.com/touch/advertise/adlist/00340BNC/0-1.html')

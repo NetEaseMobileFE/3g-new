@@ -105,8 +105,8 @@ export default function analysis(userOptions) {
       clickStat.addEventListener('click', function(e){
         const target = e.target
         const stat = closest(e.target, '[data-stat]')
-        const dataStat = stat.getAttribute('data-stat')
-        if (dataStat) {
+        if (stat) {
+          const dataStat = stat.getAttribute('data-stat')
           window.neteaseTracker && window.neteaseTracker(false, `http://sps.163.com/func/?func=clickStat&${queryStr.slice(1,queryStr.length)}&target=${dataStat}`, '', 'sps')
         }
       })
