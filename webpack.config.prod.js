@@ -21,21 +21,21 @@ module.exports = {
   },
   module: {
     loaders: [
-      { 
-        test: /\.js$/, 
-        exclude: /node_modules/, 
-        loader: "babel-loader" 
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
       }, {
-        test: /\.css$/, 
-        exclude: /node_modules/, 
+        test: /\.css$/,
+        exclude: /node_modules/,
         loader: ExtractTextPlugin.extract("style", "css!postcss")
       }, {
-        test: /\.scss$/, 
-        exclude: /node_modules/, 
+        test: /\.scss$/,
+        exclude: /node_modules/,
         loader: ExtractTextPlugin.extract("style", "css!postcss!sass")
       }, {
         test: /\.less$/,
-        exclude: /node_modules/, 
+        exclude: /node_modules/,
         loader: ExtractTextPlugin.extract("style", "css!postcss!less")
       }, {
         test: /\.png|jpe?g|gif$/,
@@ -66,4 +66,4 @@ module.exports = {
       })
     ]
   }
-};
+}
