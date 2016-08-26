@@ -324,7 +324,7 @@ analysis({
       let version = ''
 
       if (utils.isIos) {
-        version = navigator.userAgent.match((/OS (\d)_(\d)/))
+        version = navigator.userAgent.match((/OS (\d*)_(\d*)/))
         version = +`${version[1]}.${version[2]}`
       }
       if (!version || version < 8.3) {
