@@ -45,7 +45,6 @@ window.addEventListener('orientationchange', () => {
 
 // 安卓阻止页面滚动
 isAndroid && document.addEventListener('touchmove', (e) => {
-  console.log(landscape)
   if (!landscape) {
     e.preventDefault()
   }
@@ -66,7 +65,8 @@ window._callback = (data) => {
 
   // android 微信和qq浏览器中，跳转应用宝
   if (isAndroid && (isWechat || isX5)) {
-    window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=${scheme}`
+    // window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=${scheme}`
+    window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=tencent`
   }
   render(config)
   document.body.classList.add('active')
