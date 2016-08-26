@@ -28,6 +28,16 @@
 
 ---------------------------------------------------------------------------------------------------------------------
 
+视频页统计：
+
+大视频下查看更多： func=clickStat.*target=video-tid
+
+相关视频查看更多： func=clickStat.*target=remommond-video
+
+热门视频查看更多： func=clickStat.*target=hot-video
+
+底部大视频查看更多： func=clickStat.*target=big-video
+
 ## 线上地址
 
 http://c.m.163.com/news/a/BTP5CGJ100014SEH.html

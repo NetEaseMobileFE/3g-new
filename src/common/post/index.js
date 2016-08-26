@@ -2,7 +2,7 @@
  * 跟帖
  * [article、photo、video] 调用
  */
-import { importJs, isNewsapp } from '../utils'
+import { importJs, isNewsapp, isOwnEmpty } from '../utils'
 
 require('./index.less')
 
@@ -21,7 +21,7 @@ export default function post(postData) {
 
   window.hotList = (data) => {
     window.hotList = null
-    if (data.hotPosts.length) {
+    if (!isOwnEmpty(data.hotPosts)) {
       document.querySelector('.m-comment').style.display = 'block'
     } else {
       return

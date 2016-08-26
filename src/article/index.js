@@ -8,6 +8,7 @@ import post from '../common/post'
 import popular from '../common/popular'
 import modal from '../common/modal'
 import testFooter from '../common/test-footer'
+import testRedpacket from '../common/test-redpacket'
 import advert from '../common/advert'
 import '../common/is-newsapp'
 import '../common/is-iframe'
@@ -184,6 +185,9 @@ utils.ajax({
 
 // common footer
 document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({ docid }))
+
+// 红包ab测试
+testRedpacket()
 
 // share component
 {

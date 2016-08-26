@@ -73,7 +73,7 @@ analysis({
             <p><#=topicName#></p>
             <p><#=topicDesc#></p>
           </div>
-          <a href="http://m.163.com/newsapp/applinks.html?s=sps&url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-sid="<#=sid#>" class="u-more u-hide-in-newsapp">查看更多</a>
+          <a href="http://m.163.com/newsapp/applinks.html?s=sps&url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D<#=tid#>" data-stat="video-tid" data-sid="<#=sid#>" class="u-more u-hide-in-newsapp">查看更多</a>
         </div>
       `,
       videoList: `
@@ -111,7 +111,7 @@ analysis({
             <span class="u-tip-icon">打开网易新闻</span>
           </div>
         </a>
-        <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
+        <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps" data-stat="big-video">查看更多&gt;</a>
       `
     }
     return myTpl
@@ -196,7 +196,7 @@ analysis({
         document.querySelector('.m-video-recommond').innerHTML = `
             <div class="u-title">相关视频</div>
             <ul class="video-list">${html}</ul>
-            <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
+            <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps" data-stat="remommond-video">查看更多&gt;</a>
           `
       },
 
@@ -242,7 +242,7 @@ analysis({
             $('.m-video-hot')[0].innerHTML = `
               <div class="u-title">热门视频</div>
               <ul class="video-list">${html}</ul>
-              <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
+              <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps" data-stat="hot-video">查看更多&gt;</a>
             `
             $('.m-video-last').html(lastVideoHtml)
           })

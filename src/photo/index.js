@@ -304,7 +304,7 @@ document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter
   pid: modelid
 }))
 
-// 红包ab测试
+// 红包
 redpacket()
 
 

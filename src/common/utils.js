@@ -147,9 +147,13 @@ export function formatTime(time) {
 
 // 判断对象是否存在或为空
 export function isOwnEmpty(obj) {
-  for(var name in obj) {
-    if(obj.hasOwnProperty(name)) {
-      return false;
+  if (typeof(obj) === 'number') {
+    return false
+  } else {
+    for(var name in obj) {
+      if(obj.hasOwnProperty(name)) {
+        return false;
+      }
     }
   }
   return true;
