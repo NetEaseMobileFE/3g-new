@@ -147,12 +147,16 @@ export function formatTime(time) {
 
 // 判断对象是否存在或为空
 export function isOwnEmpty(obj) {
-  for(var name in obj) {
-    if(obj.hasOwnProperty(name)) {
-      return false;
-    }
+  if (!obj && obj !== 0) {
+    return true
   }
-  return true;
+  if (['number', 'string', 'boolean'].indexOf(typeof obj) >= 0 || obj.length > 0) {
+    return false
+  }
+  if (Object.keys(obj).length > 0) {
+    return false
+  }
+  return true
 }
 
 // 格式化跟帖数
@@ -189,4 +193,3 @@ export const assign = Object.assign || function(target) {
   }
   return target
 }
-
