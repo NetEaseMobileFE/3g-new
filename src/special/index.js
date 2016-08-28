@@ -19,7 +19,7 @@ const sid = search.sid || window.location.href.match(/\/s\/(\w*)\./)[1]
 loading()
 
 // sps analysis
-analysis({ 
+analysis({
   spst: 2,
   type: "article",
   modelid: sid
@@ -82,7 +82,7 @@ analysis({
       },
 
       //获取当前页面滚动的高度
-      getScrollTop() { 
+      getScrollTop() {
         let scrollTop = 0
         const selfScrollTop = document.documentElement.scrollTop
         if(document.documentElement && selfScrollTop) {
@@ -90,7 +90,7 @@ analysis({
         }else if(document.body) {
           scrollTop = document.body.scrollTop
         }
-        return scrollTop 
+        return scrollTop
       }
     }
     return my
@@ -169,7 +169,7 @@ analysis({
             return id
           }
         }
-        const getNewsLink = (data) => { 
+        const getNewsLink = (data) => {
           return newsLink[data.type](data)
         }
 
@@ -198,12 +198,12 @@ analysis({
           data_len = data.length
           while(data_len--) {
             dataArray.push(data[data_len])
-          }        
+          }
         })
 
         dataArray.sort((a, b) => {
           return ((a.index || 1) - (b.index || -1))
-        })     
+        })
 
         return dataArray
       },
@@ -265,7 +265,7 @@ analysis({
               NTES.showWin('投票已结束')
             }
             NTES.voteBehavior(this)
-            $(this).hide()  //隐藏按钮 
+            $(this).hide()  //隐藏按钮
           }
         })
       },
@@ -299,7 +299,7 @@ analysis({
           }
         },2800)
       },
-  
+
       voteble: (elem) => {
         return elem ? '  投票已结束' : '  投票进行中'
       },
@@ -329,7 +329,7 @@ analysis({
           $(tObj).parents('.vote-area').find(targetReplaceElem).replaceWith(voteResultContent)
         }
       },
-  
+
       /**
        * [获取百分比]
        * @param  {[type]} target [description]
@@ -341,7 +341,7 @@ analysis({
     }
 
     return my;
-   
+
   })($)
 
   /******************************************************************
@@ -357,14 +357,14 @@ analysis({
           webviews: "webviews",
           photoset: "photoset",
           video: "video",
-          imgnews: "imgnews",    
+          imgnews: "imgnews",
           news: "news",
           vote: "vote",
           PK: "PK",
           timeline: "timeline",
           circle: "circle",
           special: "special",
-          activity: "activity",        
+          activity: "activity",
         },
 
         //模块渲染主入口
@@ -390,12 +390,12 @@ analysis({
               let newsappTip = ''
               if (data.sdocid) {
                 url = NTES.getUrl({
-                  type: 'doc', 
+                  type: 'doc',
                   id: data.sdocid
                 })
               } else if (data.sid) {
                 url = NTES.getUrl({
-                  type: 'special', 
+                  type: 'special',
                   id: data.sid
                 })
               }
@@ -409,8 +409,8 @@ analysis({
 
               const mustach = data.digest ? TPL.banner : TPL.liveBanner
               bodyContent.content += NTUI.simpleParse(mustach, {
-                url: url, 
-                banner: data.banner, 
+                url: url,
+                banner: data.banner,
                 digest: data.digest,
                 newsappTip: newsappTip
               })
@@ -424,12 +424,12 @@ analysis({
               if(!data.headpics || data.headpics.length <= 1) {
                 let newsappTip = ''
                 let url = NTES.getUrl({
-                  type: 'doc', 
+                  type: 'doc',
                   id: data.sdocid
                 })
                 if (data.tag == 'photoset') {
                   url = NTES.getUrl({
-                    type: 'photoset', 
+                    type: 'photoset',
                     id: data.photoset
                   })
                   newsappTip = `
@@ -450,7 +450,7 @@ analysis({
                 let _ctrlHtml = ''
                 data.headpics.forEach((item) => {
                   let url = NTES.getUrl({
-                    type: item.tag, 
+                    type: item.tag,
                     id: item.url
                   })
                   _headpicHtml += NTUI.simpleParse (
@@ -460,11 +460,11 @@ analysis({
                     </a>
                     <h1><#=sname#></h1>
                     </div>`,{url: url, imgsrc: item.imgsrc, sname: item.title})
-                  _ctrlHtml += '<li></li>' 
+                  _ctrlHtml += '<li></li>'
                 })
                 bodyContent.content += NTUI.simpleParse(TPL.mainImgWithAd, {
-                  digest: data.digest, 
-                  imgHtml: _headpicHtml, 
+                  digest: data.digest,
+                  imgHtml: _headpicHtml,
                   ctrlHtml: _ctrlHtml
                 })
               }
@@ -484,7 +484,7 @@ analysis({
               bodyContent.content += `<div class="m-active-nav">${webviewsContent}</div>`
               return true
             }
-          },   
+          },
           photoset: {
             validate: (data, tIndex) => {
               let thisContent = ''
@@ -515,7 +515,7 @@ analysis({
               data.docs.forEach((item) => {
                 const imgurl = utils.optImage(item.cover, 347)
                 const _url = NTES.getUrl({
-                  type: 'video', 
+                  type: 'video',
                   id: item.vid
                 })
                 thisContent += NTUI.simpleParse(TPL.videoList, {
@@ -538,7 +538,7 @@ analysis({
               if (data.docs) {
                 data.docs.forEach((item) => {
                   let url = NTES.getUrl({
-                    type: 'doc', 
+                    type: 'doc',
                     id: item.docid
                   })
 
@@ -553,7 +553,7 @@ analysis({
                   //判断skipType
                   if(!!item.skipType) {
                     url = NTES.getUrl({
-                      type: item.skipType, 
+                      type: item.skipType,
                       id: item.skipID
                     })
                   }
@@ -647,7 +647,7 @@ analysis({
                         replyCount: replyTemp,
                         // digest: item.digest,
                         imgsrc: utils.optImage(item.imgsrc, 204, 153)
-                      }) 
+                      })
                     }else {
                       if (!item.replyCount) {
                         replyTemp = ''
@@ -674,13 +674,13 @@ analysis({
 
               return true
             }
-          }, 
+          },
           news: {
             validate: (data, tIndex) => {
               let newsContent = ''
               data.docs.forEach((item) => {
                 let url = NTES.getUrl({
-                  type: 'doc', 
+                  type: 'doc',
                   id: item.docid
                 })
 
@@ -694,7 +694,7 @@ analysis({
                 let replyTemp = item.replyCount ? `<span class="join">${userCount}跟贴</span>` : ''
                 if (item.skipType) {
                   url = NTES.getUrl({
-                    type: item.skipType, 
+                    type: item.skipType,
                     id: item.skipID
                   })
                 }
@@ -756,7 +756,7 @@ analysis({
                     })
                     startVoteContent = `<ul class="vote-options-view" data-dateType="${itemDoc.date_type}" data-voteType="${itemDoc.option_type}">${startVoteContent}</ul>`
                   }
-                  
+
                   thisContent += `
                     <div class="vote-area">
                       <div class="vote-title">
@@ -871,7 +871,7 @@ analysis({
                 let dateTitle = ''
                 let dateHtml = ''
                 let url = NTES.getUrl({
-                  type: 'doc', 
+                  type: 'doc',
                   id: item.docid
                 })
 
@@ -902,7 +902,7 @@ analysis({
                     imgsrc: item.imgsrc
                   })
                 }else {
-                  timelineNewsContent += NTUI.simpleParse(TPL.timelineSimple, { 
+                  timelineNewsContent += NTUI.simpleParse(TPL.timelineSimple, {
                     url: url,
                     title: item.title,
                     replyCount: item.replyCount,
@@ -922,7 +922,7 @@ analysis({
                     timelineContainer +=`<div class="item-wrap">${dateHtml}<dl class="timeline-item">${dateTitle}${timelineNewsContent}</dl></div>`
                   }
                 }
-                index++ 
+                index++
               })
               moreBtn = docSize > 2 ? '<div class="more-news-btn">更多</div>' : ''
               bodyContent.content += `
@@ -944,7 +944,7 @@ analysis({
               for(let i = 0; i < size; i++) {
                 const imgsrc = utils.optImage(data.docs[i].imgsrc, _width)
                 circleContent += NTUI.simpleParse(TPL.circle, {
-                  url: data.docs[i].url, 
+                  url: data.docs[i].url,
                   imgsrc: imgsrc
                 })
                 if(size > 1) {
@@ -964,14 +964,14 @@ analysis({
               return true
             }
           },
-          
+
           special: {
             validate: (data, tIndex) => {
               let specialContent = ''
               data.docs.forEach((item) => {
                 specialContent += NTUI.simpleParse(TPL.special, {
-                  specialID: item.specialID, 
-                  sname: item.sname, 
+                  specialID: item.specialID,
+                  sname: item.sname,
                   digest: item.digest
                 })
               })
@@ -990,7 +990,7 @@ analysis({
               let activityContent = ''
               data.docs.forEach((item) => {
                 activityContent += NTUI.simpleParse(TPL.activity, {
-                  url: item.url, 
+                  url: item.url,
                   imgsrc: utils.optImage(item.imgsrc, 344, 178)
                 })
               })
@@ -1048,7 +1048,7 @@ analysis({
         </div>
       `,
 
-      mainImg2: ` 
+      mainImg2: `
         <div class="imgwrapper">
           <a class="mainshow" href="<#=url#>"><img src="" data-echo="<#=imgsrc#>" width="100%"></a>
           <h1><#=sname#></h1>
@@ -1080,7 +1080,7 @@ analysis({
         </div>
       `, //图集模板
 
-      videoList: ` 
+      videoList: `
         <a class="b-video" href="<#=url#>">
           <div class="b-img" data-echo-background="<#=imgsrc#>"></div>
           <p class="ttl"><#=title#></p>
@@ -1114,7 +1114,7 @@ analysis({
         </li>
       `, // 新增大图新闻
 
-      imgNewsSet: ` 
+      imgNewsSet: `
         <li class="newsHead multiImg">
           <a href="<#=url#>">
             <p class="newsTitle"><#=title#></p>
@@ -1199,7 +1199,7 @@ analysis({
 
       PKProgress: `
         <div class="vote <#=style#>">
-          <div class="vote-logo" data-voteId="<#=voteid#>" data-voteOptionId="<#=voteOptionId#>"></div> 
+          <div class="vote-logo" data-voteId="<#=voteid#>" data-voteOptionId="<#=voteOptionId#>"></div>
           <p><#=num#></p>
         </div>
       `,
@@ -1259,7 +1259,7 @@ analysis({
   bodyContent.content = ''  //页面内容变量
 
   // 调用接口专题数据接口 同客户端
-  $.ajax({ 
+  $.ajax({
     type: 'get',
     url: `http://c.3g.163.com/nc/special/${sid}.html?callback=mainFunc`,
     dataType: 'jsonp'
@@ -1304,10 +1304,10 @@ analysis({
     } else {
       footer.show()
     }
-    
+
     footer.on('click', function(e) {
       e.preventDefault()
-      window.location.href = 'http://m.163.com/newsapp/applinks.html?s=sps&sid=' + sid 
+      window.location.href = 'http://m.163.com/newsapp/applinks.html?s=sps&sid=' + sid
     })
 
     $('title').append(dataCache.sname)
@@ -1319,7 +1319,7 @@ analysis({
         type: "webviews",
         webviews: dataCache.webviews
       }
-      RENGUI.ModuleValidator.validate(newDataArray)     
+      RENGUI.ModuleValidator.validate(newDataArray)
     }
 
     newDataArray = {}
@@ -1396,7 +1396,7 @@ analysis({
       if($('.m-main-img .gallery').length){
         NTES.gallery()
       }
-      
+
       $('.circle-list').each(function() {
         NTES.circleSlider($(this))
       })
@@ -1420,18 +1420,17 @@ analysis({
           // item.style.backgroundSize = _width + 'px'
           item.style.backgroundSize = 'cover'
         }
-      })                
+      })
     }
 
     RenGui(renMapGui)
 
     TopTitle.init()
-    
+
     lazyload({
       offset: 0,
       throttle: 1000,
       unload: false
     })
-  } 
+  }
 }
-
