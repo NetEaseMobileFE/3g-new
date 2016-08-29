@@ -113,24 +113,22 @@ analysis({
   window.RECOMMEND_VIDEOS = null
 
   // 热门视频
-  utils.ajax({
-    url: 'http://c.m.163.com/nc/video/list/VATL2LQO4/n/0-4.html',
-    dataType: 'JSON',
-    success: (data) => {
-      const hot = document.querySelector('.m-video-hot')
-      if (!data || !data.VATL2LQO4 || !data.VATL2LQO4.length) {
-        hot.style.display = 'none'
-        return
-      }
-
-      const html = data.VATL2LQO4.map((item, index) => template(item, index)).join('')
-      hot.innerHTML = `
-        <div class="u-title">热门视频</div>
-        <ul class="video-list">${html}</ul>
-        <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
-      `
+  function renderPopular(data) {
+    const hot = document.querySelector('.m-video-hot')
+    if (!data || !data.VATL2LQO4 || !data.VATL2LQO4.length) {
+      hot.style.display = 'none'
+      return
     }
-  })
+
+    const html = data.VATL2LQO4.map((item, index) => template(item, index)).join('')
+    hot.innerHTML = `
+    <div class="u-title">热门视频</div>
+    <ul class="video-list">${html}</ul>
+    <a class="u-more u-hide-in-newsapp" href="http://m.163.com/newsapp/applinks.html?s=sps">查看更多&gt;</a>
+    `
+  }
+  renderPopular(window.POPULAR_VIDEOS)
+  window.POPULAR_VIDEOS = null
 }
 
 // main body

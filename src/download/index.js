@@ -75,12 +75,6 @@ window._callback = (data) => {
 // 获取scheme
 const scheme = genScheme(search) + '?s=' + (CHANNLE || 'sps')
 
-// iOS中，尝试打开客户端
-if (isIOS) {
-  setTimeout(() => {
-    openNewsapp(false, scheme)
-  }, 100)
-}
 // android中，尝试iframe打开客户端
 if (isAndroid) {
   openNewsapp(true, scheme)
@@ -89,6 +83,13 @@ if (isAndroid) {
 // 此时如果打不开，则判断，如果url中含有redirect，则重定向url
 if (search.redirect) {
   window.location.href = decodeURIComponent(search.redirect)
+}
+
+// iOS中，尝试打开客户端
+if (isIOS && !search.redirect) {
+  setTimeout(() => {
+    openNewsapp(false, scheme)
+  }, 100)
 }
 
 // iOS 微信和qq浏览器中，提示浏览器中打开
