@@ -66,7 +66,7 @@ window._callback = (data) => {
   // android 微信和qq浏览器中，跳转应用宝
   if (isAndroid && (isWechat || isX5)) {
     // window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=${scheme}`
-    window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=tencent`
+    window.location.href = `http://a.app.qq.com/o/simple.jsp?pkgname=com.netease.newsreader.activity&ckey=${config.tencent || 'CK1331205846719'}&android_schema=${scheme.replace(/\?s=.*/, '?s=tencent')}`
   }
   render(config)
   document.body.classList.add('active')
