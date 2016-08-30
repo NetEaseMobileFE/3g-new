@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html data-board=${data.replyBoard} data-reply=${data.replyid} data-count=${data.replyCount}>
 <head>
-  <title>网易新闻</title>
+  <title>网易新闻：${data.title}</title>
   <!-- build:remove -->
   <base href="http://localhost:3100/" />
   <!-- endbuild -->
@@ -10,7 +10,7 @@
   <script>
     (function (doc, win) {
       var docEl = doc.documentElement,
-        isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+        isIOS = navigator.userAgent.match(/iphone|ipod|ipad/i),
         dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
         dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
@@ -37,22 +37,48 @@
   <iframe id="iframe" style="display: none !important;"></iframe>
   <img src="http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png" style="display: none!important;">
   <div class="js-analysis">
-    <section class="m-loading"></section>
     <section class="g-body-wrap">
       <article class="m-video-player js-video-player">
+        <div class="video-holder">
+          <div class="video-wrap js-video">
+            <img src="${data.cover}" />
+            <video src="${data.mp4_url}" type="video/mp4" webkit-playsinline="true" controls preload="none"></video>
+            <div class="u-play-btn"></div>
+          </div>
+          <a class="u-open-tip open-newsapp" data-open="openVideo" data-stat="o-vid-tip">
+            打开网易新闻，观看视频体验更加流畅
+          </a>
+          <div class="video-desc-wrap">
+            <div class="title-bar">
+              <div class="video-title">${data.title}</div>
+              <div class="btn arrow-down"></div>
+            </div>
+            <div class="video-subtitle">
+              <span>${data.desc}</span>
+            </div>
+          </div>
+        </div>
+        <div class="subscibe-wrap">
+          <img src="${data.topicImg}" alt="${data.videoTopic.alias}">
+          <div class="subscibe-title">
+            <p>${data.videoTopic.alias}</p>
+            <p>${data.videoTopic.tname}</p>
+          </div>
+          <a href="http://m.163.com/newsapp/applinks.html?s=sps&url=http%3A%2F%2Fm.163.com%2Fnewsapp%2Fapplinks.html%3Freaderid%3D${data.videoTopic.tid}" data-sid="${data.topicSid}" class="u-more u-hide-in-newsapp">查看更多</a>
+        </div>
       </article>
-      <article class="m-comment">
-      </article>
-      <article class="m-middle-share">
-      </article>
+      <article class="m-comment"></article>
       <article class="m-ad js-ad"></article>
-      <article class="m-video-recommond">
-      </article>
-      <article class="m-video-hot">
-      </article>
+      <article class="m-video-recommond"></article>
+      <article class="m-video-hot"></article>
       <article class="m-video-last"></article>
     </section>
   </div>
+  <script>
+    window.RECOMMEND_VIDEOS = ${JSON.stringify(data.recommend)};
+    window.POPULAR_VIDEOS = ${popularVideos}
+    window.ad = ${ad}
+  </script>
   <script src="http://img3.cache.netease.com/apps/3g/1.1.4/zepto.min.js" type="text/javascript"></script>
   <!-- build:videoScript -->
   <script type="text/javascript" src="http://localhost:3100/js/video.bundle.js"></script>
