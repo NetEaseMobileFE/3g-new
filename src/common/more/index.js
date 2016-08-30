@@ -6,7 +6,9 @@
 if (module && module.hot) {
   module.hot.accept()
 }
+
 require('./index.less')
+
 export default function more(data) {
   const { origin } = data
   return `
@@ -15,5 +17,3 @@ export default function more(data) {
     </div>
   `
 }
-
-

@@ -1,4 +1,4 @@
-/*** 统计 ***/
+// 统计
 
 import { closest } from '../common/utils'
 
@@ -25,7 +25,7 @@ function loadScript(id, src, callback) {
 export default function analysis(userOptions) {
   function params() {
     const url = window.location.href
-    const start = url.indexOf("?") + 1
+    const start = url.indexOf('?') + 1
     let paras = {}
     if (start !== 0) {
       const queryString = url.substring(start)
@@ -38,8 +38,8 @@ export default function analysis(userOptions) {
     }
     return paras
   }
-  
-  function defaults (object) {
+
+  function defaults(object) {
     if (!object) {
       return object
     }
@@ -48,7 +48,7 @@ export default function analysis(userOptions) {
       let iterable = arguments[i]
       if (iterable) {
         for (let key in iterable) {
-          if (typeof object[key] == 'undefined') {
+          if (typeof object[key] === 'undefined') {
             object[key] = iterable[key]
           }
         }
@@ -71,20 +71,20 @@ export default function analysis(userOptions) {
     spsf = 'qq'
   }
   let spst = 0
-  let spsw = paramsObject['w'] || 1
+  let spsw = paramsObject.w || 1
   let defaultOptions = {
-    spss: "newsapp",
-    spst: spst,
-    spsw: spsw,
-    spsf: spsf,
-    type: "article",
+    spss: 'newsapp',
+    spst,
+    spsw,
+    spsf,
+    type: 'article',
   }
   defaultOptions.spss = (ua.match(/newsapp/gi)) ? 'native' : 'newsapp'
   let options = defaults(userOptions, defaultOptions)
   let queryStr = '?'
 
   for (let item in options) {
-    if (item != 'type') {
+    if (item !== 'type') {
       queryStr = `${queryStr}${item}=${options[item]}&`
     }
   }
@@ -93,9 +93,9 @@ export default function analysis(userOptions) {
 
   let link = `http://sps.163.com/${options.type}/${queryStr}`
 
-  loadScript('__ntes__analysis', 'http://img6.cache.netease.com/utf8/3g/libs/ntes-stat.js', ()=> {
-    window._ntes_nacc = "mapp"
-    neteaseTracker()
+  loadScript('__ntes__analysis', 'http://img6.cache.netease.com/utf8/3g/libs/ntes-stat.js', () => {
+    window._ntes_nacc = 'mapp'
+    window.neteaseTracker && window.neteaseTracker()
 
     window.neteaseTracker && window.neteaseTracker(false, link, '', 'sps' )
 
@@ -113,7 +113,3 @@ export default function analysis(userOptions) {
     }
   })
 }
-
-
-
-

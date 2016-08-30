@@ -6,11 +6,13 @@
 if (module && module.hot) {
   module.hot.accept()
 }
+
 require('./index.less')
+
 export default function modal(data) {
-  // if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
-  //   console.error('Have not any hot news')
-  // }
+  if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
+    console.error('Have not any hot news')
+  }
   let { normalNews } = data.reduce((pre, data) => {
     const { normalNews } = pre
     const n = isNormalNews(data)
@@ -60,10 +62,10 @@ export default function modal(data) {
       dialog.hide()
     }
     if (target.classList.contains('news-title')) {
-      neteaseTracker(false, 'http://sps.163.com/func/?func=clickStat&spst=0&docid=' + target.href.match(/\/([A-Z0-9]{16})/)[1] + '&target=dailog_news', '', 'sps')
+      window.neteaseTracker && window.neteaseTracker(false, 'http://sps.163.com/func/?func=clickStat&spst=0&docid=' + target.href.match(/\/([A-Z0-9]{16})/)[1] + '&target=dailog_news', '', 'sps')
     }
     if (target.classList.contains('dialog-more')) {
-      neteaseTracker(false, 'http://sps.163.com/func/?func=clickStat&spst=0&target=dailog_more', '', 'sps')
+      window.neteaseTracker && window.neteaseTracker(false, 'http://sps.163.com/func/?func=clickStat&spst=0&target=dailog_more', '', 'sps')
       window.location.href = 'http://m.163.com/newsapp/applinks.html?from=share_dailog&s=sps'
     }
   })

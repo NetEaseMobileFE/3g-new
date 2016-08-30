@@ -4,6 +4,6 @@ if (module && module.hot) {
 
 require('./index.less')
 
-if (window.top != window.self) {
+if (window.top !== window.self) {
   document.body.classList.add('is-iframe')
 }
