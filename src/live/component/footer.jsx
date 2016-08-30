@@ -10,7 +10,6 @@ export default class Footer extends React.Component {
   componentDidMount() {
     NTES.Pubsub.subscribe('shareData', (shareData) => {
       this.shareData = shareData
-      console.log(shareData)
     })
   }
   componentWillUnmount() {

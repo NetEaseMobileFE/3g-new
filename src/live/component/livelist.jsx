@@ -180,7 +180,7 @@ export default class LiveList extends React.Component {
                   {
                     section.list.map((item, j) => {
                       count++
-                      return <LiveItem showDownload={count % 10 === 1 && count !== 1} item={item} key={item.id} ref={(i === 0 && j === 0) ? 'last' : ''} />
+                      return <LiveItem firstItem={j === 0 ? true : false} showDownload={count % 10 === 1 && count !== 1} item={item}  key={item.id} ref={(i === 0 && j === 0) ? 'last' : ''} />
                     })
                   }
                 </div>

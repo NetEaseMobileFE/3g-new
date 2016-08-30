@@ -31,6 +31,6 @@ export default class VideoPlayer extends React.Component {
     this.props.playVideo && this.props.playVideo(!this.props.playing)
   }
   render() {
-    return <video src={this.props.src} poster={this.props.poster} autoPlay={this.props.autoPlay} ref="video" onClick={this.handleClick} />
+    return <video src={this.props.src} poster={this.props.poster} autoPlay={this.props.autoPlay} className={this.props.show ? 'video' : 'shrink-video'} ref="video" onClick={this.handleClick} />
   }
 }

@@ -63,16 +63,27 @@ export default class Tab extends React.Component {
               })
             }
           </div>
-          <span className={'expand-button' + (this.props.header ? '': ' rotate')} onClick={this.props.expandHeader}></span>
+          <span className={this.props.boolMultiVideo ? (this.props.multiHeader ? 'expand-button' : 'expand-button rotate') : (this.props.header ? 'expand-button' : 'expand-button rotate')} onClick={this.props.boolMultiVideo ? this.props.expandMultiHeader : this.props.expandHeader}></span>
           <span className="underscore" ref="underscore"></span>
         </div>
         <div className="m-tab-content">
           {
+
             appFrame.map((item, i) => {
               return (
                 <div className={'tab-panel' + (active === i ? ' active' : '')}>
                   {
-                    item.url === 'live' && (liveData.nextPage < 0 ? <section className="live-not-start-tip">本次直播将于{this.getTime(liveData.startDate)}开始</section> : <LiveList liveData={liveData} active={active === i} />)
+                    item.url === 'live' && (liveData.nextPage < 0 ?
+                      <section className="live-not-start-tip">
+                        <div className="set-alert">
+                          <div className="title">————本次直播将于{this.getTime(liveData.startDate)}开始————</div>
+                          <div className="button" onClick={this.props.openNewsapp}>
+                            <div className="logo"></div>
+                            <div className="text">打开应用 开启提醒</div>
+                          </div>
+                        </div>
+                      </section> :
+                      <LiveList liveData={liveData} active={active === i} />)
                   }
                   {
                     item.url === 'chat' && <ChatList nuid={this.props.nuid} roomId={liveData.roomId} active={active === i} />

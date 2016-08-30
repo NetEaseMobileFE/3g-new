@@ -49,7 +49,10 @@ export default class NormalHeader extends React.Component {
     this.setState({ playing })
   }
   render() {
-    const { banner, video, mutilVideo, liveVideoFull, subtitle } = this.props.liveData
+    const { banner, video, mutilVideo, liveVideoFull, subtitle, endDate} = this.props.liveData
+    // console.log(endDate)
+    // alert(new Date(endDate))
+    // console.log(+new Date)
     let style = {}
     if (banner && banner.url) {
       style = {
@@ -80,23 +83,64 @@ export default class NormalHeader extends React.Component {
     if (this.state.playing) {
       className += ' playing'
     }
-    if (!this.props.show) {
-      className += ' expanded'
+    let cClassName = ''
+    if (this.props.show) {
+      switch (true){
+        case !!video:
+          cClassName = 'exp-video-height'
+          break
+        case !!mutilVideo:
+          cClassName = 'exp-multi-height'
+          break
+        default:
+          cClassName = 'exp-height'
+          break
+      }
+    } else {
+      switch (true){
+        case !!video:
+          cClassName = 'shrink-video-height'
+          break
+        case !!mutilVideo:
+          cClassName = 'shrink-multi-height'
+          break
+        default:
+          cClassName = 'shrink-height'
+          break
+      }
     }
-
+    let liveStatus
+    if(+(new Date(endDate.replace(/-/g,"/"))) - (+new Date()) < 0){
+      liveStatus = false
+    } else {
+      liveStatus = true
+    }
+    // alert(+(new Date(endDate)))
+    // alert((+new Date()))
+    // alert(+(new Date(endDate)) - (+new Date()))
     return (
-      <div className={!this.props.show ? '' : 'f-height'}>
+      <div className={cClassName}>
         <div className={className} style={style} onClick={this.click}>
           <div className="title ellipsis">{this.props.title}</div>
           <div className="subtitle">{this.props.subtitle}</div>
           {
-            (video || mutilVideo) ? <div className="video-wrap">
-              <VideoPlayer inline playVideo={this.playVideo} poster={videoInfo.img} playing={this.state.playing} src={videoInfo.src} />
-              <div className="user-count1">{this.props.userCount}人参与</div>
-            </div> : <div className="user-count2"><div className="logo">直播</div><div className="polt-NO">{this.props.userCount}人参与</div></div>
+            (video || mutilVideo) ?
+              <div className="video-wrap">
+                <VideoPlayer inline playVideo={this.playVideo} show = {this.props.show} poster={videoInfo.img} playing={this.state.playing} src={videoInfo.src} />
+                <div className="user-count video-style">
+                  <div className={`video-logo ${liveStatus ? 'red-color' : 'gray-color'}`}>
+                    <div className="video-text">{liveStatus ? '直播' : '回顾'}</div>
+                    <div className="video-icon"></div>
+                  </div>
+                  <div className="polt-NO">{this.props.userCount}人参与</div></div>
+              </div> :
+              <div className="user-count">
+                <div className="logo">{liveStatus ? '直播' : '回顾'}</div>
+                <div className="polt-NO">{this.props.userCount}人参与</div>
+              </div>
           }
           {
-            <div className={"multi-video" + (!mutilVideo ? ' hide' : '')} ref="videos">
+            <div className={"multi-video" + (!mutilVideo || !this.props.showMultiVideo ? ' u-hide' : '')} ref="videos">
               <div className="inner">
                 {
                   mutilVideo && mutilVideo.map((item, i) => {
@@ -109,7 +153,7 @@ export default class NormalHeader extends React.Component {
             </div>
           }
           {
-            !this.props.show ? <div className="open-look" onClick={this.props.expandHeader}><div className="play-btn"><span className="btn"></span>点击观看视频</div></div> : null
+             !mutilVideo && !this.props.show ? <div className="open-look" onClick={!!mutilVideo ? this.props.expandMulitHeader : this.props.expandHeader}><div className="play-btn"><span className="btn"></span>点击观看视频</div></div> : null
           }
         </div>
         {

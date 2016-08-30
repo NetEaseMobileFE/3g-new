@@ -1,4 +1,5 @@
 import ChatItem from './chatitem.jsx'
+import * as utils from './../../common/utils'
 
 export default class ChatList extends React.Component {
   constructor(props) {

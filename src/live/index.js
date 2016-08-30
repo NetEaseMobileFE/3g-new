@@ -1,6 +1,6 @@
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
-import testFooter from '../common/test-footer'
+// import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
@@ -156,9 +156,11 @@ analysis({
       this.state = {
         liveData: {},
         userCount: 0,
-        header: true
+        header: true,
+        multiHeader: true
       }
       this.expandHeader = this.expandHeader.bind(this)
+      this.expandMultiHeader = this.expandMultiHeader.bind(this)
       this.openNewsapp = this.openNewsapp.bind(this)
     }
     componentDidMount() {
@@ -231,7 +233,9 @@ analysis({
       this.Jsession = utils.getCookie('JSESSIONID-WYZBS')
     }
     expandHeader() {
+      console.log(11111)
       this.setState({ header: !this.state.header })
+      console.log(11111)
       // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
       const video = document.querySelector('video')
       if (video && video.paused && !this.state.header) {
@@ -240,19 +244,32 @@ analysis({
         video.pause()
       }
     }
+
+    expandMultiHeader(){
+      console.log(100000)
+      this.setState({ multiHeader: !this.state.multiHeader })
+      // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
+      const video = document.querySelector('video')
+      if (video && video.paused && !this.state.multiHeader) {
+        video.play()
+      } else {
+        video.pause()
+      }
+    }
     openNewsapp() {
       NTES.Pubsub.publish('openNewsapp', this.state.liveData.floatLayer.floatUrl)
     }
+
     render() {
       const params = utils.localParam().search
       const liveData = this.state.liveData
       const userCount = this.state.userCount
-
+      console.log(this.state.liveData)
       // const chatData = this.state.chatData
       if (!liveData.roomId) {
         return <div className="loading"></div>
       }
-      let header = <NormalHeader userCount={userCount} liveData={liveData} show={this.state.header} expandHeader={this.expandHeader}/>
+      let header = <NormalHeader userCount={userCount} liveData={liveData} show={this.state.header} showMultiVideo={this.state.multiHeader} expandHeader={this.expandHeader} />
       if (!!liveData.sportsApiUrl) {
         header = <NBAHeader userCount={userCount} url={liveData.sportsApiUrl} show={this.state.header} gameInfo={liveData.messages[0]} started={liveData.nextPage >= 0} />
       }
@@ -262,7 +279,7 @@ analysis({
           {false && !utils.isNewsapp && !this.state.liveData.video && !this.state.liveData.mutilVideo && <Nav /> }
           {params.spss === 'imoney' && !utils.isNewsapp && <IMoney />}
           {header}
-          <Tab nuid={this.nuid} liveData={liveData} expandHeader={this.expandHeader} header={this.state.header} />
+          <Tab nuid={this.nuid} liveData={liveData} expandHeader={this.expandHeader} openNewsapp={this.openNewsapp} header={this.state.header} expandMultiHeader={this.expandMultiHeader} multiHeader={this.state.multiHeader} boolMultiVideo={!!this.state.liveData.mutilVideo} />
           <footer className="footer-placeholder u-hide-in-newsapp" />
         </div>
       )
@@ -280,7 +297,7 @@ analysis({
           {<Newsapp roomId={this.props.roomId} show={!utils.isNewsapp && !liveData.video && !liveData.mutilVideo} />}
           {content}
           {
-            liveData.floatLayer && +liveData.floatLayer.floatType !== 0 && <a onClick={this.openNewsapp} className={"m-float-icon" + ` type${liveData.floatLayer.floatType}`}onClick={this.openNewsapp} />
+            liveData.floatLayer && +liveData.floatLayer.floatType !== 0 && <a onClick={this.openNewsapp} className={"m-float-icon" + ` type${liveData.floatLayer.floatType}`} onClick={this.openNewsapp} />
           }
           <Footer isFull={liveData.video && liveData.video.videoFull === 'on'} />
           <Carousel />

@@ -3,13 +3,14 @@ import Video from './video.jsx'
 import Album from './album.jsx'
 import News from './news.jsx'
 import NBAScore from './nbascore.jsx'
+import Quote from './quote.jsx'
 
 export default class LiveItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       newest: props.item.newest,
-      topSpread: true
+      topSpread: false
     }
     this.openNewsapp = this.openNewsapp.bind(this)
     this.avatarError = this.avatarError.bind(this)
@@ -52,6 +53,9 @@ export default class LiveItem extends React.Component {
     }
     if(this.state.newest){
       className.push('newest')
+    }
+    if(this.props.firstItem){
+      className.push('f-item')
     }
     // 内容
     let content = item.msg.content || ''
@@ -101,6 +105,7 @@ export default class LiveItem extends React.Component {
     if (!avatar || avatar === 'null') {
       avatar = 'http://img4.cache.netease.com/utf8/3g/touch/images/live2.png'
     }
+    // 时间线
     const currentTime = (new Date()).getTime()
     let pastTime = (currentTime - new Date(item.time).getTime()) / (1000*60)
     let timeText = ''
@@ -110,16 +115,9 @@ export default class LiveItem extends React.Component {
       timeText = NTES.formatTime(item.time).time
     }
     return <article className={className.join(' ')}>
-      { !!this.props.top ?
+      {
         <div className="timeline">
-          <div className="time-text">刚刚</div>
-          <div className="circle">
-            <div className="circle-inner"></div>
-          </div>
-          <div className="line"></div>
-        </div> :
-        <div className="timeline">
-          <div className="time-text">{timeText}</div>
+          <div className="time-text">{!!this.props.top ? '刚刚' : timeText}</div>
           <div className="circle">
             <div className="circle-inner"></div>
           </div>
@@ -129,7 +127,6 @@ export default class LiveItem extends React.Component {
       <header>
         <img className="avatar" src={avatar} onError={this.avatarError}/>
         <span className="name">{item.commentator.name}</span>
-        <span className="time"></span>
         { !!this.props.top && <div className="logo"></div> }
       </header>
       <div className={!!this.props.top && this.state.topSpread ? "content spread-height" : "content"}>
@@ -138,7 +135,7 @@ export default class LiveItem extends React.Component {
         {nbaScore}{quote}{(this.props.showDownload || quote) && <a className="down-link" onClick={this.openNewsapp}>打开网易新闻客户端，与主播互动上榜 &gt;&gt;</a>}
       </div>
       {!!this.props.top && <div className='control-height' onClick={this.controlHeight}>
-        <div className="logo">{ this.state.topSpread ? '展开' : '收起' }</div>
+        <div className="logo"><span className={this.state.topSpread ? 'expand-button' : 'expand-button rotate'}></span><span>{this.state.topSpread ? '收起' :'展开'}</span></div>
       </div>}
     </article>
   }
