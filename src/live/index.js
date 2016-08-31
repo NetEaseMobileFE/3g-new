@@ -1577,8 +1577,14 @@ analysis({
 
         {
           // 参与人数统计
-          const form = this.refs.form
-          form.submit()
+          utils.ajax({
+            method: 'POST',
+            url: `http://data.live.126.net/partake/incr?User_U=${this.nuid}&User_D=${this.Jsession}`,
+            data: {
+              roomid: roomId,
+              source: 'wap'
+            }
+          })
         }
       }
       utils.importJs('http://data.live.126.net/liveAll/' + roomId + '.json?callback=firstbloodCallback')
@@ -1656,13 +1662,6 @@ analysis({
           <Footer isFull={liveData.video && liveData.video.videoFull === 'on'} />
           <Carousel />
           <Mask />
-          <div className="u-hide">
-            <form ref="form" method="POST" target="post" action={`http://data.live.126.net/partake/incr?User_U=${this.nuid}&User_D=${this.Jsession}`}>
-              <input type="hidden" name="roomid" value={liveData.roomId} />
-              <input type="hidden" name="source" value="wap" />
-            </form>
-            <iframe name="post" id="post"></iframe>
-          </div>
           {utils.isNewsapp && <NewsappShare />}
         </section>
       )
