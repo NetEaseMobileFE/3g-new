@@ -21,7 +21,7 @@ export default function post(postData) {
 
   window.hotList = (data) => {
     window.hotList = null
-    if (!isOwnEmpty(data.hotPosts) && data.hotPosts.length > 2) {
+    if (!isOwnEmpty(data.hotPosts) && data.hotPosts.length > 1) {
       document.querySelector('.m-comment').style.display = 'block'
     }
     let html = ''

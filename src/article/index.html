@@ -54,7 +54,7 @@
               <h1 class="article-title">${data.title}</h1>
               <h2>
                 <span class="source">${data.source}</span>
-                <span class="time">${data.ptime}</span>
+                <span class="time">${data.ptime.slice(5, -3)}</span>
                 <a class="js-reply-link replyLink" href="#comment">${data.replyCount ? ('跟贴（' + data.replyCount + '）条') : ''}</a>
               </h2>
               <div class="article-digest">${data.digest}</div>
@@ -66,6 +66,8 @@
         </div>
       </div>
       <div class="m-comment">
+      </div>
+      <div class="m-relative">
       </div>
       <div class="m-middle-share">
       </div>

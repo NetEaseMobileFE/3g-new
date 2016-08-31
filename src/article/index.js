@@ -7,6 +7,7 @@ import post from '../common/post'
 // import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import modal from '../common/modal'
+import relativeNews from '../common/relative-news'
 import testFooter from '../common/test-footer'
 import testRedpacket from '../common/test-redpacket'
 import advert from '../common/advert'
@@ -153,6 +154,12 @@ lazyload({
       votecount: replyCount
     })
   })(boardid, docid)
+}
+
+// 相关新闻
+const relative = window.RELATIVE_NEWS
+if (!utils.isOwnEmpty(relative) && relative.length > 2) {
+  document.querySelector('.m-relative').innerHTML = relativeNews(relative)
 }
 
 // 中间分享
