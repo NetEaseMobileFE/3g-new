@@ -34,6 +34,7 @@ export default class Tab extends React.Component {
   }
 
   getTime(time) {
+    console.log(time)
     const t = +(new Date(time.replace(/-/g,"/")))
     if (t - Date.now() < 1000 * 60 * 60 * 24){
       return `今天${time.slice(11, 16)}`
@@ -47,6 +48,7 @@ export default class Tab extends React.Component {
   render() {
     const active = this.state.active
     const liveData = this.props.liveData
+    console.log(liveData)
     let appFrame = [{ title : '直播', url: 'live' }]
     if (liveData.chatRoomTrigger !== 'off') {
       appFrame.push({ title : '聊天室', url: 'chat' })
@@ -73,7 +75,7 @@ export default class Tab extends React.Component {
               return (
                 <div className={'tab-panel' + (active === i ? ' active' : '')}>
                   {
-                    item.url === 'live' && (liveData.nextPage < 0 ?
+                    item.url === 'live' && (+(new Date(liveData.startDate.replace(/-/g,"/"))) > +(new Date())?
                       <section className="live-not-start-tip">
                         <div className="set-alert">
                           <div className="title">————本次直播将于{this.getTime(liveData.startDate)}开始————</div>
@@ -83,7 +85,7 @@ export default class Tab extends React.Component {
                           </div>
                         </div>
                       </section> :
-                      <LiveList liveData={liveData} active={active === i} />)
+                      liveData.nextPage > 0 && <LiveList liveData={liveData} active={active === i} />)
                   }
                   {
                     item.url === 'chat' && <ChatList nuid={this.props.nuid} roomId={liveData.roomId} active={active === i} />

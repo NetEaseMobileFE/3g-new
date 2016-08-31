@@ -1,6 +1,5 @@
 import analysis from '../common/analysis'
 import * as utils from '../common/utils'
-// import testFooter from '../common/test-footer'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
@@ -164,7 +163,6 @@ analysis({
       this.openNewsapp = this.openNewsapp.bind(this)
     }
     componentDidMount() {
-
       const roomId = this.props.roomId
       if (utils.isNewsapp) {
         window.location.href = 'newsapp://live/' + roomId
@@ -206,11 +204,11 @@ analysis({
           })
         }
 
-        {
-          // 参与人数统计
-          const form = this.refs.form
-          form.submit()
-        }
+        // {
+        //   // 参与人数统计
+        //   const form = this.refs.form
+        //   form.submit()
+        // }
       }
       utils.importJs('http://data.live.126.net/liveAll/' + roomId + '.json?callback=firstbloodCallback')
 
@@ -231,11 +229,24 @@ analysis({
       }
       // 反作弊防刷
       this.Jsession = utils.getCookie('JSESSIONID-WYZBS')
+
+      {
+        // 参与人数统计
+        utils.ajax({
+          method: 'POST',
+          url: `http://data.live.126.net/partake/incr?User_U=${this.nuid}&User_D=${this.Jsession}`,
+          data: {
+            roomid: roomId,
+            source: 'wap'
+          }
+        })
+      }
+
     }
+
     expandHeader() {
-      console.log(11111)
+      console.log(1)
       this.setState({ header: !this.state.header })
-      console.log(11111)
       // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
       const video = document.querySelector('video')
       if (video && video.paused && !this.state.header) {
@@ -246,15 +257,7 @@ analysis({
     }
 
     expandMultiHeader(){
-      console.log(100000)
       this.setState({ multiHeader: !this.state.multiHeader })
-      // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
-      const video = document.querySelector('video')
-      if (video && video.paused && !this.state.multiHeader) {
-        video.play()
-      } else {
-        video.pause()
-      }
     }
     openNewsapp() {
       NTES.Pubsub.publish('openNewsapp', this.state.liveData.floatLayer.floatUrl)
@@ -302,13 +305,6 @@ analysis({
           <Footer isFull={liveData.video && liveData.video.videoFull === 'on'} />
           <Carousel />
           <Mask />
-          <div className="u-hide">
-            <form ref="form" method="POST" target="post" action={`http://data.live.126.net/partake/incr?User_U=${this.nuid}&User_D=${this.Jsession}`}>
-              <input type="hidden" name="roomid" value={liveData.roomId} />
-              <input type="hidden" name="source" value="wap" />
-            </form>
-            <iframe name="post" id="post"></iframe>
-          </div>
           {utils.isNewsapp && <NewsappShare />}
         </section>
       )

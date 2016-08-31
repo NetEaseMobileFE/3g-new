@@ -135,7 +135,7 @@ export default class LiveItem extends React.Component {
         {nbaScore}{quote}{(this.props.showDownload || quote) && <a className="down-link" onClick={this.openNewsapp}>打开网易新闻客户端，与主播互动上榜 &gt;&gt;</a>}
       </div>
       {!!this.props.top && <div className='control-height' onClick={this.controlHeight}>
-        <div className="logo"><span className={this.state.topSpread ? 'expand-button' : 'expand-button rotate'}></span><span>{this.state.topSpread ? '收起' :'展开'}</span></div>
+        <div className="logo"><span className={this.state.topSpread ? 'expand-button rotate' : 'expand-button'}></span><span>{!this.state.topSpread ? '收起' :'展开'}</span></div>
       </div>}
     </article>
   }

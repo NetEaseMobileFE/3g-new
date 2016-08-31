@@ -5,11 +5,15 @@ export default class NormalHeader extends React.Component {
     super(props)
     this.state = {
       playing: false,
-      active: 0
+      active: 0,
+      boolPlayVideo: false,
+      displayVideoShade: false
     }
     this.openNewsapp = this.openNewsapp.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.playVideo = this.playVideo.bind(this)
+    this.continuePlayVideo = this.continuePlayVideo.bind(this)
+    this.displayVideoShade = this.displayVideoShade.bind(this)
   }
   componentDidMount() {
     this.refs.videos.addEventListener('touchmove', (e) => {
@@ -48,11 +52,27 @@ export default class NormalHeader extends React.Component {
   playVideo(playing) {
     this.setState({ playing })
   }
+
+  continuePlayVideo(){
+    this.setState({
+      displayVideoShade: false
+    })
+    const video = document.querySelector('video')
+    if (video && video.paused && !this.state.header) {
+      video.play()
+    } else {
+      video.pause()
+    }
+  }
+
+  displayVideoShade(){
+    this.setState({
+      displayVideoShade: true
+    })
+  }
   render() {
     const { banner, video, mutilVideo, liveVideoFull, subtitle, endDate} = this.props.liveData
-    // console.log(endDate)
-    // alert(new Date(endDate))
-    // console.log(+new Date)
+    console.log('mutilVideo: ',mutilVideo)
     let style = {}
     if (banner && banner.url) {
       style = {
@@ -84,7 +104,8 @@ export default class NormalHeader extends React.Component {
       className += ' playing'
     }
     let cClassName = ''
-    if (this.props.show) {
+    const boolOfexpand = !!mutilVideo ? this.props.showMultiVideo : this.props.show
+    if (boolOfexpand) {
       switch (true){
         case !!video:
           cClassName = 'exp-video-height'
@@ -115,6 +136,7 @@ export default class NormalHeader extends React.Component {
     } else {
       liveStatus = true
     }
+    console.log(endDate)
     // alert(+(new Date(endDate)))
     // alert((+new Date()))
     // alert(+(new Date(endDate)) - (+new Date()))
@@ -126,7 +148,19 @@ export default class NormalHeader extends React.Component {
           {
             (video || mutilVideo) ?
               <div className="video-wrap">
-                <VideoPlayer inline playVideo={this.playVideo} show = {this.props.show} poster={videoInfo.img} playing={this.state.playing} src={videoInfo.src} />
+                {
+                  !utils.isWIFI && this.state.displayVideoShade &&
+                  <div className="wifi-alert" onClick={this.continuePlayVideo}>
+                    <div className="inner">
+                      <div className="text">
+                        <div>正在使用非Wi-Fi网络</div>
+                        <div>播放将产生流量费用</div>
+                      </div>
+                      <div className="btn">继续播放</div>
+                    </div>
+                  </div>
+                }
+                <VideoPlayer inline playVideo={this.playVideo} show = {this.props.show} poster={videoInfo.img} playing={this.state.playing} src={videoInfo.src} displayVideoShade={this.displayVideoShade} />
                 <div className="user-count video-style">
                   <div className={`video-logo ${liveStatus ? 'red-color' : 'gray-color'}`}>
                     <div className="video-text">{liveStatus ? '直播' : '回顾'}</div>
@@ -153,7 +187,7 @@ export default class NormalHeader extends React.Component {
             </div>
           }
           {
-             !mutilVideo && !this.props.show ? <div className="open-look" onClick={!!mutilVideo ? this.props.expandMulitHeader : this.props.expandHeader}><div className="play-btn"><span className="btn"></span>点击观看视频</div></div> : null
+            (video || mutilVideo) && !this.props.show ? <div className="open-look" onClick={!!mutilVideo ? this.props.expandMulitHeader : this.props.expandHeader}><div className="play-btn"><span className="btn"></span>点击观看视频</div></div> : null
           }
         </div>
         {

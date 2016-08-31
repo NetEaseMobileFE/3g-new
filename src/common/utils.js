@@ -10,6 +10,7 @@ export const isWeixin = navigator.userAgent.match(/micromessenger/ig)
 export const isWeibo = navigator.userAgent.match(/weibo/ig)
 export const isYixin = navigator.userAgent.match(/yixin/ig)
 export const isQQ = navigator.userAgent.match(/qq/gi)
+export let isWIFI
 
 export function localParam(search, hash) {
   const _search = search || window.location.search
@@ -190,3 +191,33 @@ export const assign = Object.assign || function(target) {
   return target
 }
 
+// 判断是否WIFI环境
+{
+  isWIFI = true;
+  const ua = window.navigator.userAgent;
+  const con = window.navigator.connection;
+// 如果是微信
+  if (/MicroMessenger/.test(ua)) {
+    // 如果是微信6.0以上版本，用UA来判断
+    if (/NetType/.test(ua)) {
+      if (ua.match(/NetType\/WIFI/ig)[0] !== 'NetType/WIFI') {
+        isWIFI = false;
+      }
+      // 如果是微信6.0以下版本，调用微信私有接口WeixinJSBridge
+    } else {
+      document.addEventListener("WeixinJSBridgeReady", function onBridgeReady() {
+        WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+          if (e.err_msg != "network_type:wifi") {
+            isWIFI = false;
+          }
+        });
+      });
+    }
+    // 如果支持navigator.connection
+  } else if (con) {
+    var network = con.type;
+    if (network != "wifi" && network != "2" && network != "unknown") {  // unknown是为了兼容Chrome Canary
+      isWIFI = false;
+    }
+  }
+}
