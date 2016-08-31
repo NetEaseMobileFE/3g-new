@@ -7,10 +7,8 @@ if (module && module.hot) {
   module.hot.accept()
 }
 require('./index.less')
+
 export default function modal(data) {
-  // if (!data.T1348647909107 && !data.T1348647909107.length > 0) {
-  //   console.error('Have not any hot news')
-  // }
   let { normalNews } = data.reduce((pre, data) => {
     const { normalNews } = pre
     const n = isNormalNews(data)
