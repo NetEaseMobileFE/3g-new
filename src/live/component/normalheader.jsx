@@ -73,6 +73,7 @@ export default class NormalHeader extends React.Component {
   render() {
     const { banner, video, mutilVideo, liveVideoFull, subtitle, endDate} = this.props.liveData
     console.log('mutilVideo: ',mutilVideo)
+    console.log(banner)
     let style = {}
     if (banner && banner.url) {
       style = {
@@ -142,6 +143,7 @@ export default class NormalHeader extends React.Component {
     // alert(+(new Date(endDate)) - (+new Date()))
     return (
       <div className={cClassName}>
+        <div className="img-bg"></div>
         <div className={className} style={style} onClick={this.click}>
           <div className="title ellipsis">{this.props.title}</div>
           <div className="subtitle">{this.props.subtitle}</div>
@@ -166,9 +168,10 @@ export default class NormalHeader extends React.Component {
                     <div className="video-text">{liveStatus ? '直播' : '回顾'}</div>
                     <div className="video-icon"></div>
                   </div>
-                  <div className="polt-NO">{this.props.userCount}人参与</div></div>
+                  <div className="polt-NO">{this.props.userCount}人参与</div>
+                </div>
               </div> :
-              <div className="user-count">
+              <div className="user-count img-shade">
                 <div className="logo">{liveStatus ? '直播' : '回顾'}</div>
                 <div className="polt-NO">{this.props.userCount}人参与</div>
               </div>

@@ -36,13 +36,14 @@ export default class LiveItem extends React.Component {
     ReactDOM.findDOMNode(this).querySelector('.avatar').src = 'http://img4.cache.netease.com/utf8/3g/touch/images/live2.png'
   }
 
-  controlHeight(){
+  controlHeight() {
     this.setState({
       topSpread: !this.state.topSpread
     })
   }
 
   render() {
+    console.log(this.state.topSpread)
     let className = ['live-list-item']
     const item = this.props.item
     if (this.props.top) {
@@ -134,9 +135,12 @@ export default class LiveItem extends React.Component {
         {images}{video}{album}{news}
         {nbaScore}{quote}{(this.props.showDownload || quote) && <a className="down-link" onClick={this.openNewsapp}>打开网易新闻客户端，与主播互动上榜 &gt;&gt;</a>}
       </div>
-      {!!this.props.top && <div className='control-height' onClick={this.controlHeight}>
-        <div className="logo"><span className={this.state.topSpread ? 'expand-button rotate' : 'expand-button'}></span><span>{!this.state.topSpread ? '收起' :'展开'}</span></div>
-      </div>}
+      {
+        !!this.props.top &&
+        <div className='control-height' onClick={this.controlHeight}>
+          <div className="logo"><span className={this.state.topSpread ? 'expand-button rotate' : 'expand-button'}></span><span>{!this.state.topSpread ? '收起' : '展开'}</span></div>
+        </div>
+      }
     </article>
   }
 }

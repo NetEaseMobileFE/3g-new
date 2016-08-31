@@ -629,7 +629,16 @@ html, body, .container{
   }
 }
 .exp-height {
+  position: relative;
   min-height: 2rem;
+  .img-bg {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+    height: 1.4rem;
+    background: url('./../img/img-shade.png') no-repeat center center;
+    background-size: 7.5rem 1.4rem;
+  }
 }
 .exp-video-height {
   min-height: 5.05rem;
@@ -1041,6 +1050,7 @@ html, body, .container{
   .border(border-bottom, 1px, solid, #dfdfdf);
   width: 7.05rem;
   margin: .71rem auto 0;
+  padding-bottom: .2rem;
   border: 1px solid #e5e8ef;
   //overflow: hidden;
   background: #ffffff;
