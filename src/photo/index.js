@@ -7,6 +7,7 @@ import post from '../common/post'
 // import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import testFooter from '../common/test-footer'
+import footer from '../common/footer'
 import redpacket from '../common/redpacket'
 import '../common/is-newsapp'
 import '../common/is-iframe'
@@ -273,9 +274,10 @@ analysis({
     const mainBody = document.querySelector('.main-body')
     articleContent.insertAdjacentHTML('afterend', more({ origin: 'pid' }))
     const showAllArticle = document.querySelector('.js-all-article')
-    showAllArticle.addEventListener('click', () => {
+    showAllArticle.addEventListener('click', (e) => {
+      const that = e.currentTarget
       mainBody.style.maxHeight = 'none'
-      this.parentElement.style.display = 'none'
+      that.parentElement.style.display = 'none'
     })
   }
 
@@ -296,9 +298,38 @@ utils.ajax({
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({
-  pid: modelid
-}))
+// 底部ab测试
+{
+  const num = Math.random()
+  const ntesNuid = utils.getCookie('_ntes_nuid') || ''
+  let test = localStorage.getItem('_footer_test') || ''
+  let flag = '0'
+  if (test.slice(0, -1) === ntesNuid) {
+    flag = test.slice(-1, test.length)
+  } else if (utils.isAndroid && utils.isWeixin) {
+    if (num < 0.5) {
+      localStorage.setItem('_footer_test', `${ntesNuid}a`)
+    } else {
+      localStorage.setItem('_footer_test', `${ntesNuid}b`)
+    }
+  } else {
+    localStorage.setItem('_footer_test', `${ntesNuid}0`)
+  }
+
+  if (+flag === 0 || flag === 'b') {
+    document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({
+      pid: modelid
+    }))
+  } else {
+    document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
+      pid: modelid
+    }))
+  }
+
+  if (flag === 'b') {
+    ('.g-banner-footer a').dataset.stat = 'o-pid-b-footer'
+  }
+}
 
 // 红包
 redpacket()
