@@ -177,7 +177,9 @@ if (!utils.isOwnEmpty(relative) && relative.length > 2) {
       `
     }
   })
-  document.querySelector('.m-relative').innerHTML = `<div class="u-title">相关新闻</div><ul class="news-list">${html}</ul>`
+  const relativeElm = document.querySelector('.m-relative')
+  relativeElm.style.display = 'block'
+  relativeElm.innerHTML = `<div class="u-title">相关新闻</div><ul class="news-list">${html}</ul>`
 }
 
 // 中间分享
