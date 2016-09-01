@@ -38,9 +38,6 @@
   <script>${globalVariable || ''}</script>
 </head>
 <body ontouchstart="">
-  <script>
-    (function(e,d){var f=e.documentElement,b="orientationchange" in window?"orientationchange":"resize",a=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream,c=function(){var g=f.clientWidth;if(!g){return}if(g>=750){g=750;e.body.style.width=750+"px"}else{e.body.style.width=g+"px"}f.style.fontSize=100*(g/750)+"px";f.dataset.width=g;f.dataset.percent=100*(g/750)};c();e.documentElement.classList.add("iosx"+d.devicePixelRatio);if(!e.addEventListener){return}d.addEventListener(b,c,false)})(document,window);
-  </script>
   <iframe id="iframe" style="display: none !important;"></iframe>
   <img src="http://img1.cache.netease.com/travel/2014/7/22/20140722172931b2127.png" style="display: none!important;">
   <div class="js-analysis">
@@ -54,7 +51,7 @@
               <h1 class="article-title">${data.title}</h1>
               <h2>
                 <span class="source">${data.source}</span>
-                <span class="time">${data.ptime}</span>
+                <span class="time">${data.ptime.slice(5, -3)}</span>
                 <a class="js-reply-link replyLink" href="#comment">${data.replyCount ? ('跟贴（' + data.replyCount + '）条') : ''}</a>
               </h2>
               <div class="article-digest">${data.digest}</div>
@@ -66,6 +63,8 @@
         </div>
       </div>
       <div class="m-comment">
+      </div>
+      <div class="m-relative">
       </div>
       <div class="m-middle-share">
       </div>

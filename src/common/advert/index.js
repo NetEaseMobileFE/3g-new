@@ -1,4 +1,4 @@
-/*** 广告 ***/
+// 广告
 
 if (module && module.hot) {
   module.hot.accept()
@@ -6,7 +6,7 @@ if (module && module.hot) {
 require('./index.less')
 
 export default function advert(data) {
-  const { url, imgsrc, digest} = data
+  const { url, imgsrc, digest } = data
   return `
     <a href="${url}" class="advert">
       <img src="${imgsrc}">
@@ -14,5 +14,3 @@ export default function advert(data) {
     </a>
   `
 }
-
-

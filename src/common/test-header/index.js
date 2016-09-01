@@ -9,13 +9,10 @@ if (module && module.hot) {
 require('./index.less')
 
 export default function testHeadder(data) {
-  let param = ''
-  let stat = ''
-  for (let item in data) {
-    const id = data[item]
-    param = id ? `${item}=${id}&s=sps` : 's=sps'
-    stat = `o-${item}-banner-header`
-  }
+  const key = Object.keys(data)[0]
+  const id = data[key]
+  const param = id ? `${key}=${id}&s=sps` : 's=sps'
+  const stat = `o-${key}-banner-footer`
   const isIos9 = navigator.userAgent.match(/iPhone OS 9/i)
 
   return `

@@ -1,75 +1,31 @@
-.g-footer {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
+.border(@bdv, @w, @s, @c){
+  @{bdv}: @w @s @c;
+  .iosx2 &{
+    @{bdv}: @w/2 @s @c;
+  }
+  .iosx3 &{
+    @{bdv}: @w/2.8 @s @c;
+  }
+}
+.g-test-footer {
   position: fixed;
-  z-index: 2;
   bottom: 0;
   left: 50%;
-  padding: .14rem .25rem;
-  width: 7.5rem;
+  z-index: 99998;
   margin-left: -3.75rem;
-  background: #fff;
+  width: 7.5rem;
+  height: 1rem;
+  background: url(../../img/red-bottom-banner.png) center center no-repeat;
+  background-color: #fff;
+  background-size: 7.5rem 1rem;
   will-change: transform;
-  /*transform: translateX(-50%);*/
+  .border(border-top,1px,solid,rgba(0,0,0,0.1));
   &.ios9 {
-    background-color:rgba(255, 255, 255, 0.5);
+    background-color:rgba(255, 255, 255, 0.8);
     -webkit-backdrop-filter:saturate(180%) blur(20px);
   }
-  .u-open-newsapp {
-    display: flex;
-    width: 2.4rem;
-    color: #4a4645;
-    font-size: .26rem;
-    line-height: .71rem;
-    text-indent: .15rem;
-  }
-  .m-share-home-icon {
+  a {
     display: block;
-    width: .71rem;
-    height: .71rem;
-    background-image: url(../../img/new-logo.png);
-    background-size: cover;
-    border-radius: .1rem;
-  }
-  .m-share {
-    display: flex;
-    flex-flow: row nowrap;
-    padding: .1rem 0;
-    line-height: .48rem;
-    .share {
-      font-size: .26rem;
-      color: #898989;
-    }
-    a, span {
-      display: block;
-    }
-    a {
-      background: url(../../img/share.png) no-repeat;
-      background-size: .48rem 1.93rem;
-      margin-left: .4rem;
-    }
-    .u-sina {
-      margin-left: .2rem;
-      width: .48rem;
-      height: .48rem;
-      background-position: 0 -.03rem;
-    }
-    .u-weixin {
-      display: none;
-      width: .48rem;
-      height: .4rem;
-      background-position: 0 -1.48rem;
-    }
-    .u-qqzone {
-      width: .45rem;
-      height: .48rem;
-      background-position: 0 -.51rem;
-    }
-    .u-yixin {
-      width: .44rem;
-      height: .48rem;
-      background-position: 0 -.97rem;
-    }
+    height: inherit;
   }
 }

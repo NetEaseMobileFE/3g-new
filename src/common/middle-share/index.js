@@ -2,11 +2,12 @@
  * 中间分享
  * [article、photo、video] 调用
  */
+require('./index.less')
 
 if (module && module.hot) {
   module.hot.accept()
 }
-require('./index.less')
+
 export default function middleShare(data) {
   const { origin } = data
   return `
@@ -21,5 +22,3 @@ export default function middleShare(data) {
     </div>
   `
 }
-
-

@@ -1,7 +1,3 @@
-if (module && module.hot) {
-  module.hot.accept()
-}
-
 import analysis from '../common/analysis'
 import loading from '../common/loading'
 import share from '../common/share'
@@ -11,12 +7,17 @@ import post from '../common/post'
 // import middleShare from '../common/middle-share'
 import popular from '../common/popular'
 import testFooter from '../common/test-footer'
+import footer from '../common/footer'
 import redpacket from '../common/redpacket'
 import '../common/is-newsapp'
 import '../common/is-iframe'
 
 require('../common/reset.css')
 require('./index.less')
+
+if (module && module.hot) {
+  module.hot.accept()
+}
 
 const search = utils.localParam().search
 let channelid = search.channelid || '0096'
@@ -32,10 +33,10 @@ const modelid = `${channelid}_${setid}`
 loading()
 
 // mapp and sps analysis
-analysis({ 
+analysis({
   spst: 3,
-  type: "article",
-  modelid: modelid
+  type: 'article',
+  modelid
 })
 
 // body content
@@ -123,167 +124,164 @@ analysis({
   })()
 
   let number = 10
-  {
-    window.photosetinfo = (data) => {
-      window.photosetinfo = null
-      if(!data) return
-      const docid = data.postid
-      const board = data.boardid
-      const photosData = data.photos
+  window.photosetinfo = (data) => {
+    window.photosetinfo = null
+    if (!data) return
+    const docid = data.postid
+    const board = data.boardid
+    const photosData = data.photos
 
-      let photoScroll = null
-      // share component
-      {
-        const spss = search.s || 'newsapp'
-        let url = window.location.origin + location.pathname + '?s=newsapp'
-        let w = +search.w
-        if (w) {
-          w++
-          url += '&w=' + w
-        } else {
-          url += '&w=2'
-        }
-        share({
-          title: data.setname || document.title,
-          desc: data.desc || '',
-          url: url,
-          img: data.cover || 'http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png',
-          statistics: {
-            spst: 3,
-            modelid: modelid,
-            spss: spss,
-            spsw: w
-          }
-        })
+    let photoScroll = null
+    // share component
+    {
+      const spss = search.s || 'newsapp'
+      let url = window.location.origin + location.pathname + '?s=newsapp'
+      let w = +search.w
+      if (w) {
+        w++
+        url += '&w=' + w
+      } else {
+        url += '&w=2'
       }
-
-      document.addEventListener('click', (e) => {
-        const wrap = document.querySelector('.m-photoset')
-        if (wrap.classList.contains('show')) {
-          wrap.classList.remove('show')
-          document.body.removeEventListener('touchstart', RENDER.preventDefault, false)
-        } else {
-          if (!e.target.classList.contains('img')) return
-          window.location.hash = 'img'
-          wrap.classList.add('show')
-          document.body.addEventListener('touchstart', RENDER.preventDefault, false)
-          let imgIndex = +e.target.dataset.index || 0
-          if (wrap.dataset.loaded == 0) {
-            //加载并显示图集
-            wrap.dataset.loaded = 1
-            let html = ''
-            photosData.forEach((item, i) => {
-              html += utils.simpleParse(TPL.photoset, {src: item.imgurl})
-            })
-            wrap.querySelector('ul').innerHTML = html
-            wrap.querySelector('ul').style.width = `${750 * photosData.length}px`
-            
-            photoScroll = new IScroll('.m-photoset', {
-              scrollX: true,
-              scrollY: false,
-              momentum: false,
-              snap: 'li',
-              snapSpeed: 600,
-              snapThreshold: 0.08,
-              click: true,
-              preventDefault: false
-            })
-            photoScroll.on('scrollEnd', (e) => {
-              const cp = photoScroll.currentPage.pageX
-              const imgs = wrap.querySelectorAll('img')
-              if (imgs[cp] && !imgs[cp].src) {
-                imgs[cp].src = imgs[cp].dataset.src
-              }
-              if (imgs[cp + 1] && !imgs[cp + 1].src) {
-                imgs[cp + 1].src = imgs[cp + 1].dataset.src
-              }
-              if (imgs[cp - 1] && !imgs[cp - 1].src) {
-                imgs[cp - 1].src = imgs[cp - 1].dataset.src
-              }
-            })
-          }
-
-          photoScroll.goToPage(imgIndex, 0, 0)
-          const imgs = wrap.querySelectorAll('img')
-
-          imgs[imgIndex].src = imgs[imgIndex].dataset.src
-          if (imgIndex != 0) {
-            imgs[imgIndex - 1].src = imgs[imgIndex - 1].dataset.src
-          }
-          imgs[imgIndex + 1].src = imgs[imgIndex + 1].dataset.src
+      share({
+        title: data.setname || document.title,
+        desc: data.desc || '',
+        url,
+        img: data.cover || 'http://img6.cache.netease.com/utf8/3g/touch/images/share-logo.png',
+        statistics: {
+          spst: 3,
+          modelid,
+          spss,
+          spsw: w
         }
-      }, false)
-
-      // 禁止并改变安卓的物理返回事件
-      XBack.listen(function() {
-        window.location.hash = ''
-        document.querySelector('.m-photoset').classList.remove('show')
-        document.body.removeEventListener('touchstart', RENDER.preventDefault, false)
-      })
-
-      document.querySelector('.m-loading').style.display = 'none'
-
-      // 跟帖
-      if (docid && board) {
-        document.querySelector('.m-comment').style.display = 'block'
-        // 获取跟帖数
-        utils.importJs(`http://comment.api.163.com/api/json/thread/total/${board}/${docid}?jsoncallback=getPosts`)
-
-        window.getPosts = (data) => {
-          window.getPosts = null
-          const tiecount = document.querySelector('.js-tiecount')
-          const comment = document.querySelector('.comment-list')
-          if (tiecount) {
-            tiecount.textContent = data.votecount || 0
-            // 获取跟帖
-            post({ 
-              boardid: board, 
-              params: `postid=${docid}&pid=${modelid}`, 
-              votecount: data.votecount || 0
-            })
-          }
-        }
-      }
-
-      let photosHtml = RENDER.getHtml(photosData, 0, number)
-      photosHtml = utils.simpleParse(TPL.content, {
-        setname: data.setname, 
-        source: data.source, 
-        time: data.datatime, 
-        content: photosHtml
-      })
-
-      if (photosData.length > number) {
-        document.querySelector('.article-content').insertAdjacentHTML('afterend', '<div class="expanded"><a class="load-more" data-page="1">加载更多</a></div>')
-        const loadMore = document.querySelector('.load-more')
-        loadMore.addEventListener('click', function(e) {
-          e.preventDefault()
-          let page = +loadMore.dataset.page
-          if (page*number < photosData.length) {
-            let html = RENDER.getHtml(photosData, page * number, number)
-            loadMore.insertAdjacentHTML('beforebegin', html)
-            loadMore.dataset.page = page + 1
-          }
-          if ((page+1)*number >= photosData.length) {
-            loadMore.style.display = 'none'
-          }
-        }, false)
-      } 
-      
-      const articleContent = document.querySelector('.article-content')
-      articleContent.innerHTML = photosHtml
-
-      const mainBody = document.querySelector('.main-body')
-      articleContent.insertAdjacentHTML('afterend', more({ origin: 'pid' }))
-      const showAllArticle = document.querySelector('.js-all-article')
-      showAllArticle.addEventListener('click', function(){
-        mainBody.style.maxHeight = 'none'
-        this.parentElement.style.display = 'none'
       })
     }
 
-    utils.importJs(`http://c.3g.163.com/photo/api/jsonp/set/${channelid}/${setid}.json`)
+    document.addEventListener('click', (e) => {
+      const wrap = document.querySelector('.m-photoset')
+      if (wrap.classList.contains('show')) {
+        wrap.classList.remove('show')
+        document.body.removeEventListener('touchstart', RENDER.preventDefault, false)
+      } else {
+        if (!e.target.classList.contains('img')) return
+        window.location.hash = 'img'
+        wrap.classList.add('show')
+        document.body.addEventListener('touchstart', RENDER.preventDefault, false)
+        let imgIndex = +e.target.dataset.index || 0
+        if (+wrap.dataset.loaded === 0) {
+          // 加载并显示图集
+          wrap.dataset.loaded = 1
+          let html = ''
+          photosData.forEach((item) => {
+            html += utils.simpleParse(TPL.photoset, { src: item.imgurl })
+          })
+          wrap.querySelector('ul').innerHTML = html
+          wrap.querySelector('ul').style.width = `${750 * photosData.length}px`
+          const IScroll = window.IScroll
+          photoScroll = new IScroll('.m-photoset', {
+            scrollX: true,
+            scrollY: false,
+            momentum: false,
+            snap: 'li',
+            snapSpeed: 600,
+            snapThreshold: 0.08,
+            click: true,
+            preventDefault: false
+          })
+          photoScroll.on('scrollEnd', () => {
+            const cp = photoScroll.currentPage.pageX
+            const imgs = wrap.querySelectorAll('img')
+            if (imgs[cp] && !imgs[cp].src) {
+              imgs[cp].src = imgs[cp].dataset.src
+            }
+            if (imgs[cp + 1] && !imgs[cp + 1].src) {
+              imgs[cp + 1].src = imgs[cp + 1].dataset.src
+            }
+            if (imgs[cp - 1] && !imgs[cp - 1].src) {
+              imgs[cp - 1].src = imgs[cp - 1].dataset.src
+            }
+          })
+        }
+
+        photoScroll.goToPage(imgIndex, 0, 0)
+        const imgs = wrap.querySelectorAll('img')
+
+        imgs[imgIndex].src = imgs[imgIndex].dataset.src
+        if (+imgIndex !== 0) {
+          imgs[imgIndex - 1].src = imgs[imgIndex - 1].dataset.src
+        }
+        imgs[imgIndex + 1].src = imgs[imgIndex + 1].dataset.src
+      }
+    }, false)
+
+    // 禁止并改变安卓的物理返回事件
+    const XBack = window.XBack
+    XBack.listen(() => {
+      window.location.hash = ''
+      document.querySelector('.m-photoset').classList.remove('show')
+      document.body.removeEventListener('touchstart', RENDER.preventDefault, false)
+    })
+
+    document.querySelector('.m-loading').style.display = 'none'
+
+    // 跟帖
+    if (docid && board) {
+      // 获取跟帖数
+      utils.importJs(`http://comment.api.163.com/api/json/thread/total/${board}/${docid}?jsoncallback=getPosts`)
+      window.getPosts = (postData) => {
+        window.getPosts = null
+        const tiecount = document.querySelector('.js-tiecount')
+        if (tiecount) {
+          tiecount.textContent = postData.votecount || 0
+          // 获取跟帖
+          post({
+            boardid: board,
+            params: `postid=${docid}&pid=${modelid}`,
+            votecount: postData.votecount || 0
+          })
+        }
+      }
+    }
+
+    let photosHtml = RENDER.getHtml(photosData, 0, number)
+    photosHtml = utils.simpleParse(TPL.content, {
+      setname: data.setname,
+      source: data.source,
+      time: data.datatime.slice(5, -3),
+      content: photosHtml
+    })
+
+    if (photosData.length > number) {
+      document.querySelector('.article-content').insertAdjacentHTML('afterend', '<div class="expanded"><a class="load-more" data-page="1">加载更多</a></div>')
+      const loadMore = document.querySelector('.load-more')
+      loadMore.addEventListener('click', (e) => {
+        e.preventDefault()
+        let page = +loadMore.dataset.page
+        if (page * number < photosData.length) {
+          let html = RENDER.getHtml(photosData, page * number, number)
+          loadMore.insertAdjacentHTML('beforebegin', html)
+          loadMore.dataset.page = page + 1
+        }
+        if ((page + 1) * number >= photosData.length) {
+          loadMore.style.display = 'none'
+        }
+      }, false)
+    }
+
+    const articleContent = document.querySelector('.article-content')
+    articleContent.innerHTML = photosHtml
+
+    const mainBody = document.querySelector('.main-body')
+    articleContent.insertAdjacentHTML('afterend', more({ origin: 'pid' }))
+    const showAllArticle = document.querySelector('.js-all-article')
+    showAllArticle.addEventListener('click', (e) => {
+      const that = e.currentTarget
+      mainBody.style.maxHeight = 'none'
+      that.parentElement.style.display = 'none'
+    })
   }
+
+  utils.importJs(`http://c.3g.163.com/photo/api/jsonp/set/${channelid}/${setid}.json`)
 }
 
 // 中间分享
@@ -291,20 +289,47 @@ analysis({
 
 // hotNews videoNews
 utils.ajax({
-  method: "GET",
+  method: 'GET',
   dataType: 'json',
   url: 'http://c.m.163.com/nc/article/list/T1348647909107/0-40.html',
-  success: function(data) {
+  success: (data) => {
     popular('pid', data)
   }
 })
 
 // common footer
-document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({
-  pid: modelid
-}))
+// 底部ab测试
+{
+  const num = Math.random()
+  const ntesNuid = utils.getCookie('_ntes_nuid') || ''
+  let test = localStorage.getItem('_footer_test') || ''
+  let flag = '0'
+  if (test.slice(0, -1) === ntesNuid) {
+    flag = test.slice(-1, test.length)
+  } else if (utils.isAndroid && utils.isWeixin) {
+    if (num < 0.5) {
+      localStorage.setItem('_footer_test', `${ntesNuid}a`)
+    } else {
+      localStorage.setItem('_footer_test', `${ntesNuid}b`)
+    }
+  } else {
+    localStorage.setItem('_footer_test', `${ntesNuid}0`)
+  }
+
+  if (+flag === 0 || flag === 'b') {
+    document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', testFooter({
+      pid: modelid
+    }))
+  } else {
+    document.querySelector('.m-body-wrap').insertAdjacentHTML('afterend', footer({
+      pid: modelid
+    }))
+  }
+
+  if (flag === 'b') {
+    ('.g-banner-footer a').dataset.stat = 'o-pid-b-footer'
+  }
+}
 
 // 红包
 redpacket()
-
-

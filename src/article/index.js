@@ -155,6 +155,31 @@ lazyload({
   })(boardid, docid)
 }
 
+// 相关新闻
+const relative = window.RELATIVE_NEWS
+if (!utils.isOwnEmpty(relative) && relative.length > 2) {
+  let html = ''
+  relative.forEach((item, index) => {
+    if (index < 3) {
+      let href = `http://c.m.163.com/news/a/${item.docID}.html?form=relative${index}`
+      if (utils.isIos9) {
+        href = `http://m.163.com/newsapp/applinks.html?docid=${item.docID}&redirect=${encodeURIComponent(href)}&s=sps`
+      }
+      html += `
+        <li class="single-img">
+          <a href="${href}">
+            <div class="news-img" style="background:url(${utils.optImage(item.imgsrc, 160, 120)}) no-repeat center"></div>
+            <div class="news-wrap">
+              <div class="news-title">${item.title}</div>
+            </div>
+          </a>
+        </li>
+      `
+    }
+  })
+  document.querySelector('.m-relative').innerHTML = `<div class="u-title">相关新闻</div><ul class="news-list">${html}</ul>`
+}
+
 // 中间分享
 // $('.m-middle-share')[0].innerHTML = middleShare({
 //   origin: 'docid'
