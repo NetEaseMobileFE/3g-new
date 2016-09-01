@@ -12,7 +12,7 @@ export default function footer(data) {
   const key = Object.keys(data)[0]
   const id = data[key]
   const param = id ? `${key}=${id}&s=sps` : 's=sps'
-  const stat = `o-${key}-test-footer`
+  const stat = `o-${key}-a-footer`
   const isIos9 = navigator.userAgent.match(/iPhone OS 9/i)
 
   return `
