@@ -327,7 +327,7 @@ utils.ajax({
   }
 
   if (flag === 'b') {
-    ('.g-banner-footer a').dataset.stat = 'o-pid-b-footer'
+    document.querySelector('.g-banner-footer a').dataset.stat = 'o-pid-b-footer'
   }
 }
 
