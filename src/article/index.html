@@ -1,83 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh" data-docid="${data.docid}" data-boardid="${data.replyBoard}" data-digest="${data.digest || data.body.replace(/<.*?>/g,'').replace(/(^\s*)/g, '').substr(0, 30)}">
+<html lang="zh" data-docid="{{=it.data.docid}}" data-boardid="{{=it.data.replyBoard}}" data-digest="{{=it.data.digest || it.data.body.replace(/<.*?>/g,'').replace(/(^\s*)/g, '').substr(0, 30)}}">
 <head>
   <meta charset="UTF-8">
-  <title>${data.title}</title>
+  <title>{{=it.data.title}}</title>
   <script>
-    window.NRUM = window.NRUM || {};
-    window.NRUM.config = {key:'27e86c0843344caca7ba9ea652d7948d',clientStart: +new Date()};
-    (function() {var n = document.getElementsByTagName('script')[0],s = document.createElement('script');s.type = 'text/javascript';s.async = true;s.src = '//nos.netease.com/apmsdk/napm-web-min-1.1.1.js';n.parentNode.insertBefore(s, n);})();
+    window.NRUM = window.NRUM || {}, window.NRUM.config = {
+        key: "27e86c0843344caca7ba9ea652d7948d",
+        clientStart: +new Date
+      },
+      function() {
+        var e = document.getElementsByTagName("script")[0],
+          t = document.createElement("script");
+        t.type = "text/javascript", t.async = !0, t.src = "//nos.netease.com/apmsdk/napm-web-min-1.1.1.js", e.parentNode.insertBefore(t, e)
+      }()
   </script>
-  <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-  <meta name="format-detection" content="telephone=no" />
-  <script>
-    (function (doc, win) {
-      var docEl = doc.documentElement,
-        isIOS = !!navigator.userAgent.match(/ipad|iphone|ipod/i),
-        dpr = isIOS? Math.min(win.devicePixelRatio, 3) : 1,
-        dpr = window.top === window.self? dpr : 1, //被iframe引用时，禁止缩放
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-      docEl.dataset.dpr = dpr;
-      var recalc = function () {
-        var width = docEl.clientWidth;
-        if (width / dpr > 750) {
-            width = 750 * dpr;
-        }
-        docEl.dataset.width = width;
-        docEl.dataset.percent = 100 * (width / 750);
-        docEl.style.fontSize = 100 * (width / 750) + 'px';
-      };
-      recalc();
-      doc.documentElement.classList.add('iosx' + win.devicePixelRatio);
-      if (!doc.addEventListener) return;
-      win.addEventListener(resizeEvt, recalc, false);
-    })(document, window);
-  </script>
+  <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+  <meta name="format-detection" content="telephone=no">
   <!-- build:articleStyle -->
   <!-- endbuild -->
-  <script>${globalVariable || ''}</script>
 </head>
 <body ontouchstart="">
-  <iframe id="iframe" style="display: none !important;"></iframe>
-  <img src="http://img1.cache.netease.com/travel/2014/7/22/20140722172931b2127.png" style="display: none!important;">
+  <script>
+    ! function(e, t) {
+      var n = e.documentElement,
+        i = "orientationchange" in window ? "orientationchange" : "resize",
+        d = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream, function() {
+          var t = n.clientWidth;
+          t && (t >= 750 ? (t = 750, e.body.style.width = "750px") : e.body.style.width = t + "px", n.style.fontSize = 100 * (t / 750) + "px", n.dataset.width = t, n.dataset.percent = 100 * (t / 750))
+        });
+      d(), e.documentElement.classList.add("iosx" + t.devicePixelRatio), e.addEventListener && t.addEventListener(i, d, !1)
+    }(document, window)
+  </script><iframe id="iframe" style="display:none!important"></iframe><img src="http://img1.cache.netease.com/travel/2014/7/22/20140722172931b2127.png" style="display:none!important">
   <div class="js-analysis">
-    <div class="m-body-wrap">
-      ${header || ''}
+    <div class="m-body-wrap">{{=it.header || ''}}
       <div class="content-wrapper">
-        <!--正文-->
-        <div class="m-container" id="contentHolder" style="max-height: 16rem;">
+        <div class="m-container" id="contentHolder" style="max-height:16rem">
           <article class="articleList">
             <div class="head clearfix">
-              <h1 class="article-title">${data.title}</h1>
-              <h2>
-                <span class="source">${data.source}</span>
-                <span class="time">${data.ptime.slice(5, -3)}</span>
-                <a class="js-reply-link replyLink" href="#comment">${data.replyCount ? ('跟贴（' + data.replyCount + '）条') : ''}</a>
-              </h2>
-              <div class="article-digest">${data.digest}</div>
+              <h1 class="article-title">{{=it.data.title}}</h1>
+              <h2><span class="source">{{=it.data.source}}</span> <span class="time">{{=it.data.ptime}}</span> <a class="js-reply-link replyLink" href="#comment">{{=it.data.replyCount ? ('跟贴（' + it.data.replyCount + '）条') : ''}}</a></h2>
+              <div class="article-digest">{{=it.data.digest}}</div>
             </div>
-            <div class="text clearfix">
-            ${body}
-            </div>
+            <div class="text clearfix">{{=it.body}}</div>
           </article>
         </div>
       </div>
-      <div class="m-comment">
-      </div>
-      <div class="m-relative">
-      </div>
-      <div class="m-middle-share">
-      </div>
-      <div class="m-ad js-ad">
-      </div>
-      <div class="m-hotnews">
-      </div>
+      <div class="m-comment"></div>
+      <div class="m-middle-share"></div>
+      <div class="m-ad js-ad"></div>
+      <div class="m-hotnews"></div>
     </div>
   </div>
+  <script>
+    {{=it.globalVariable || ''}}
+  </script>
   <script src="http://img3.cache.netease.com/apps/3g/1.1.4/zepto.min.js" type="text/javascript"></script>
-  <!-- END NetEase Devilfish 2006 -->
   <!-- build:articleScript -->
   <script type="text/javascript" src="http://abc.163.com:3100/js/article.bundle.js"></script>
   <!-- endbuild -->
 </body>
+
 </html>
