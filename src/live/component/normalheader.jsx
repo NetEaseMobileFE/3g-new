@@ -175,7 +175,7 @@ export default class NormalHeader extends React.Component {
                     </div>
                   </div>
                 }
-                <VideoPlayer inline playVideo={this.playVideo} show = {this.props.show} poster={videoInfo.img} playing={this.state.playing} src={videoInfo.src} displayVideoShade={this.displayVideoShade} />
+                <VideoPlayer inline playVideo={this.playVideo} show = {this.props.show} poster={videoInfo.img || "http://img4.cache.netease.com/utf8/3g-new/img/live-video-bg.png"} playing={this.state.playing} src={videoInfo.src} displayVideoShade={this.displayVideoShade} />
                 <div className="user-count video-style">
                   <div className={`video-logo ${liveStatus ? 'red-color' : 'gray-color'}`}>
                     <div className="video-text">{liveStatus ? '直播' : '回顾'}</div>

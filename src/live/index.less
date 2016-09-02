@@ -512,7 +512,7 @@ html, body, .container{
   text-align: center;
   .px2px(font-size, 15);
   color: #e10000;
-  border: 1px solid #e10000;
+  .border(border,1px,solid,#e10000);
   border-radius: .05rem;
   background: #ffeff0;
 
@@ -946,14 +946,11 @@ html, body, .container{
     color: #ffffff;
   }
   .teams{
-
-    display: -webkit-box;
-    -webkit-box-flex: 1;
-    -webkit-box-pack: justify;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .team{
-    // padding-top: 1.06rem;
-    //margin-top: -.2rem;
     text-align: center;
 
     img{
@@ -964,10 +961,13 @@ html, body, .container{
       display: block;
     }
   }
+  .teams-center{
+    margin-top: .2rem;
+  }
   .scores{
     text-align: center;
     font-family: "MyWebFont";
-    // font-size: 0.8rem;
+
     .px2px(font-size, 40);
     a{
       position: relative;
@@ -1111,7 +1111,7 @@ html, body, .container{
   word-break: break-all;
 }
 .section-wrap{
-  margin-bottom: .7rem;
+  margin-bottom: .4rem;
 }
 .live-list-item, .chat-list-item {
   position: relative;
@@ -1416,7 +1416,7 @@ html, body, .container{
   }
 }
 .chat-list-item{
-  margin: .35rem auto 0;
+  margin: .33rem auto 0;
 }
 .chat-list-item .name{
   color: #97979b !important;
