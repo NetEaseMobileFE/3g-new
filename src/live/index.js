@@ -22,7 +22,7 @@ require('./index.less')
 if (module && module.hot) {
   module.hot.accept()
 }
-const liveid = window.location.href.match(/\/l\/(\w*)\./)[1]
+const liveid = utils.localParam()['search']['roomid'] || window.location.href.match(/\/l\/(\w*)\./)[1]
 
 if (window.top != window.self) {
   window.top.location = `http://c.m.163.com/news/l/${liveid}.html`
@@ -250,8 +250,8 @@ analysis({
       // 需要优化，我觉得把播放video的方法提到live父级就可以通过props公用了
       const video = document.querySelector('video')
       if (video && video.paused && !this.state.header) {
-        video.play()
-      } else {
+        // video.play()
+      } else if (video) {
         video.pause()
       }
     }
@@ -267,7 +267,6 @@ analysis({
       const params = utils.localParam().search
       const liveData = this.state.liveData
       const userCount = this.state.userCount
-      console.log(this.state.liveData)
       // const chatData = this.state.chatData
       if (!liveData.roomId) {
         return <div className="loading"></div>

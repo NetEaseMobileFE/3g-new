@@ -7,7 +7,8 @@ export default class NormalHeader extends React.Component {
       playing: false,
       active: 0,
       boolPlayVideo: false,
-      displayVideoShade: false
+      displayVideoShade: false,
+      videoShadeCount: -1
     }
     this.openNewsapp = this.openNewsapp.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -55,7 +56,8 @@ export default class NormalHeader extends React.Component {
 
   continuePlayVideo(){
     this.setState({
-      displayVideoShade: false
+      displayVideoShade: false,
+      videoShadeCount: 1
     })
     const video = document.querySelector('video')
     if (video && video.paused && !this.state.header) {
@@ -72,8 +74,6 @@ export default class NormalHeader extends React.Component {
   }
   render() {
     const { banner, video, mutilVideo, liveVideoFull, subtitle, endDate} = this.props.liveData
-    console.log('mutilVideo: ',mutilVideo)
-    console.log(banner)
     let style = {}
     if (banner && banner.url) {
       style = {
@@ -106,43 +106,56 @@ export default class NormalHeader extends React.Component {
     }
     let cClassName = ''
     const boolOfexpand = !!mutilVideo ? this.props.showMultiVideo : this.props.show
-    if (boolOfexpand) {
-      switch (true){
-        case !!video:
-          cClassName = 'exp-video-height'
-          break
-        case !!mutilVideo:
-          cClassName = 'exp-multi-height'
-          break
-        default:
-          cClassName = 'exp-height'
-          break
+    if (!video && !mutilVideo) {
+      if (boolOfexpand) {
+        cClassName = 'exp-imgtext-height'
+      } else {
+        cClassName = 'shrink-imgtext-height'
       }
     } else {
-      switch (true){
-        case !!video:
-          cClassName = 'shrink-video-height'
-          break
-        case !!mutilVideo:
-          cClassName = 'shrink-multi-height'
-          break
-        default:
-          cClassName = 'shrink-height'
-          break
+      if (!boolOfexpand && this.state.displayVideoShade && this.state.videoShadeCount === -1) {
+        this.setState({
+          videoShadeCount: 1
+        })
       }
     }
+
+    // 这段代码是为了避免不同id下iframe占用剩余空间的,后来改为使用  flex-shrink: 0  解决
+    // const boolOfexpand = !!mutilVideo ? this.props.showMultiVideo : this.props.show
+    // if (boolOfexpand) {
+    //   switch (true){
+    //     case !!video:
+    //       cClassName = 'exp-video-height'
+    //       break
+    //     case !!mutilVideo:
+    //       cClassName = 'exp-multi-height'
+    //       break
+    //     default:
+    //       cClassName = 'exp-imgtext-height'
+    //       break
+    //   }
+    // } else {
+    //   switch (true){
+    //     case !!video:
+    //       cClassName = 'shrink-video-height'
+    //       break
+    //     case !!mutilVideo:
+    //       cClassName = 'shrink-multi-height'
+    //       break
+    //     default:
+    //       cClassName = 'shrink-imgtext-height'
+    //       break
+    //   }
+    // }
     let liveStatus
     if(+(new Date(endDate.replace(/-/g,"/"))) - (+new Date()) < 0){
       liveStatus = false
     } else {
       liveStatus = true
     }
-    console.log(endDate)
-    // alert(+(new Date(endDate)))
-    // alert((+new Date()))
-    // alert(+(new Date(endDate)) - (+new Date()))
+
     return (
-      <div className={cClassName}>
+      <div className={`${cClassName} shrink-flex`}>
         <div className="img-bg"></div>
         <div className={className} style={style} onClick={this.click}>
           <div className="title ellipsis">{this.props.title}</div>
@@ -151,11 +164,11 @@ export default class NormalHeader extends React.Component {
             (video || mutilVideo) ?
               <div className="video-wrap">
                 {
-                  !utils.isWIFI && this.state.displayVideoShade &&
+                  !utils.IsWifi() && this.state.displayVideoShade && this.state.videoShadeCount === -1 &&
                   <div className="wifi-alert" onClick={this.continuePlayVideo}>
                     <div className="inner">
                       <div className="text">
-                        <div>正在使用非Wi-Fi网络</div>
+                        <div>正在使用非WiFi网络</div>
                         <div>播放将产生流量费用</div>
                       </div>
                       <div className="btn">继续播放</div>
@@ -172,7 +185,7 @@ export default class NormalHeader extends React.Component {
                 </div>
               </div> :
               <div className="user-count img-shade">
-                <div className="logo">{liveStatus ? '直播' : '回顾'}</div>
+                <div className={`logo ${liveStatus ? 'red-color' : 'gray-color'}`}>{liveStatus ? '直播' : '回顾'}</div>
                 <div className="polt-NO">{this.props.userCount}人参与</div>
               </div>
           }
@@ -194,7 +207,7 @@ export default class NormalHeader extends React.Component {
           }
         </div>
         {
-          (video || mutilVideo) ? <div className="open-newsapp-tip" data-stat="o-live-tip" onClick={this.openNewsapp}>打开网易新闻，参与直播体验更加流畅</div> : null
+          (video || mutilVideo) ? <div className="open-newsapp-tip" data-stat="o-live-tip" onClick={this.openNewsapp}><div className="speed-logo"></div>提升三倍流畅度 打开网易新闻</div> : null
         }
       </div>
     )

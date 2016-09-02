@@ -4,7 +4,10 @@ export default class VideoPlayer extends React.Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
-
+    this.videoPlay = this.videoPlay.bind(this)
+    this.state = {
+      videoShadeCount: true
+    }
   }
   componentDidMount() {
     const video = this.refs.video
@@ -25,17 +28,28 @@ export default class VideoPlayer extends React.Component {
     video.onerror = () => onError && onError()
   }
   handleClick() {
-    if (utils.isWIFI) {
-      const video = this.refs.video
-      if (video.paused) {
-        video.play()
-      } else {
-        video.pause()
-      }
-      this.props.playVideo && this.props.playVideo(!this.props.playing)
+    if (utils.IsWifi()) {
+      this.videoPlay()
     } else {
-     this.props.displayVideoShade()
+      if (this.state.videoShadeCount) {
+        this.props.displayVideoShade()
+        this.setState({
+          videoShadeCount: false
+        })
+      } else {
+        this.videoPlay()
+      }
     }
+  }
+
+  videoPlay(){
+    const video = this.refs.video
+    if (video.paused) {
+      video.play()
+    } else {
+      video.pause()
+    }
+    this.props.playVideo && this.props.playVideo(!this.props.playing)
   }
   render() {
     return <video src={this.props.src} poster={this.props.poster} autoPlay={this.props.autoPlay} className={this.props.show ? 'video' : 'shrink-video'} ref="video" onClick={this.handleClick} />

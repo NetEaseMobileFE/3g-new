@@ -499,27 +499,41 @@ html, body, .container{
 //   width: 100%;
 // }
 .open-newsapp-tip {
-  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
   position: relative;
-  width: 100%;
-  height: .84rem;
-  min-height: .84rem;
-  line-height: .84rem;
+  width: 6.9rem;
+  height: .8rem;
+  min-height: .8rem;
+  margin: .2rem auto 0;
+  line-height: .8rem;
   text-align: center;
   .px2px(font-size, 15);
-  background: #e10000;
-  color: #fff;
-  &::after {
-    position: absolute;
-    top: -.2rem;
-    right: .34rem;
-    content: '';
-    width: 0;
-    height: 0;
-    border-left: .22rem solid transparent;
-    border-right: .22rem solid transparent;
-    border-bottom: .22rem solid #e10000;
+  color: #e10000;
+  border: 1px solid #e10000;
+  border-radius: .05rem;
+  background: #ffeff0;
+
+  .speed-logo{
+    width: .29rem;
+    height: .48rem;
+    margin-right: .15rem;
+    background: url('./../img/increase-speed.png') no-repeat center center;
+    background-size: .29rem .48rem;
   }
+  //&::after {
+  //  position: absolute;
+  //  top: -.2rem;
+  //  right: .34rem;
+  //  content: '';
+  //  width: 0;
+  //  height: 0;
+  //  border-left: .22rem solid transparent;
+  //  border-right: .22rem solid transparent;
+  //  border-bottom: .22rem solid #e10000;
+  //}
 }
 .m-tab-wrap {
   position: relative;
@@ -617,7 +631,7 @@ html, body, .container{
       .logo{
         width: .5rem;
         height: .6rem;
-        margin-right: .1rem;
+        margin-left: .1rem;
         background: url('../img/clock.png') no-repeat center center;
         background-Size: .33rem .3rem;
       }
@@ -625,11 +639,16 @@ html, body, .container{
       .text{
         color: #fff;
         line-height: .63rem;
+        margin-left: .02rem;
       }
     }
   }
 }
-.exp-height {
+.shrink-flex{
+  flex-shrink: 0;
+  background: white;
+}
+.exp-imgtext-height {
   position: relative;
   min-height: 2rem;
   .img-bg {
@@ -647,7 +666,7 @@ html, body, .container{
 .exp-multi-height {
   min-height: 6.92rem;
 }
-.shrink-height{
+.shrink-imgtext-height{
   display: none;
 }
 .shrink-video-height{
@@ -796,7 +815,7 @@ html, body, .container{
   }
 
   .user-count {
-    z-index: 15;
+    z-index: 3;
     position: absolute;
     display: flex;
     justify-content: space-between;
@@ -821,6 +840,7 @@ html, body, .container{
 
     .video-logo {
       display: flex;
+      align-items: center;
       width: .9rem;
       height: .36rem;
       margin: 0 .17rem 0 .35rem;
@@ -836,15 +856,16 @@ html, body, .container{
     }
     .video-text {
       height: .36rem;
-      padding: 0 .05rem 0 .05rem;
+      padding: 0 .05rem;
       color: #fff;
       border-radius: .04rem;
     }
     .video-icon {
-      width: .3rem;
-      height: .36rem;
-      background: url('../img/video.png') no-repeat center center;
+      width: .28rem;
+      height: .18rem;
+      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAASBAMAAAC6KaPXAAAALVBMVEUAAAD///////////////////////////////////////////////////////+hSKubAAAADnRSTlMA5uFJEMrFq6SHf0A6JpIluSMAAABKSURBVBjTYzB8BwXCDCAgB+M+BHPfATGUwdL3Dpl76B0yl+tdLDI37yUDMvfRBhRuCRAjG4WXi1CMMArTIoQz0B2J5gU0D6J5HwDQw1U7zdNhYwAAAABJRU5ErkJggg==') no-repeat center center;
       background-size: .28rem .18rem;
+      margin-top: -.03rem;
     }
 
     .polt-NO {
@@ -858,6 +879,10 @@ html, body, .container{
     width: 100%;
   }
 }
+.useTouchmove{
+  -webkit-overflow-scrolling: touch;
+}
+
 .tab3-wrap{
   position: relative;
   display: flex;
@@ -867,7 +892,7 @@ html, body, .container{
   border: 0;
   overflow-x: hidden;
   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+
   iframe {
     // position: absolute;
     // top: 0; left: 0; right: 0; bottom: 0;
@@ -921,13 +946,16 @@ html, body, .container{
     color: #ffffff;
   }
   .teams{
+
     display: -webkit-box;
     -webkit-box-flex: 1;
     -webkit-box-pack: justify;
   }
   .team{
     // padding-top: 1.06rem;
+    //margin-top: -.2rem;
     text-align: center;
+
     img{
       width: 1.14rem;
       height: 1.14rem;
@@ -1007,7 +1035,44 @@ html, body, .container{
       // /*设置内嵌的元素在 3D 空间如何呈现：保留 3D*/
       // -webkit-backface-visibility: hidden;
     }
+    .over-hidden{
+      overflow: hidden;
+    }
+    .tab-shade{
+      z-index: 10000;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255,255,255,.6) 0%,
+        rgba(255,255,255,.7) 20%,
+        rgba(255,255,255,.8) 40%,
+        rgba(255,255,255,.9) 60%,
+        rgba(255,255,255,1) 100%
+      );
+
+      .text{
+        position: absolute;
+        right: .3rem;
+        bottom: .75rem;
+        color: #666666;
+      }
+
+      .logo{
+        position: absolute;
+        right: 1rem;
+        bottom: .3rem;
+        width: .19rem;
+        height: .2rem;
+        background: url(./../img/guide.png) center no-repeat no-repeat;
+        background-size: .19rem .2rem;
+      }
+    }
   }
+
 }
 .live-wrap {
   display: flex;
@@ -1046,6 +1111,7 @@ html, body, .container{
   word-break: break-all;
 }
 .section-wrap{
+  margin-bottom: .7rem;
 }
 .live-list-item, .chat-list-item {
   position: relative;
@@ -1137,7 +1203,8 @@ html, body, .container{
         width: 2rem;
       }
     }
-    .spread-height{
+    .shrink-height{
+      width: 7rem;
       height: 3rem;
       margin-bottom: .2rem;
       overflow: hidden;
@@ -1209,10 +1276,8 @@ html, body, .container{
     }
   }
   .content {
-    //padding-bottom: .3rem;
     line-height: .46rem;
     color: #1f1f1f;
-    // font-size: .34rem;
     .px2px(font-size, 17);
     .media {
       padding-bottom: .16rem;
@@ -1291,6 +1356,8 @@ html, body, .container{
       max-width: 100%;
     }
     .video-wrap{
+      margin: 0 auto;
+      width: 6.6rem;
       padding-bottom: 0;
       &.playing{
         &:after {
@@ -1298,22 +1365,35 @@ html, body, .container{
         }
       }
       video{
-        max-width: 100%;
+        width: 6.4rem;
+        //max-width: 100%;
         vertical-align: top;
       }
     }
     .quote{
-      margin-bottom: .2rem;
+      position: relative;
+      margin: 0 .2rem .2rem;
       padding: 0.3rem;
       border-radius: 0.04rem;
-      // font-size: 0.34rem;
-      .px2px(font-size, 17);
+      .px2px(font-size, 14);
       line-height: .49rem;
       color: #666;
-      background-color: #fff;
-      .quote-user{
-        // font-size: 0.28rem;
+      background-color: #f6f6f6;
+
+      .quote-user {
         .px2px(font-size, 14);
+        color: #000;
+      }
+      .quote-text {
+        margin-left: .15rem;
+        .px2px(font-size, 15);
+
+      }
+      .quote-time {
+        position: absolute;
+        right: .2rem;
+        top: .3rem;
+        .px2px(font-size,12);
       }
     }
     .nba-score{
@@ -1334,6 +1414,9 @@ html, body, .container{
     .px2px(font-size, 11);
     color: #e12000 !important;
   }
+}
+.chat-list-item{
+  margin: .35rem auto 0;
 }
 .chat-list-item .name{
   color: #97979b !important;
@@ -1360,6 +1443,7 @@ html, body, .container{
     height: 100%;
   }
   .img-wrap{
+    z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;

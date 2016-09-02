@@ -40,14 +40,16 @@ export default class NBAHeader extends React.Component {
     }
     return (
       <div className={className}>
-        <div className="section">{gameInfo.section || ''}&nbsp;&nbsp;{this.props.userCount || 0}人参与</div>
         <div className="teams">
           <div className="team">
             <img src={teamInfo.homeFlag} />
             <span>{teamInfo.homeName}</span>
           </div>
-          <div className="scores" style={style}>
-            <div>{gameInfo.homeScore} - {gameInfo.awayScore}</div>
+          <div>
+            <div className="section">{gameInfo.section || ''}&nbsp;&nbsp;{this.props.userCount || 0}人参与</div>
+            <div className="scores" style={style}>
+              <div>{gameInfo.homeScore} - {gameInfo.awayScore}</div>
+            </div>
           </div>
           <div className="team">
             <img src={teamInfo.awayFlag} />

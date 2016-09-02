@@ -6,9 +6,11 @@ export default class Tab extends React.Component {
     super(props)
     this.getTime = this.getTime.bind(this)
     this.state = {
-      active: 0
+      active: 0,
+      iframeTouch: true
     }
     this.tabChange = this.tabChange.bind(this)
+    this.preventTouchMove = this.preventTouchMove.bind(this)
   }
 
   componentDidMount() {
@@ -45,16 +47,20 @@ export default class Tab extends React.Component {
     return time.slice(5,16)
   }
 
+  preventTouchMove(){
+    this.setState({
+      iframeTouch : !this.state.iframeTouch
+    })
+  }
+
   render() {
     const active = this.state.active
     const liveData = this.props.liveData
-    console.log(liveData)
     let appFrame = [{ title : '直播', url: 'live' }]
     if (liveData.chatRoomTrigger !== 'off') {
       appFrame.push({ title : '聊天室', url: 'chat' })
     }
     appFrame = appFrame.concat(liveData.appFrame ? liveData.appFrame : [] )
-
     return (
       <div className="m-tab-wrap">
         <div className="m-tab">
@@ -75,6 +81,13 @@ export default class Tab extends React.Component {
               return (
                 <div className={'tab-panel' + (active === i ? ' active' : '')}>
                   {
+                    item.url && item.url !== 'chat' && item.url !=='live' && item.sid || (item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule') && this.preventTouchMove() &&
+                    <div className="tab-shade">
+                      <div className="text">查看精彩资讯 快来打开网易新闻</div>
+                      <div className="logo"></div>
+                    </div>
+                  }
+                  {
                     item.url === 'live' && (+(new Date(liveData.startDate.replace(/-/g,"/"))) > +(new Date())?
                       <section className="live-not-start-tip">
                         <div className="set-alert">
@@ -91,9 +104,9 @@ export default class Tab extends React.Component {
                     item.url === 'chat' && <ChatList nuid={this.props.nuid} roomId={liveData.roomId} active={active === i} />
                   }
                   {
-                    item.url !== 'live' && item.url !== 'chat' && active === i && <div className="tab3-wrap">
+                    item.url !== 'live' && item.url !== 'chat' && active === i && <div className={`tab3-wrap ${this.state.iframeTouch ? 'useTouchmove' : ''}` }>
                       {
-                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://c.m.163.com/news/s/${item.sid}.html` : item.url}></iframe>
+                        item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://c.m.163.com/news/s/${item.sid}.html` : item.url} ref="iframe"></iframe>
                       }
                     </div>
                   }

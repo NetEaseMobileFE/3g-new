@@ -10,7 +10,8 @@ export default class LiveItem extends React.Component {
     super(props)
     this.state = {
       newest: props.item.newest,
-      topSpread: false
+      topShrink: true,
+      boolLimitTop: false
     }
     this.openNewsapp = this.openNewsapp.bind(this)
     this.avatarError = this.avatarError.bind(this)
@@ -23,6 +24,17 @@ export default class LiveItem extends React.Component {
         this.setState({ newest: false })
       }, 6000)
     }
+    setTimeout(() => {
+      const topContent = this.refs.topContent
+      const limitTop = 3 * 100 * (document.documentElement.clientWidth / 750)
+      if (topContent && topContent.offsetHeight > limitTop) {
+        this.setState({
+          boolLimitTop: true
+        })
+      }
+    },200)
+
+
   }
   componentWillUnmount() {
     clearTimeout(this.timeout)
@@ -38,12 +50,11 @@ export default class LiveItem extends React.Component {
 
   controlHeight() {
     this.setState({
-      topSpread: !this.state.topSpread
+      topShrink: !this.state.topShrink
     })
   }
 
   render() {
-    console.log(this.state.topSpread)
     let className = ['live-list-item']
     const item = this.props.item
     if (this.props.top) {
@@ -130,15 +141,15 @@ export default class LiveItem extends React.Component {
         <span className="name">{item.commentator.name}</span>
         { !!this.props.top && <div className="logo"></div> }
       </header>
-      <div className={!!this.props.top && this.state.topSpread ? "content spread-height" : "content"}>
+      <div className={!!this.props.top && this.state.topShrink && this.state.boolLimitTop ? "content shrink-height" : "content"} ref={!!this.props.top ? 'topContent' : ''}>
         <div className="text" style={contentStyle} dangerouslySetInnerHTML={{__html: content || ''}} ></div>
         {images}{video}{album}{news}
         {nbaScore}{quote}{(this.props.showDownload || quote) && <a className="down-link" onClick={this.openNewsapp}>打开网易新闻客户端，与主播互动上榜 &gt;&gt;</a>}
       </div>
       {
-        !!this.props.top &&
+        !!this.props.top && this.state.boolLimitTop &&
         <div className='control-height' onClick={this.controlHeight}>
-          <div className="logo"><span className={this.state.topSpread ? 'expand-button rotate' : 'expand-button'}></span><span>{!this.state.topSpread ? '收起' : '展开'}</span></div>
+          <div className="logo"><span className={this.state.topShrink ? 'expand-button rotate' : 'expand-button'}></span><span>{!this.state.topShrink ? '收起' : '展开'}</span></div>
         </div>
       }
     </article>

@@ -1,3 +1,5 @@
+import * as utils from './../../common/utils'
+
 export default class ChatItem extends React.Component {
   constructor(props) {
     super(props)
@@ -11,8 +13,9 @@ export default class ChatItem extends React.Component {
     let quote = null
     if(!!item.quote){
       quote = <div className="quote">
-        <div className="name">{item.quote.nick_name.slice(0, 20)}</div>
-        <div>{item.quote.msg}</div>
+        <div className="quote-user">{item.quote.nick_name.slice(0, 20)}</div>
+        <div className="quote-text">{item.quote.msg}</div>
+        <div className="quote-time">{utils.parseTime(item.quote.time)}</div>
       </div>
     }
     let avatar = item.avatar

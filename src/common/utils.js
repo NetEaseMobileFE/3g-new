@@ -10,7 +10,6 @@ export const isWeixin = navigator.userAgent.match(/micromessenger/ig)
 export const isWeibo = navigator.userAgent.match(/weibo/ig)
 export const isYixin = navigator.userAgent.match(/yixin/ig)
 export const isQQ = navigator.userAgent.match(/qq/gi)
-export let isWIFI
 
 export function localParam(search, hash) {
   const _search = search || window.location.search
@@ -192,15 +191,15 @@ export const assign = Object.assign || function(target) {
 }
 
 // 判断是否WIFI环境
-{
-  isWIFI = true;
+export const IsWifi = function(){
+  let isWIFI = true;
   const ua = window.navigator.userAgent;
   const con = window.navigator.connection;
 // 如果是微信
   if (/MicroMessenger/.test(ua)) {
     // 如果是微信6.0以上版本，用UA来判断
     if (/NetType/.test(ua)) {
-      if (ua.match(/NetType\/WIFI/ig)[0] !== 'NetType/WIFI') {
+      if (ua.match(/NetType\/WIFI/ig) != 'NetType/WIFI') {
         isWIFI = false;
       }
       // 如果是微信6.0以下版本，调用微信私有接口WeixinJSBridge
@@ -220,4 +219,14 @@ export const assign = Object.assign || function(target) {
       isWIFI = false;
     }
   }
+  return isWIFI;
+}
+
+export const parseTime = function (time){
+  const timer = new Date(time)
+  let hour = parseInt(timer.getHours(), 10)
+  hour = hour < 10 ? '0' + hour : hour
+  let minute = parseInt(timer.getMinutes(), 10)
+  minute = minute < 10 ? '0' + minute : minute
+  return `${hour}:${minute}`
 }
