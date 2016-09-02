@@ -38,7 +38,7 @@
           <article class="articleList">
             <div class="head clearfix">
               <h1 class="article-title">{{=it.data.title}}</h1>
-              <h2><span class="source">{{=it.data.source}}</span> <span class="time">{{=it.data.ptime}}</span> <a class="js-reply-link replyLink" href="#comment">{{=it.data.replyCount ? ('跟贴（' + it.data.replyCount + '）条') : ''}}</a></h2>
+              <h2><span class="source">{{=it.data.source}}</span> <span class="time">{{=it.data.ptime.slice(5, -3)}}</span> <a class="js-reply-link replyLink" href="#comment">{{=it.data.replyCount ? ('跟贴（' + it.data.replyCount + '）条') : ''}}</a></h2>
               <div class="article-digest">{{=it.data.digest}}</div>
             </div>
             <div class="text clearfix">{{=it.body}}</div>
@@ -46,8 +46,9 @@
         </div>
       </div>
       <div class="m-comment"></div>
-      <div class="m-middle-share"></div>
+      <div class="m-relative"></div>
       <div class="m-ad js-ad"></div>
+      <div class="m-hotnews"></div>
       <div class="m-hotnews"></div>
     </div>
   </div>
