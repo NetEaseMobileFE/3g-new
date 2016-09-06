@@ -8,7 +8,8 @@ export default class VideoPlayer extends React.Component {
     this.imgToVideo = this.imgToVideo.bind(this)
     this.state = {
       videoShadeCount: true,
-      androidPlaying: false
+      androidPlaying: false,
+      androidPlayCount: 0
     }
   }
   componentDidMount() {
@@ -31,9 +32,13 @@ export default class VideoPlayer extends React.Component {
     if (utils.isAndroid) {
       video.addEventListener('pause',() => {
         this.setState({
-          androidPlaying: true
+          androidPlaying: true,
+          androidPlayCount: 1
         })
       },false)
+    }
+    if (this.state.androidPlaying) {
+      video.play()
     }
   }
 
@@ -70,7 +75,7 @@ export default class VideoPlayer extends React.Component {
 
   render() {
     let centerClass = this.props.show ? 'video' : 'shrink-video'
-    const finalClass = this.state.androidPlaying ? centerClass +' video-displayNone' : centerClass + ' video-displayBlock'
+    const finalClass = this.state.androidPlaying && !!this.state.androidPlayCount ? centerClass +' video-displayNone' : centerClass + ' video-displayBlock'
     return (
       <div>
         {
