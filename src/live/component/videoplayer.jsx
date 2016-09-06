@@ -33,7 +33,6 @@ export default class VideoPlayer extends React.Component {
         this.setState({
           androidPlaying: true
         })
-        alert('监听到pause事件')
       },false)
     }
   }
@@ -67,18 +66,6 @@ export default class VideoPlayer extends React.Component {
     this.setState({
       androidPlaying: false
     })
-
-    // setTimeout(()=>{
-    //   const video = this.refs.video
-    //   video.removeEventListener('pause',() => {
-    //   },false)
-    //   video.addEventListener('pause',() => {
-    //     this.setState({
-    //       androidPlaying: true
-    //     })
-    //     alert('监听到pause事件')
-    //   },false)
-    // },200)
   }
 
   render() {
@@ -88,6 +75,8 @@ export default class VideoPlayer extends React.Component {
     const displayBlock = {
       display: 'block'
     }
+    let centerClass = this.props.show ? 'video' : 'shrink-video'
+    const finalClass = this.state.androidPlaying ? centerClass +' video-displayNone' : centerClass + ' video-displayBlock'
     return (
       <div>
         {
@@ -97,11 +86,10 @@ export default class VideoPlayer extends React.Component {
           src={this.props.src}
           poster={this.props.poster}
           autoPlay={this.props.autoPlay}
-          className={this.props.show ? 'video' : 'shrink-video'}
+          className={finalClass}
           ref="video"
           onClick={this.handleClick}
-          style={this.state.androidPlaying ? displayNone : displayBlock}
-
+          // style={this.state.androidPlaying ? displayNone : displayBlock}
         />
       </div>
     )
