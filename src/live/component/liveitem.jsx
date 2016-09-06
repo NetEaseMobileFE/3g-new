@@ -10,7 +10,7 @@ export default class LiveItem extends React.Component {
     super(props)
     this.state = {
       newest: props.item.newest,
-      topShrink: true,
+      topShrink: false,
       boolLimitTop: false
     }
     this.openNewsapp = this.openNewsapp.bind(this)

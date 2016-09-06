@@ -139,6 +139,7 @@ html, body, .container{
       margin-top: -1rem;
       transform: scale(1.4);
     }
+
   }
   video {
     display: flex;
@@ -512,7 +513,7 @@ html, body, .container{
   text-align: center;
   .px2px(font-size, 15);
   color: #e10000;
-  .border(border,1px,solid,#e10000);
+  .border(border, 1px, solid, #e10000);
   border-radius: .05rem;
   background: #ffeff0;
 
@@ -542,6 +543,7 @@ html, body, .container{
   flex-grow: 1;
 }
 .m-tab{
+  z-index: 1000;
   position: relative;
   width: 100%;
   height: .84rem;
@@ -597,8 +599,10 @@ html, body, .container{
 .live-not-start-tip{
   // font-size: 0.35rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  flex-grow: 1;
+  width: 100%;
+  height: 2.3rem;
   line-height: 1;
   .px2px(font-size, 17);
   color: #373737;
@@ -620,6 +624,8 @@ html, body, .container{
 
     .button{
       display: flex;
+      align-items: center;
+      justify-content: space-around;
       width: 3.35rem;
       height: .6rem;
       margin: .5rem auto;
@@ -629,17 +635,17 @@ html, body, .container{
       border-radius: 3px;
 
       .logo{
-        width: .5rem;
-        height: .6rem;
-        margin-left: .1rem;
+        width: .33rem;
+        height: .3rem;
         background: url('../img/clock.png') no-repeat center center;
         background-Size: .33rem .3rem;
+        margin-left: .05rem;
       }
 
       .text{
         color: #fff;
         line-height: .63rem;
-        margin-left: .02rem;
+        margin-left: -.15rem;
       }
     }
   }
@@ -651,14 +657,6 @@ html, body, .container{
 .exp-imgtext-height {
   position: relative;
   min-height: 2rem;
-  .img-bg {
-    z-index: 10;
-    position: absolute;
-    width: 100%;
-    height: 1.4rem;
-    background: url('./../img/img-shade.png') no-repeat center center;
-    background-size: 7.5rem 1.4rem;
-  }
 }
 .exp-video-height {
   min-height: 5.05rem;
@@ -780,7 +778,7 @@ html, body, .container{
       width: 2.54rem;
       height: 1.44rem;
       margin-right: .21rem;
-      border: 2px solid #212121;
+      border: 1px solid #212121;
       &:last-child {
         margin-right: 0;
       }
@@ -930,8 +928,10 @@ html, body, .container{
   }
 }
 .live-header-nba{
+  display: flex;
+  align-items: center;
   min-height: 2rem;
-  padding: 0.2rem 0.22rem;
+  padding: 0 0.22rem;
   color: #fff;
   background: url('../img/live-nba-banner.jpg') center center no-repeat;
   background-size: cover;
@@ -946,6 +946,7 @@ html, body, .container{
     color: #ffffff;
   }
   .teams{
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1006,7 +1007,7 @@ html, body, .container{
   // z-index: 1;
   position: absolute;
   top: -0.35714px; left: 0;
-  z-index: 1;
+  z-index: 1000;
   width: 100%;
   padding-left: 0.3rem;
   line-height: 0.55rem;
@@ -1018,6 +1019,7 @@ html, body, .container{
 }
 .m-tab-content{
   display: flex;
+
   flex-grow: 1;
   background: #f6f6f6;
   >div, >div>div{
@@ -1025,6 +1027,7 @@ html, body, .container{
   }
   .tab-panel{
     display: none;
+    flex-wrap: wrap;
     position: relative;
     width: 100%;
     min-height: 100%;
@@ -1111,7 +1114,7 @@ html, body, .container{
   word-break: break-all;
 }
 .section-wrap{
-  margin-bottom: .4rem;
+  margin-bottom: .25rem;
 }
 .live-list-item, .chat-list-item {
   position: relative;
@@ -1185,7 +1188,7 @@ html, body, .container{
     }
   }
   &.top{
-    margin-bottom: .71rem;
+    margin-bottom: .35rem;
 
     .timeline{
       top: -.34rem;
@@ -1364,11 +1367,30 @@ html, body, .container{
           display: none;
         }
       }
-      video{
+      video {
+        z-index: -999999;
         width: 6.4rem;
         //max-width: 100%;
         vertical-align: top;
+        margin: 0 auto;
       }
+      .android-bug-video {
+        width: 6.4rem;
+        height: 4.3rem;
+        margin: 0 auto;
+        background:rgba(0,0,0,0.6);
+      }
+      //.videoDebug {
+      //  .videoDebug1{
+      //    position: absolute;
+      //    top: 0;
+      //    bottom: 0;
+      //    right: 0;
+      //    left: 0;
+      //    background: rgba(2,255,255,.5);
+      //    pointer-events: none;
+      //  }
+      //}
     }
     .quote{
       position: relative;

@@ -7,10 +7,10 @@ export default class Tab extends React.Component {
     this.getTime = this.getTime.bind(this)
     this.state = {
       active: 0,
-      iframeTouch: true
+      iframeTouch: false
     }
     this.tabChange = this.tabChange.bind(this)
-    this.preventTouchMove = this.preventTouchMove.bind(this)
+    // this.preventTouchMove = this.preventTouchMove.bind(this)
   }
 
   componentDidMount() {
@@ -47,11 +47,12 @@ export default class Tab extends React.Component {
     return time.slice(5,16)
   }
 
-  preventTouchMove(){
-    this.setState({
-      iframeTouch : !this.state.iframeTouch
-    })
-  }
+  // preventTouchMove(){
+  //   // console.log(1)
+  //   this.setState({
+  //     iframeTouch : !this.state.iframeTouch
+  //   })
+  // }
 
   render() {
     const active = this.state.active
@@ -78,17 +79,28 @@ export default class Tab extends React.Component {
           {
 
             appFrame.map((item, i) => {
+              // console.log(!!item.url)
+              // console.log(item.sid)
+              // console.log(item.url,' : ',item.url !== 'chat' && item.url !=='live' && !!item.sid || (item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule') && this.preventTouchMove())
+              const boolShade = item.url !== 'chat' && item.url !=='live' && !!item.sid || !!(item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule')
+              if (boolShade) {
+                console.log(1)
+                // this.preventTouchMove()
+              }
+              console.log('boolShade: ',boolShade)
               return (
                 <div className={'tab-panel' + (active === i ? ' active' : '')}>
                   {
-                    item.url && item.url !== 'chat' && item.url !=='live' && item.sid || (item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule') && this.preventTouchMove() &&
+                    boolShade &&
                     <div className="tab-shade">
                       <div className="text">查看精彩资讯 快来打开网易新闻</div>
                       <div className="logo"></div>
                     </div>
                   }
                   {
-                    item.url === 'live' && (+(new Date(liveData.startDate.replace(/-/g,"/"))) > +(new Date())?
+                    item.url === 'live' &&
+                    (
+                      liveData.nextPage < 0 ?
                       <section className="live-not-start-tip">
                         <div className="set-alert">
                           <div className="title">————本次直播将于{this.getTime(liveData.startDate)}开始————</div>
@@ -98,13 +110,14 @@ export default class Tab extends React.Component {
                           </div>
                         </div>
                       </section> :
-                      liveData.nextPage > 0 && <LiveList liveData={liveData} active={active === i} />)
+                      <LiveList liveData={liveData} active={active === i} />
+                    )
                   }
                   {
                     item.url === 'chat' && <ChatList nuid={this.props.nuid} roomId={liveData.roomId} active={active === i} />
                   }
                   {
-                    item.url !== 'live' && item.url !== 'chat' && active === i && <div className={`tab3-wrap ${this.state.iframeTouch ? 'useTouchmove' : ''}` }>
+                    item.url !== 'live' && item.url !== 'chat' && active === i && <div className={`tab3-wrap ${boolShade ? '' : 'useTouchmove'}` }>
                       {
                         item.url.indexOf('CreditMarket') !== -1 ? <div className="credit-market"><div className="credit-img"></div><a href={`http://m.163.com/newsapp/applinks.html?s=sps&liveRoomid=${liveData.roomId}`}>点击前往</a></div> : <iframe className="tab3-iframe" src={item.sid ? `http://c.m.163.com/news/s/${item.sid}.html` : item.url} ref="iframe"></iframe>
                       }
