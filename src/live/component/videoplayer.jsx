@@ -69,12 +69,6 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const displayNone = {
-      display: 'none'
-    }
-    const displayBlock = {
-      display: 'block'
-    }
     let centerClass = this.props.show ? 'video' : 'shrink-video'
     const finalClass = this.state.androidPlaying ? centerClass +' video-displayNone' : centerClass + ' video-displayBlock'
     return (
@@ -89,7 +83,6 @@ export default class VideoPlayer extends React.Component {
           className={finalClass}
           ref="video"
           onClick={this.handleClick}
-          // style={this.state.androidPlaying ? displayNone : displayBlock}
         />
       </div>
     )
