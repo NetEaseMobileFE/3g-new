@@ -79,15 +79,7 @@ export default class Tab extends React.Component {
           {
 
             appFrame.map((item, i) => {
-              // console.log(!!item.url)
-              // console.log(item.sid)
-              // console.log(item.url,' : ',item.url !== 'chat' && item.url !=='live' && !!item.sid || (item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule') && this.preventTouchMove())
               const boolShade = item.url !== 'chat' && item.url !=='live' && !!item.sid || !!(item.url.match(/wapSpecialModule/ig) == 'wapSpecialModule')
-              if (boolShade) {
-                console.log(1)
-                // this.preventTouchMove()
-              }
-              console.log('boolShade: ',boolShade)
               return (
                 <div className={'tab-panel' + (active === i ? ' active' : '')}>
                   {
